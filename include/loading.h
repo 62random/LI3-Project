@@ -1,40 +1,13 @@
-
-
-typedef struct TCD_community {
-	//àrvore de USERS, com key ID
-	//àrvore de POSTS, com key ID
-	//posts ordenados por data?
-}
-
-
-
-
-/* USERS */
-
-typedef struct my_user {
-	long 	id;
-	int		reputation;
-	char *	dname;
-	char *	about;
-	//lista de posts
-} * USER;
+#include <stdlib.h>
+#include <stdio.h>
+#include "/usr/include/libxml2/libxml/parser.h"
+#include "/usr/include/libxml2/libxml/xmlwriter.h"
+#include "/usr/include/libxml2/libxml/tree.h"
+#include "/usr/include/libxml2/libxml/xmlmemory.h"
 
 
 
-/* POSTS */
 
-typedef struct my_post {
-	long 		id;
-	long 		parent_id;
-	struct date	cdate;
-	int 		score;
-	long 		ownerid;
-	char *		ownername;
-	char *		title;
-	char **		tags;
-	int 		anscount;
-	int			commcount;
-	int			favcount;
-	int			votecount;			//contruir ao dar load
-	//lista de votos (so com o id do user)
-} * POST;
+
+
+void xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath);
