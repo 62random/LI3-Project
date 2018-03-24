@@ -11,9 +11,9 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int			commcount;
-	int			favcount;
-	int			votecount;			//contruir ao dar load
+	int		commcount;
+	int		favcount;
+	int		votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
 } * MYPOST;
 
@@ -78,9 +78,63 @@ void getOwnerName(MYPOST post, char * name){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o título de um post.
  * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o titulo do post.
  */
-char* getTile(MYPOST post){
+void getTitle(MYPOST post,char* title){
+	strcpy(title, post->title);
+}
 
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém as tags de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador para a lista de strings onde vao ser devolvidas as tags do post.
+ */
+
+ // esta merda pode estar a foder testar isto
+void getTags(MYPOST post,char** tags){
+	for(int i = 0; tags[i] != NULL; i++)
+		strcpy(tags[i], post->tags[i]);
+	tags[i] = NULL;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém as respostas de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de respostas do post.
+ */
+void getAnswer(MYPOST post,int *answer){
+	*answer = post->anscount;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o numero de comentarios de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de comentarios do post.
+ */
+void getComments(MYPOST post,int *comments){
+	*comments = post->commcount;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o numero de favoritos de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de favoritos do post.
+ */
+void getFavs(MYPOST post,int *fav){
+	*fav = post->favcount;
+}
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o numero de votos de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de votos do post.
+ */
+void getVotes(MYPOST post,int *votes){
+	*votes = post->votecount;
 }
 
 
