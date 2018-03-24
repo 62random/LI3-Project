@@ -3,7 +3,7 @@
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <glib.h>
-#include <common.h>xs
+#include <common.h>
 
 //gcc teste.c `xml2-config --cflags --libs` `pkg-config --cflags --libs glib-2.0` -o teste
 
@@ -119,11 +119,4 @@ void createTREE(){
 
 
 
-}
-
-
-
-
-int main(){
-    return 0;
 }
