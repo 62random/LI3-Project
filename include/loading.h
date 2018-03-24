@@ -9,9 +9,6 @@ typedef struct TCD_community {
 
 
 
-
-
-
 /* USERS */
 
 typedef struct my_user {
