@@ -4,7 +4,7 @@ typedef struct mypost *MYPOST;
 struct mypost {
 	long 		id;
 	long 		parent_id;
-	struct date	cdate;
+	Date		cdate;
 	int 		score;
 	long 		ownerid;
 	char *		ownername;
