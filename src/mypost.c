@@ -1,5 +1,9 @@
+#include <string.h>
+#include "date.h"
+
 
 typedef struct mypost *MYPOST;
+
 
 struct mypost {
 	long 		id;
@@ -15,7 +19,7 @@ struct mypost {
 	int		favcount;
 	int		votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
-} * MYPOST;
+};
 
 ///mudar o resto das funções para void
 
@@ -27,6 +31,16 @@ struct mypost {
  */
 void getId(MYPOST post, long * id){
   *id = post->id;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que altera o Id de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo ID do post.
+ */
+void setId(MYPOST post, long  id){
+  post->id=id;
 }
 
 
@@ -48,7 +62,7 @@ void getPId(MYPOST post, long * p_id){
  * @param			Apontador para struct onde a função devolve a data do post.
  */
 void getDate(MYPOST post, Date data){
-  memcpy(data, post->cdate, sizeof(struct date));
+  memcpy(data, post->cdate, sizeof(Date));
 }
 
 
@@ -93,7 +107,8 @@ void getTitle(MYPOST post,char* title){
 
  // esta merda pode estar a foder testar isto
 void getTags(MYPOST post,char** tags){
-	for(int i = 0; tags[i] != NULL; i++)
+	int i ;
+	for(i= 0; tags[i] != NULL; i++)
 		strcpy(tags[i], post->tags[i]);
 	tags[i] = NULL;
 }
