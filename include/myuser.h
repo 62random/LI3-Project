@@ -7,6 +7,12 @@
 
 typedef struct myuser * MYUSER;
 
+long getId(MYUSER use);
+
+char * getUsername(MYUSER use);
+
+char * getBiography(MYUSER use);
+
 MYUSER createMYUSER();
 
 void freeMYUSER(MYUSER conta);
