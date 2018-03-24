@@ -1,4 +1,17 @@
 
+
+typedef struct TCD_community {
+	//àrvore de USERS, com key ID
+	//àrvore de POSTS, com key ID
+	//posts ordenados por data?
+}
+
+
+
+
+
+
+
 /* USERS */
 
 typedef struct my_user {
