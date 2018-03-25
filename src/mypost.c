@@ -79,7 +79,7 @@ void getOwnerName(MYPOST post, char * name){
  * @brief 			Função que obtém o título de um post.
  * @param 			Apontador para a struct do post.
  */
-char* getTile(MYPOST post){
+char * getTile(MYPOST post){
 
 }
 

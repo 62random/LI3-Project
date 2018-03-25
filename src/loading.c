@@ -55,3 +55,18 @@ void xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 	return 1;
 }
+
+
+
+void xmltoMYPOST(MYPOST post, xmlNodePtr xml) {
+	xmlAttrPtr cur;
+
+	for(cur = xml->properties; cur; cur = cur->next) {
+		if(strcmp(cur->name, "Id") == 0) {
+			setPostId(post, xmltoInt(cur->children));
+			continue;
+		}
+
+
+	}
+}
