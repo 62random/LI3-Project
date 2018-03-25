@@ -7,6 +7,7 @@ typedef struct mypost *MYPOST;
 
 struct mypost {
 	long 		id;
+	int			typeid;
 	long 		parent_id;
 	Date		cdate;
 	int 		score;
@@ -15,13 +16,13 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int		commcount;
-	int		favcount;
-	int		votecount;			//contruir ao dar load
+	int			commcount;
+	int			favcount;
+	int			votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
 };
 
-///mudar o resto das funções para void
+
 
 /**
  * @date 			24 Mar 2018
@@ -42,6 +43,29 @@ void getId(MYPOST post, long * id){
 void setId(MYPOST post, long  id){
   post->id=id;
 }
+
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o TypeId de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Apontador onde a função devolve o TypeId do post.
+ */
+void getPostTypeId(MYPOST post, int * id){
+  *id = post->typeid;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que altera o TypeId de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo TypeId do post.
+ */
+void setPostTypeId(MYPOST post, int  id){
+  post->typeid = id;
+}
+
+
 
 
 /**
@@ -94,13 +118,9 @@ void getOwnerName(MYPOST post, char * name){
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o titulo do post.
  */
-<<<<<<< HEAD
-char * getTile(MYPOST post){
-=======
 void getTitle(MYPOST post,char* title){
 	strcpy(title, post->title);
 }
->>>>>>> a994c16cf0015182d468f0d7269158dbd091bf5e
 
 /**
  * @date 			24 Mar 2018
