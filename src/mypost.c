@@ -1,5 +1,9 @@
+#include <string.h>
+#include "date.h"
+
 
 typedef struct mypost *MYPOST;
+
 
 struct mypost {
 	long 		id;
@@ -11,11 +15,11 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int			commcount;
-	int			favcount;
-	int			votecount;			//contruir ao dar load
+	int		commcount;
+	int		favcount;
+	int		votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
-} * MYPOST;
+};
 
 ///mudar o resto das funções para void
 
@@ -27,6 +31,16 @@ struct mypost {
  */
 void getId(MYPOST post, long * id){
   *id = post->id;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que altera o Id de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo ID do post.
+ */
+void setId(MYPOST post, long  id){
+  post->id=id;
 }
 
 
@@ -48,7 +62,7 @@ void getPId(MYPOST post, long * p_id){
  * @param			Apontador para struct onde a função devolve a data do post.
  */
 void getDate(MYPOST post, Date data){
-  memcpy(data, post->cdate, sizeof(struct date));
+  memcpy(data, post->cdate, sizeof(Date));
 }
 
 
@@ -78,9 +92,68 @@ void getOwnerName(MYPOST post, char * name){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o título de um post.
  * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o titulo do post.
  */
+<<<<<<< HEAD
 char * getTile(MYPOST post){
+=======
+void getTitle(MYPOST post,char* title){
+	strcpy(title, post->title);
+}
+>>>>>>> a994c16cf0015182d468f0d7269158dbd091bf5e
 
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém as tags de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador para a lista de strings onde vao ser devolvidas as tags do post.
+ */
+
+ // esta merda pode estar a foder testar isto
+void getTags(MYPOST post,char** tags){
+	int i ;
+	for(i= 0; tags[i] != NULL; i++)
+		strcpy(tags[i], post->tags[i]);
+	tags[i] = NULL;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém as respostas de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de respostas do post.
+ */
+void getAnswer(MYPOST post,int *answer){
+	*answer = post->anscount;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o numero de comentarios de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de comentarios do post.
+ */
+void getComments(MYPOST post,int *comments){
+	*comments = post->commcount;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o numero de favoritos de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de favoritos do post.
+ */
+void getFavs(MYPOST post,int *fav){
+	*fav = post->favcount;
+}
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém o numero de votos de um post.
+ * @param 			Apontador para a struct do post.
+ * @param 			Apontador onde a funcao devolve o numero de votos do post.
+ */
+void getVotes(MYPOST post,int *votes){
+	*votes = post->votecount;
 }
 
 
