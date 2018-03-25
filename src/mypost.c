@@ -1,5 +1,4 @@
-#include <string.h>
-#include "date.h"
+#include <mypost.h>
 
 
 typedef struct mypost *MYPOST;
@@ -86,7 +85,7 @@ void getPId(MYPOST post, long * p_id){
  * @param			Apontador para struct onde a função devolve a data do post.
  */
 void getDate(MYPOST post, Date data){
-  memcpy(data, post->cdate, sizeof(Date));
+  memcpy(data, post->cdate, date_size());
 }
 
 

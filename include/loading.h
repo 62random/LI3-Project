@@ -4,10 +4,9 @@
 #include "/usr/include/libxml2/libxml/xmlwriter.h"
 #include "/usr/include/libxml2/libxml/tree.h"
 #include "/usr/include/libxml2/libxml/xmlmemory.h"
+#include <mypost.h>
+#include <myuser.h>
 
 
 
-
-
-
-void xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath);
+int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath);

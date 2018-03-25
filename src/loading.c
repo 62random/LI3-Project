@@ -3,13 +3,7 @@
  * @date 	24 Mar 2018
  * @brief	Ficheiro contendo funções utilizadas na gestão do carregamento do dump para memória.
  */
-#include <stdlib.h>
-#include <stdio.h>
-#include "/usr/include/libxml2/libxml/parser.h"
-#include "/usr/include/libxml2/libxml/xmlwriter.h"
-#include "/usr/include/libxml2/libxml/tree.h"
-#include "/usr/include/libxml2/libxml/xmlmemory.h"
-
+#include <loading.h>
 
 /*
 	Aqui vai ficar definida as funções que carregam
@@ -39,7 +33,7 @@
  * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
  * @param filepath 	O filepath do ficheiro xml a ser lido e carregado.
  */
-void xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
+int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 	*doc = xmlParseFile(filepath);
 
@@ -48,7 +42,7 @@ void xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 		return -1;
 	}
 
-	*ptr = xmlDocGetRootElement(doc);
+	*ptr = xmlDocGetRootElement(*doc);
 
 	if (!(*ptr)) {
 		fprintf(stderr, "%s is an empty document\n", filepath);
@@ -61,15 +55,15 @@ void xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 
 
-long xmlToLong(xmlAttrPtr cur) { ///falta converter string em long
+long xmlToLong(xmlAttrPtr cur, xmlDocPtr doc) { ///falta converter string em long
 
-	if (!cur) return NULL;
+	if (cur) return (long) NULL;
 
 	char * string;
 
 	string = xmlNodeListGetString(doc, cur->children, 1);
 
-
+	return 1;
 }
 
 
