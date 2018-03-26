@@ -7,7 +7,7 @@
 
 typedef struct myuser * MYUSER;
 
-long getId(MYUSER use);
+long getIdMYUSER(MYUSER use);
 
 char * getUsername(MYUSER use);
 

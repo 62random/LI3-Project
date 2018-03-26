@@ -15,7 +15,7 @@ struct myuser{
  * @param			Apontador para o user.
 */
 
-long getId(MYUSER use){
+long getIdMYUSER(MYUSER use){
 	return use->id;
 }
 /**
