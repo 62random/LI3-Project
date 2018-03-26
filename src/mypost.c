@@ -1,4 +1,5 @@
 #include <mypost.h>
+#include <date.h>
 
 
 typedef struct mypost *MYPOST;
