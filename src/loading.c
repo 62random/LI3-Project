@@ -15,7 +15,7 @@
 		-> TAD_community clean();
 
 
-/*
+
 
 	defines para os file paths dos ficheiros do dump
 
@@ -59,9 +59,9 @@ long xmlToLong(xmlAttrPtr cur, xmlDocPtr doc) { ///falta converter string em lon
 
 	if (cur) return (long) NULL;
 
-	char * string;
+	//char * string;
 
-	string = xmlNodeListGetString(doc, cur->children, 1);
+	//string = (char *) xmlNodeListGetString(doc, cur->children, 1);
 
 	return 1;
 }
