@@ -1,7 +1,7 @@
-#include "/usr/include/libxml2/libxml/parser.h"
-#include "/usr/include/libxml2/libxml/xmlwriter.h"
-#include "/usr/include/libxml2/libxml/tree.h"
-#include "/usr/include/libxml2/libxml/xmlmemory.h"
+#include <libxml/parser.h>
+#include <libxml/xmlwriter.h>
+#include <libxml/tree.h>
+#include <libxml/xmlmemory.h>
 #include <glib.h>
 #include <common.h>
 
