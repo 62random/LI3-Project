@@ -5,7 +5,10 @@
 #include "common.h"
 #include <string.h>
 #include <stdlib.h>
-#include "loading.h"
+#include "/usr/include/libxml2/libxml/parser.h"
+#include "/usr/include/libxml2/libxml/xmlwriter.h"
+#include "/usr/include/libxml2/libxml/tree.h"
+#include "/usr/include/libxml2/libxml/xmlmemory.h"
 
 typedef struct myuser * MYUSER;
 

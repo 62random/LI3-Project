@@ -156,6 +156,33 @@ MYUSER search_USER(GTree * tree,long id){
 }
 
 /**
+ * @date 			24 Mar 2018
+ * @brief 			Função que (recorrendo à biblioteca libxml2) efetua o parsing de um ficheiro xml.
+ * @param doc		O apontador do ficheiro xml.
+ * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
+ * @param filepath 	O filepath do ficheiro xml a ser lido e carregado.
+ */
+
+static int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
+
+	*doc = xmlParseFile(filepath);
+
+	if (!(*doc)) {
+		fprintf(stderr, "Document %s not parsed successfully\n", filepath);
+		return -1;
+	}
+
+	*ptr = xmlDocGetRootElement(*doc);
+
+	if (!(*ptr)) {
+		fprintf(stderr, "%s is an empty document\n", filepath);
+		return -2;
+	}
+
+	return 1;
+}
+
+/**
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
 */
 
