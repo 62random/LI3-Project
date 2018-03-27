@@ -40,7 +40,7 @@ void getIdP(MYPOST post, long * id){
  * @param 			Apontador para a struct do post.
  * @param			Novo ID do post.
  */
-void setIdP(MYPOST post, long  id){
+static void setIdP(MYPOST post, long  id){
   post->id=id;
 }
 
@@ -61,7 +61,7 @@ void getPostTypeIdP(MYPOST post, int * id){
  * @param 			Apontador para a struct do post.
  * @param			Novo TypeId do post.
  */
-void setPostTypeIdP(MYPOST post, long  id){
+static void setPostTypeIdP(MYPOST post, long  id){
   post->typeid=id;
 }
 
@@ -83,7 +83,7 @@ void getPIdP(MYPOST post, long * p_id){
  * @param 			Apontador para a struct do post.
  * @param			Novo ParendId do post.
  */
-void setPIdP(MYPOST post, long  id){
+static void setPIdP(MYPOST post, long  id){
   post->parent_id=id;
 }
 
@@ -105,7 +105,7 @@ void getDateP(MYPOST post, Date data){
  * @param 			Apontador para a struct do post.
  * @param			Nova data do post.
  */
-void setDateP(MYPOST post, Date data){
+static void setDateP(MYPOST post, Date data){
   post->cdate=data;
 }
 
@@ -127,7 +127,7 @@ void getOwnerIdP(MYPOST post, long * id){
  * @param 			Apontador para a struct do post.
  * @param			Novo OwnerId do post.
  */
-void setOwnerIdP(MYPOST post, long  id){
+static void setOwnerIdP(MYPOST post, long  id){
   post->ownerid=id;
 }
 
@@ -147,7 +147,7 @@ void getOwnerNameP(MYPOST post, char * name){
  * @param 			Apontador para a struct do post.
  * @param			Novo OwnerName do post.
  */
-void setOwnerNameP(MYPOST post, char *  name){
+static void setOwnerNameP(MYPOST post, char *  name){
   post->ownername=name;
 }
 
@@ -167,7 +167,7 @@ void getTitleP(MYPOST post,char* title){
  * @param 			Apontador para a struct do post.
  * @param			Novo titulo do post.
  */
-void setTitleP(MYPOST post, char* title){
+static void setTitleP(MYPOST post, char* title){
   post->title=title;
 }
 
@@ -192,7 +192,7 @@ void getTagsP(MYPOST post,char** tags){
  * @param 			Apontador para a struct do post.
  * @param			Nova lista de tags do post.
  */
-void setTagsP(MYPOST post, char* tags){
+static void setTagsP(MYPOST post, char** tags){
   post->tags=tags;
 }
 
@@ -213,7 +213,7 @@ void getAnswersP(MYPOST post,int *answer){
  * @param 			Apontador para a struct do post.
  * @param			Novo numero de respostas do post.
  */
-void setAsnwersP(MYPOST post, int answer){
+static void setAsnwersP(MYPOST post, int answer){
   post->anscount=answer;
 }
 
@@ -233,7 +233,7 @@ void getCommentsP(MYPOST post,int *comments){
  * @param 			Apontador para a struct do post.
  * @param			Novo comentarios de respostas do post.
  */
-void setCommentsP(MYPOST post, int comments){
+static void setCommentsP(MYPOST post, int comments){
   post->commcount=comments;
 }
 
@@ -253,7 +253,7 @@ void getFavsP(MYPOST post,int *fav){
  * @param 			Apontador para a struct do post.
  * @param			Novo favoritos de respostas do post.
  */
-void setFavsP(MYPOST post, int fav){
+static void setFavsP(MYPOST post, int fav){
   post->favcount=fav;
 }
 
@@ -273,7 +273,7 @@ void getVotesP(MYPOST post,int *votes){
  * @param 			Apontador para a struct do post.
  * @param			Novo numero de votos do post.
  */
-void setVotesP(MYPOST post, int votes){
+static void setVotesP(MYPOST post, int votes){
   post->votecount=votes;
 }
 
