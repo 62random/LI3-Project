@@ -1,7 +1,4 @@
-#include <myuser.h>
-
-
-typedef struct myuser * MYUSER;
+#include "myuser.h"
 
 struct myuser{
     long id;
@@ -18,6 +15,16 @@ struct myuser{
 long getIdMYUSER(MYUSER use){
 	return use->id;
 }
+
+/**
+ * @brief			Função que devolve a rep do user.
+ * @param			Apontador para o user.
+*/
+
+int getREPMYUSER(MYUSER use){
+	return use->rep;
+}
+
 /**
  * @brief			Função que devolve o Username do user.
  * @param			Apontador para o user.
@@ -46,7 +53,7 @@ char * getBiography(MYUSER use){
  * @param			Id do user a colocar.
  */
 
-static void setId(MYUSER use, long id){
+static void setIdUSER(MYUSER use, long id){
     use->id = id;
 }
 
@@ -94,8 +101,10 @@ MYUSER createMYUSER(){
  * @param 				Memória a libertar.
 */
 
-void freeMYUSER(MYUSER conta){
-    if (!conta){
+void freeMYUSER(void * aux){
+	MYUSER conta;
+    if (!aux){
+		conta = (MYUSER) aux;
         free(conta->bio);
         free(conta->username);
         free(conta);
@@ -108,16 +117,16 @@ void freeMYUSER(MYUSER conta){
  * @param				Apontador para a segunda key.
 */
 
-int compare_user(long * key1, long * key2){
+int compare_user(const void * key1, const void * key2,void * data){
     long id1,id2;
     int result;
 
-    id1 = *key1;
-    id2 = *key2;
+    id1 = *((long *) key1);
+    id2 = *((long *) key2);
 
     if (id1 == id2)
         result = 0;
-    result = id1 > id2 ? 1 : -1 ;
+    else result = id1 > id2 ? 1 : -1 ;
 
     return result;
 }
@@ -127,53 +136,82 @@ int compare_user(long * key1, long * key2){
  * @param				Apontador para a key.
 */
 
-void freeKey(long * a){
-    if (a)
-        free(a);
+void freeKey(void * a){
+	long * b;
+    if (a){
+        b = (long *) a;
+		free(b);
+	}
 }
 
-void createTREE(){
+/**
+ * @brief				Função que procura um user na estrutura.
+ * @param				Id do user a procurar.
+*/
+
+MYUSER search_USER(GTree * tree,long id){
+
+	MYUSER use = g_tree_lookup(tree,&id);
+	return use;
+}
+
+/**
+ * @brief				Função lê o ficheiro User.xml e cria uma arvore.
+*/
+
+GTree * createTREE(const char * path){
 
     xmlDocPtr doc;
 	xmlNodePtr ptr;
 	struct _xmlAttr * cur;
 	xmlNodePtr aux;
 
-	xml_file_to_struct(doc,ptr,"Users.xml");
+	MYUSER use = NULL;
+	GTree * tree = g_tree_new_full(&compare_user,NULL,&freeKey,&freeMYUSER);
+
+	if (!(xml_file_to_struct(&doc,&ptr,path)))
+		return tree;
 
 
-    /*
+
     long id;
-    int rep;*/
+	long * keyid = NULL;
+    int rep;
 
     aux = ptr->children->next;
     xmlChar *key;
 	while (aux != NULL){
-        //MYUSER use = createMYUSER();
-		cur = aux->properties;
-		 	while (cur != NULL) {
-				key = xmlNodeListGetString(doc,cur->children,1);
-                /*
-			    if (strcmp(cur->name,"Id")==0){
-                    id = atoi(key);
-                    setId(use,id);
-                }
-                if (strcmp(cur->name,"Reputation")==0){
-                    rep = atoi(key);
-                    setRp(use,rep);
-                }
-                if (strcmp(cur->name,"DisplayName")==0){
-                    setUsername(use,key);
-                }
-                if (strcmp(cur->name,"AboutMe")==0){
-                    setRp(use,key);
-                }*/
+		if (strcmp((char*)aux->name,"row")==0){
+        	use = createMYUSER();
+			cur = aux->properties;
+		 		while (cur != NULL) {
+					key = xmlNodeListGetString(doc,cur->children,1);
 
-				cur = cur->next;
-			}
-		aux = NULL;
+			    	if (strcmp((char*)cur->name,"Id")==0){
+                    	id = atoi((char*)key);
+                    	setIdUSER(use,id);
+                	}
+                	if (strcmp((char*)cur->name,"Reputation")==0){
+                    	rep = atoi((char*)key);
+                    	setRp(use,rep);
+                	}
+                	if (strcmp((char*)cur->name,"DisplayName")==0){
+                    	setUsername(use,(char*)key);
+                	}
+                	if (strcmp((char*)cur->name,"AboutMe")==0){
+                    	setBio(use,(char*)key);
+                	}
+
+					cur = cur->next;
+				}
+				keyid = malloc(sizeof(long));
+				*keyid = id;
+				g_tree_insert(tree,keyid,use);
+		}
+		aux = aux->next;
 	}
 
 
+	return tree;
 
 }
