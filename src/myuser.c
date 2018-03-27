@@ -159,7 +159,7 @@ MYUSER search_USER(GTree * tree,long id){
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
 */
 
-GTree * createTREE(const char * path){
+GTree * createTREE( char * path){
 
     xmlDocPtr doc;
 	xmlNodePtr ptr;

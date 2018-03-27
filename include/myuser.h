@@ -27,6 +27,6 @@ void freeKey(void * a);
 
 MYUSER search_USER(GTree * tree,long id);
 
-GTree * createTREE(const char * path);
+GTree * createTREE(char * path);
 
 #endif
