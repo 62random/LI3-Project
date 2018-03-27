@@ -7,7 +7,7 @@ typedef struct mypost *MYPOST;
 
 struct mypost {
 	long 		id;
-	int			typeid;
+	int		typeid;
 	long 		parent_id;
 	Date		cdate;
 	int 		score;
@@ -16,9 +16,9 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int			commcount;
-	int			favcount;
-	int			votecount;			//contruir ao dar load
+	int		commcount;
+	int		favcount;
+	int		votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
 };
 
@@ -30,7 +30,7 @@ struct mypost {
  * @param 			Apontador para a struct do post.
  * @param			Apontador onde a função devolve o id do post.
  */
-void getId(MYPOST post, long * id){
+void getIdP(MYPOST post, long * id){
   *id = post->id;
 }
 
@@ -40,7 +40,7 @@ void getId(MYPOST post, long * id){
  * @param 			Apontador para a struct do post.
  * @param			Novo ID do post.
  */
-void setId(MYPOST post, long  id){
+void setIdP(MYPOST post, long  id){
   post->id=id;
 }
 
@@ -51,31 +51,40 @@ void setId(MYPOST post, long  id){
  * @param 			Apontador para a struct do post.
  * @param			Apontador onde a função devolve o TypeId do post.
  */
-void getPostTypeId(MYPOST post, int * id){
+void getPostTypeIdP(MYPOST post, int * id){
   *id = post->typeid;
 }
 
 /**
- * @date 			24 Mar 2018
+ * @date 			27 Mar 2018
  * @brief 			Função que altera o TypeId de um post.
  * @param 			Apontador para a struct do post.
  * @param			Novo TypeId do post.
  */
-void setPostTypeId(MYPOST post, int  id){
-  post->typeid = id;
+void setPostTypeIdP(MYPOST post, long  id){
+  post->typeid=id;
 }
-
 
 
 
 /**
  * @date 			24 Mar 2018
- * @brief 			Função que obtém o Id de um post.
+ * @brief 			Função que obtém o ParentId de um post.
  * @param 			Apontador para a struct do post.
  * @param			Apontador onde a função devolve o ParentId do post.
  */
-void getPId(MYPOST post, long * p_id){
+void getPIdP(MYPOST post, long * p_id){
   *p_id = post->parent_id;
+}
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o ParentId de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo ParendId do post.
+ */
+void setPIdP(MYPOST post, long  id){
+  post->parent_id=id;
 }
 
 
@@ -85,10 +94,20 @@ void getPId(MYPOST post, long * p_id){
  * @param 			Apontador para a struct do post.
  * @param			Apontador para struct onde a função devolve a data do post.
  */
-void getDate(MYPOST post, Date data){
+void getDateP(MYPOST post, Date data){
   memcpy(data, post->cdate, date_size());
 }
 
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera a data de criação de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Nova data do post.
+ */
+void setDateP(MYPOST post, Date data){
+  post->cdate=data;
+}
 
 
 
@@ -98,8 +117,18 @@ void getDate(MYPOST post, Date data){
  * @param 			Apontador para a struct do post.
  * @param			Apontador onde a função devolve o id do owner post.
  */
-void getOwnerId(MYPOST post, long * id){
+void getOwnerIdP(MYPOST post, long * id){
   *id = post->ownerid;
+}
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o OwnerId de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo OwnerId do post.
+ */
+void setOwnerIdP(MYPOST post, long  id){
+  post->ownerid=id;
 }
 
 /**
@@ -108,8 +137,18 @@ void getOwnerId(MYPOST post, long * id){
  * @param 			Apontador para a struct do post.
  * @param			Apontador onde afunção devolve o nome do post.
  */
-void getOwnerName(MYPOST post, char * name){
+void getOwnerNameP(MYPOST post, char * name){
 	strcpy(name, post->ownername);
+}
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o OwnerName de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo OwnerName do post.
+ */
+void setOwnerNameP(MYPOST post, char *  name){
+  post->ownername=name;
 }
 
 /**
@@ -118,8 +157,18 @@ void getOwnerName(MYPOST post, char * name){
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o titulo do post.
  */
-void getTitle(MYPOST post,char* title){
+void getTitleP(MYPOST post,char* title){
 	strcpy(title, post->title);
+}
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o título de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo titulo do post.
+ */
+void setTitleP(MYPOST post, char* title){
+  post->title=title;
 }
 
 /**
@@ -130,7 +179,7 @@ void getTitle(MYPOST post,char* title){
  */
 
  // esta merda pode estar a foder testar isto
-void getTags(MYPOST post,char** tags){
+void getTagsP(MYPOST post,char** tags){
 	int i ;
 	for(i= 0; tags[i] != NULL; i++)
 		strcpy(tags[i], post->tags[i]);
@@ -138,13 +187,34 @@ void getTags(MYPOST post,char** tags){
 }
 
 /**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera a lista de tags de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Nova lista de tags do post.
+ */
+void setTagsP(MYPOST post, char* tags){
+  post->tags=tags;
+}
+
+
+/**
  * @date 			24 Mar 2018
- * @brief 			Função que obtém as respostas de um post.
+ * @brief 			Função que obtém o numero de respostas de um post.
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o numero de respostas do post.
  */
-void getAnswer(MYPOST post,int *answer){
+void getAnswersP(MYPOST post,int *answer){
 	*answer = post->anscount;
+}
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o numero de respostas de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo numero de respostas do post.
+ */
+void setAsnwersP(MYPOST post, int answer){
+  post->anscount=answer;
 }
 
 /**
@@ -153,8 +223,18 @@ void getAnswer(MYPOST post,int *answer){
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o numero de comentarios do post.
  */
-void getComments(MYPOST post,int *comments){
+void getCommentsP(MYPOST post,int *comments){
 	*comments = post->commcount;
+}
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o numero de comentarios de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo comentarios de respostas do post.
+ */
+void setCommentsP(MYPOST post, int comments){
+  post->commcount=comments;
 }
 
 /**
@@ -163,19 +243,39 @@ void getComments(MYPOST post,int *comments){
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o numero de favoritos do post.
  */
-void getFavs(MYPOST post,int *fav){
+void getFavsP(MYPOST post,int *fav){
 	*fav = post->favcount;
 }
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o numero de favoritos de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo favoritos de respostas do post.
+ */
+void setFavsP(MYPOST post, int fav){
+  post->favcount=fav;
+}
+
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de votos de um post.
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o numero de votos do post.
  */
-void getVotes(MYPOST post,int *votes){
+void getVotesP(MYPOST post,int *votes){
 	*votes = post->votecount;
 }
 
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera o numero de votos de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novo numero de votos do post.
+ */
+void setVotesP(MYPOST post, int votes){
+  post->votecount=votes;
+}
 
 /**
  * @date 			24 Mar 2018
