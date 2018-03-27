@@ -1,3 +1,6 @@
+#ifndef __MYPOST_H__
+#define __MYPOST_H__
+
 #include <string.h>
 #include <stdlib.h>
 #include "date.h"
@@ -31,3 +34,5 @@ void getVotesP(MYPOST post,int *votes);
 static void setVotesP(MYPOST post, int votes);
 MYPOST createpost();
 void freepost(MYPOST post);
+
+#endif
