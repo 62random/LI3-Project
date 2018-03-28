@@ -75,17 +75,6 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 
 
-long xmlToLong(xmlAttrPtr cur, xmlDocPtr doc) { ///falta converter string em long
-
-	if (cur) return (long) NULL;
-
-	//char * string;
-
-	//string = (char *) xmlNodeListGetString(doc, cur->children, 1);
-
-	return 1;
-}
-
 
 /**
  * @date 			25 Mar 2018
