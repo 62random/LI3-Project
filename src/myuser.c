@@ -122,7 +122,7 @@ MYUSER createMYUSER(){
 
 void freeMYUSER(void * aux){
 	MYUSER conta;
-    if (!aux){
+    if (aux != NULL){
 		conta = (MYUSER) aux;
         free(conta->bio);
         free(conta->username);
@@ -275,6 +275,7 @@ GTree * createMYUSERS_TREE(char * path){
                     	setBio(use,(char*)key);
                 	}
 
+					xmlFree(key);
 					cur = cur->next;
 				}
 				keyid = malloc(sizeof(long));
@@ -283,7 +284,7 @@ GTree * createMYUSERS_TREE(char * path){
 		}
 		aux = aux->next;
 	}
-	//falta free da arvore
+	xmlFreeDoc(doc);
 	xmlCleanupParser();
 
 
