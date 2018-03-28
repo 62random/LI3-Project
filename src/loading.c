@@ -24,6 +24,26 @@
 
 */
 
+//isto tá aqui para nao dar erros.
+//substituir quando criar as funções
+//made by 54
+void 	postSetId				(MYPOST post, long l){};
+void 	postSetPostTypeId		(MYPOST post, int n){};
+void 	postSetParentId			(MYPOST post, long l){};
+void 	postSetCreationDate		(MYPOST post, Date d){};
+void 	postSetScore			(MYPOST post, int n){};
+void 	postSetOwnerUserId		(MYPOST post, long l){};
+void 	postSetOwnerDisplayName	(MYPOST post, char * str){};
+void 	postSetTitle			(MYPOST post, char * str){};
+void 	postSetTags				(MYPOST post, char ** strs){};
+void 	postSetAnswerCount		(MYPOST post, int n){};
+void 	postSetCommentCount		(MYPOST post, int n){};
+void 	postSetFavoriteCount	(MYPOST post, int n){};
+int 	xmlToInt				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
+Date 	xmlToDate				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
+char * 	xmlToString				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
+char ** xmlToStringArray		(xmlAttrPtr cur, xmlDocPtr doc){return NULL;};
+
 
 
 /**

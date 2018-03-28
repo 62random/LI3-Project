@@ -1,13 +1,11 @@
-#include <myuser.h>
-
-
-typedef struct myuser * MYUSER;
+#include "myuser.h"
 
 struct myuser{
     long id;
     int rep;
     char * username;
     char * bio;
+	MYLIST posts;
 };
 
 /**
@@ -18,6 +16,16 @@ struct myuser{
 long getIdMYUSER(MYUSER use){
 	return use->id;
 }
+
+/**
+ * @brief			Função que devolve a rep do user.
+ * @param			Apontador para o user.
+*/
+
+int getREPMYUSER(MYUSER use){
+	return use->rep;
+}
+
 /**
  * @brief			Função que devolve o Username do user.
  * @param			Apontador para o user.
@@ -41,12 +49,29 @@ char * getBiography(MYUSER use){
 }
 
 /**
+ * @brief			Função que devolve os ultimos N posts de um dado utilizador.
+ * @param			Apontador para o user.
+ * @param			Número de posts.
+*/
+
+long * getNposts(MYUSER use,int n){
+	long * r = malloc(n*sizeof(long));
+	int i = 0;
+	LList aux = use->posts->lista;
+	while(aux && i != n){
+		//r[i++] = getId(aux->data)
+		//aux=aux->next;
+	}
+	return r;
+}
+
+/**
  * @brief 			Função que altera o Id de um user.
  * @param 			Apontador para a struct do user.
  * @param			Id do user a colocar.
  */
 
-static void setId(MYUSER use, long id){
+static void setIdUSER(MYUSER use, long id){
     use->id = id;
 }
 
@@ -86,6 +111,7 @@ static void setUsername(MYUSER use, char * nome){
 
 MYUSER createMYUSER(){
     MYUSER conta = malloc(sizeof(struct myuser));
+	conta->posts = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
     return conta;
 }
 
@@ -94,10 +120,13 @@ MYUSER createMYUSER(){
  * @param 				Memória a libertar.
 */
 
-void freeMYUSER(MYUSER conta){
-    if (!conta){
+void freeMYUSER(void * aux){
+	MYUSER conta;
+    if (!aux){
+		conta = (MYUSER) aux;
         free(conta->bio);
         free(conta->username);
+		free_MYLIST(conta->posts);
         free(conta);
     }
 }
@@ -108,16 +137,16 @@ void freeMYUSER(MYUSER conta){
  * @param				Apontador para a segunda key.
 */
 
-int compare_user(long * key1, long * key2){
+int compare_user(const void * key1, const void * key2,void * data){
     long id1,id2;
     int result;
 
-    id1 = *key1;
-    id2 = *key2;
+    id1 = *((long *) key1);
+    id2 = *((long *) key2);
 
     if (id1 == id2)
         result = 0;
-    result = id1 > id2 ? 1 : -1 ;
+    else result = id1 > id2 ? 1 : -1 ;
 
     return result;
 }
@@ -127,53 +156,137 @@ int compare_user(long * key1, long * key2){
  * @param				Apontador para a key.
 */
 
-void freeKey(long * a){
-    if (a)
-        free(a);
+void freeKey(void * a){
+	long * b;
+    if (a){
+        b = (long *) a;
+		free(b);
+	}
 }
 
-void createTREE(){
+/**
+ * @brief				Função que liberta a memória da arvóre alocada.
+*/
+
+void freeTreeUSER(GTree * tree){
+	g_tree_destroy(tree);
+}
+
+/**
+ * @brief				Função que procura um user na estrutura.
+ * @param				Id do user a procurar.
+*/
+
+MYUSER search_USER(GTree * tree,long id){
+
+	MYUSER use = g_tree_lookup(tree,&id);
+	return use;
+}
+
+/**
+ * @brief				Função mete um post no correspondete user.
+ * @param				Árvore de users.
+ * @param				Identificador do user.
+ * @param				Key do post a inserir.
+ * @param				Informação do post.
+*/
+
+int setPostToUSER(GTree * tree,long id,MYDATE date,void * data){
+	MYUSER use;
+	use = search_USER(tree,id);
+	if (use == NULL)
+		return -1;
+	use->posts = insere_list(use->posts,date,data);
+
+	return 1;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que (recorrendo à biblioteca libxml2) efetua o parsing de um ficheiro xml.
+ * @param doc		O apontador do ficheiro xml.
+ * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
+ * @param filepath 	O filepath do ficheiro xml a ser lido e carregado.
+ */
+
+static int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
+
+	*doc = xmlParseFile(filepath);
+
+	if (!(*doc)) {
+		fprintf(stderr, "Document %s not parsed successfully\n", filepath);
+		return -1;
+	}
+
+	*ptr = xmlDocGetRootElement(*doc);
+
+	if (!(*ptr)) {
+		fprintf(stderr, "%s is an empty document\n", filepath);
+		return -2;
+	}
+
+	return 1;
+}
+
+/**
+ * @brief				Função lê o ficheiro User.xml e cria uma arvore.
+*/
+
+GTree * createMYUSERS_TREE(char * path){
 
     xmlDocPtr doc;
 	xmlNodePtr ptr;
 	struct _xmlAttr * cur;
 	xmlNodePtr aux;
 
-	xml_file_to_struct(doc,ptr,"Users.xml");
+	MYUSER use = NULL;
+	GTree * tree = g_tree_new_full(&compare_user,NULL,&freeKey,&freeMYUSER);
+
+	if (!(xml_file_to_struct(&doc,&ptr,path)))
+		return tree;
 
 
-    /*
+
     long id;
-    int rep;*/
+	long * keyid = NULL;
+    int rep;
 
     aux = ptr->children->next;
     xmlChar *key;
 	while (aux != NULL){
-        //MYUSER use = createMYUSER();
-		cur = aux->properties;
-		 	while (cur != NULL) {
-				key = xmlNodeListGetString(doc,cur->children,1);
-                /*
-			    if (strcmp(cur->name,"Id")==0){
-                    id = atoi(key);
-                    setId(use,id);
-                }
-                if (strcmp(cur->name,"Reputation")==0){
-                    rep = atoi(key);
-                    setRp(use,rep);
-                }
-                if (strcmp(cur->name,"DisplayName")==0){
-                    setUsername(use,key);
-                }
-                if (strcmp(cur->name,"AboutMe")==0){
-                    setRp(use,key);
-                }*/
+		if (strcmp((char*)aux->name,"row")==0){
+        	use = createMYUSER();
+			cur = aux->properties;
+		 		while (cur != NULL) {
+					key = xmlNodeListGetString(doc,cur->children,1);
 
-				cur = cur->next;
-			}
-		aux = NULL;
+			    	if (strcmp((char*)cur->name,"Id")==0){
+                    	id = atoi((char*)key);
+                    	setIdUSER(use,id);
+                	}
+                	if (strcmp((char*)cur->name,"Reputation")==0){
+                    	rep = atoi((char*)key);
+                    	setRp(use,rep);
+                	}
+                	if (strcmp((char*)cur->name,"DisplayName")==0){
+                    	setUsername(use,(char*)key);
+                	}
+                	if (strcmp((char*)cur->name,"AboutMe")==0){
+                    	setBio(use,(char*)key);
+                	}
+
+					cur = cur->next;
+				}
+				keyid = malloc(sizeof(long));
+				*keyid = id;
+				g_tree_insert(tree,keyid,use);
+		}
+		aux = aux->next;
 	}
+	//falta free da arvore
+	xmlCleanupParser();
 
 
+	return tree;
 
 }
