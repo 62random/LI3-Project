@@ -62,7 +62,7 @@ void free_MYdate(MYDATE d) {
 */
 
 int MYdate_size() {
-	return sizeof(struct MYDATE);
+	return sizeof(struct mydate);
 }
 
 /**
