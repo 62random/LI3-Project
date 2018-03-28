@@ -31,6 +31,8 @@ int compare_user(const void * key1, const void * key2,void * data);
 
 void freeKey(void * a);
 
+void freeTreeUSER(GTree * tree);
+
 MYUSER search_USER(GTree * tree,long id);
 
 GTree * createTREE(char * path);

@@ -165,6 +165,14 @@ void freeKey(void * a){
 }
 
 /**
+ * @brief				Função que liberta a memória da arvóre alocada.
+*/
+
+void freeTreeUSER(GTree * tree){
+	g_tree_destroy(tree);
+}
+
+/**
  * @brief				Função que procura um user na estrutura.
  * @param				Id do user a procurar.
 */
@@ -257,6 +265,8 @@ GTree * createTREE(char * path){
 		}
 		aux = aux->next;
 	}
+	//falta free da arvore
+	xmlCleanupParser();
 
 
 	return tree;
