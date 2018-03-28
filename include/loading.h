@@ -14,7 +14,6 @@
 //diferente para se saber do que estamos a falar
 
 int 	xml_file_to_struct		(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath);
-long 	xmlToLong				(xmlAttrPtr cur, xmlDocPtr doc);
 void 	xmltoMYPOST				(MYPOST post, xmlNodePtr xml, xmlDocPtr doc);
 void 	postSetId				(MYPOST post, long l);
 void 	postSetPostTypeId		(MYPOST post, int n);

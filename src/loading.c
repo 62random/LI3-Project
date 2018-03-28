@@ -83,7 +83,7 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
  * @param xml 		O apontador da estrutura resultante do parsing do ficheiro xml.
  */
 void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
-
+	/*
 	xmlAttrPtr cur;
 
 	char flag[12] = {0};
@@ -104,7 +104,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 			}
 */
 
-
+/*
 				if(!flag[0] && xmlStrcmp(cur->name, (xmlChar *) "Id") == 0) {
 					postSetId(post, xmlToLong(cur, doc));
 					flag[0] = 1;
@@ -176,6 +176,6 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 					flag[0] = 1;
 					continue;
 				}
-	}
+	}*/
 
 }
