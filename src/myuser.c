@@ -5,6 +5,7 @@ struct myuser{
     int rep;
     char * username;
     char * bio;
+	MYLIST posts;
 };
 
 /**
@@ -46,6 +47,25 @@ char * getBiography(MYUSER use){
 		return mystrdup(use->bio);
 	return NULL;
 }
+
+/**
+ * @brief			Função que devolve os ultimos N posts de um dado utilizador.
+ * @param			Apontador para o user.
+ * @param			Número de posts.
+*/
+
+long * getNposts(MYUSER use,int n){
+	long * r = malloc(n*sizeof(long));
+	int i = 0;
+	LList aux = use->posts->lista;
+	while(aux && i != n){
+		//r[i++] = getId(aux->data)
+		//aux=aux->next;
+	}
+	return r;
+}
+
+//void setPostToUSER(id,data,infopost);
 
 /**
  * @brief 			Função que altera o Id de um user.
@@ -186,7 +206,7 @@ static int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
 */
 
-GTree * createTREE( char * path){
+GTree * createTREE(char * path){
 
     xmlDocPtr doc;
 	xmlNodePtr ptr;

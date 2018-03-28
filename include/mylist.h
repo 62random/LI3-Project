@@ -14,6 +14,7 @@ typedef struct mylist{
 	int (*f_compare)(void *,void *);
 	void (*destroy_key)(void *);
 	void (*destroy_data)(void *);
+	int num_elementos;
 	LList lista;
 }*MYLIST;
 

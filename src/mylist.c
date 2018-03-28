@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "mylist.h"
 
 /**
  * @brief			Função inicializa a estrutura da lista.
@@ -14,6 +15,7 @@ MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
 	head->destroy_key = dest_key;
 	head->destroy_data = dest_data;
 	head->lista = NULL;
+	head->num_elementos = 0;
 
 	return head;
 }
@@ -78,6 +80,7 @@ MYLIST insere_list(MYLIST r,void * key,void * data){
 
 	if (!pai){
 		r->lista = create_box(key,data);
+		r->num_elementos++;
 		return r;
 	}
 	else{
@@ -96,6 +99,7 @@ MYLIST insere_list(MYLIST r,void * key,void * data){
 		}
 	}
 	r->lista = pai;
+	r->num_elementos++;
 
 	return r;
 }

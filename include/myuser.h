@@ -5,6 +5,7 @@
 #include "common.h"
 #include <string.h>
 #include <stdlib.h>
+#include "mylist.h"
 #include "/usr/include/libxml2/libxml/parser.h"
 #include "/usr/include/libxml2/libxml/xmlwriter.h"
 #include "/usr/include/libxml2/libxml/tree.h"
@@ -19,6 +20,8 @@ int getREPMYUSER(MYUSER use);
 char * getUsername(MYUSER use);
 
 char * getBiography(MYUSER use);
+
+long * getNposts(MYUSER use,int n);
 
 MYUSER createMYUSER();
 
