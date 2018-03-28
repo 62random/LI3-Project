@@ -65,8 +65,6 @@ long * getNposts(MYUSER use,int n){
 	return r;
 }
 
-//void setPostToUSER(id,data,infopost);
-
 /**
  * @brief 			Função que altera o Id de um user.
  * @param 			Apontador para a struct do user.
@@ -113,6 +111,7 @@ static void setUsername(MYUSER use, char * nome){
 
 MYUSER createMYUSER(){
     MYUSER conta = malloc(sizeof(struct myuser));
+	conta->posts = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
     return conta;
 }
 
@@ -181,6 +180,24 @@ MYUSER search_USER(GTree * tree,long id){
 
 	MYUSER use = g_tree_lookup(tree,&id);
 	return use;
+}
+
+/**
+ * @brief				Função mete um post no correspondete user.
+ * @param				Árvore de users.
+ * @param				Identificador do user.
+ * @param				Key do post a inserir.
+ * @param				Informação do post.
+*/
+
+int setPostToUSER(GTree * tree,long id,MYDATE date,void * data){
+	MYUSER use;
+	use = search_USER(tree,id);
+	if (use == NULL)
+		return -1;
+	use->posts = insere_list(use->posts,date,data);
+
+	return 1;
 }
 
 /**

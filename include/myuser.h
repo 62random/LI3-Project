@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "mylist.h"
+#include "mydate.h"
 #include "/usr/include/libxml2/libxml/parser.h"
 #include "/usr/include/libxml2/libxml/xmlwriter.h"
 #include "/usr/include/libxml2/libxml/tree.h"
@@ -34,6 +35,8 @@ void freeKey(void * a);
 void freeTreeUSER(GTree * tree);
 
 MYUSER search_USER(GTree * tree,long id);
+
+int setPostToUSER(GTree * tree,long id,MYDATE date,void * data);
 
 GTree * createTREE(char * path);
 

@@ -28,8 +28,10 @@ MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
 void free_MYLIST(MYLIST r){
 	LList aux = r->lista;
 	while(aux){
-		r->destroy_key(aux->key);
-		r->destroy_data(aux->data);
+		if (r->destroy_key != NULL)
+			r->destroy_key(aux->key);
+		if (r->destroy_data != NULL)
+			r->destroy_data(aux->data);
 		free(aux);
 		aux = aux ->next;
 	}
