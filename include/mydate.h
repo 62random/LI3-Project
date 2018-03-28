@@ -11,6 +11,7 @@ int get_MYmonth(MYDATE d);
 int get_MYyear(MYDATE d);
 void free_MYdate(MYDATE d);
 int MYdate_size();
-int compare_MYDATE(void * data1, void * data2);
+int compare_MYDATE_AVL(void * data1, void * data2);
+int compare_MYDATE_LIST(void * data1, void * data2);
 
 #endif

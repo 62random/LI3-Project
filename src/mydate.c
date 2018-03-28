@@ -66,27 +66,57 @@ int MYdate_size() {
 }
 
 /**
- * @brief			Função compara duas datas.
+ * @brief			Função compara duas datas para árvores.
  * @param			Apontador para a data 1.
  * @param			Apontador para a data 2.
 */
 
-int compare_MYDATE(void * data1, void * data2){
+int compare_MYDATE_AVL(void * data1, void * data2){
 
 	MYDATE a = (MYDATE) data1;
 	MYDATE b = (MYDATE) data2;
 
+	if (a->year == b->year && a->month == b->month && a->day==b->day)
+		return 0;
+	if (a->year == b->year && a->month == b->month && a->day < b->day)
+		return -1;
+	if (a->year == b->year && a->month == b->month && a->day > b->day)
+		return 1;
+	if (a->year == b->year && a->month > b->month)
+		return 1;
+	if (a->year == b->year && a->month < b->month)
+		return -1;
 	if (a->year > b->year)
 		return 1;
-	if (a->year < b->year)
-		return -1;
-	if (a->month > b->month)
+
+	return -1;
+
+}
+
+/**
+ * @brief			Função compara duas datas para listas.
+ * @param			Apontador para a data 1.
+ * @param			Apontador para a data 2.
+*/
+
+int compare_MYDATE_LIST(void * data1, void * data2){
+
+	MYDATE a = (MYDATE) data1;
+	MYDATE b = (MYDATE) data2;
+
+	if (a->year == b->year && a->month == b->month && a->day==b->day)
+		return 0;
+	if (a->year == b->year && a->month == b->month && a->day < b->day)
+		return 0;
+	if (a->year == b->year && a->month == b->month && a->day > b->day)
 		return 1;
-	if (a->month < b->month)
-		return -1;
-	if (a->day > b->day)
+	if (a->year == b->year && a->month > b->month)
 		return 1;
-	if (a->day < b->day)
-		return -1;
+	if (a->year == b->year && a->month < b->month)
+		return 0;
+	if (a->year > b->year)
+		return 1;
+
 	return 0;
+
 }

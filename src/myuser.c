@@ -266,7 +266,7 @@ GTree * createTREE(char * path){
 		aux = aux->next;
 	}
 	//falta free da arvore
-	//xmlCleanupParser();
+	xmlCleanupParser();
 
 
 	return tree;
