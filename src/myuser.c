@@ -126,6 +126,7 @@ void freeMYUSER(void * aux){
 		conta = (MYUSER) aux;
         free(conta->bio);
         free(conta->username);
+		free_MYLIST(conta->posts);
         free(conta);
     }
 }
