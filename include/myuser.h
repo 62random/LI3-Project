@@ -38,6 +38,6 @@ MYUSER search_USER(GTree * tree,long id);
 
 int setPostToUSER(GTree * tree,long id,MYDATE date,void * data);
 
-GTree * createTREE(char * path);
+GTree * createMYUSERS_TREE(char * path);
 
 #endif

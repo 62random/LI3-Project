@@ -232,7 +232,7 @@ static int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
 */
 
-GTree * createTREE(char * path){
+GTree * createMYUSERS_TREE(char * path){
 
     xmlDocPtr doc;
 	xmlNodePtr ptr;
