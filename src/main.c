@@ -5,7 +5,7 @@
 int main(){
 
         GTree * tree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
-
+		/*
 		long key = 0;
 		MYUSER use;
 
@@ -21,7 +21,7 @@ int main(){
 			}
 		}
 
-		freeTreeUSER(tree);
+		freeTreeUSER(tree);*/
 
 
 
