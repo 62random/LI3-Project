@@ -120,3 +120,31 @@ int compare_MYDATE_LIST(void * data1, void * data2){
 	return 0;
 
 }
+
+/**
+ * @brief			Função converte um MYDATE para Date.
+ * @param			Apontador para a data.
+*/
+
+Date MYDATEtoDate(MYDATE a){
+	Date aux;
+	aux = createDate(a->day,a->month,a->year);
+	return aux;
+}
+
+/**
+ * @brief			Função converte um Date para MYDATE.
+ * @param			Apontador para a data.
+*/
+
+MYDATE DatetoMYDATE(Date a){
+	MYDATE aux;
+	int dia,mes,ano;
+	dia = get_day(a);
+	mes = get_month(a);
+	ano = get_year(a);
+
+	aux = createMYDate(dia,mes,ano);
+
+	return aux;
+}
