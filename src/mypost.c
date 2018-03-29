@@ -298,3 +298,37 @@ void freepost(MYPOST post) {
 	free(post->ownername);
 	free(post->tags);
 }
+
+
+/**
+ * @brief				Função que compara 2 keys de posts diferentes para inserir numa AVL.
+ * @param				Apontador para a primeira data.
+ * @param				Apontador para a segunda data.
+*/
+
+
+int compare_mypostsAVL(void * data1, void * data2,void * data){
+	return  compare_MYDATE_AVL(data1,data2);
+
+}
+
+/**
+ * @brief				Função que compara 2 keys de posts diferentes para inserir numa LIST.
+ * @param				Apontador para a primeira data.
+ * @param				Apontador para a segunda data.
+*/
+
+
+int compare_mypostsLIST(void * data1, void * data2){
+	return  compare_MYDATE_LIST(data1,data2);
+
+}
+
+
+/**
+
+void inserepost(long id_user,Date dopost, void * data){
+
+
+}
+*/

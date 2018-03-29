@@ -4,6 +4,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "date.h"
+#include "mypost.h"
+
 
 
 typedef struct mypost * MYPOST;
@@ -34,5 +36,7 @@ void getVotesP(MYPOST post,int *votes);
 static void setVotesP(MYPOST post, int votes);
 MYPOST createpost();
 void freepost(MYPOST post);
+int compare_mypostsAVL(void * data1, void * data2)
+int compare_mypostsLIST(void * data1, void * data2)
 
 #endif
