@@ -40,6 +40,7 @@ void 	postSetAnswerCount		(MYPOST post, int n){};
 void 	postSetCommentCount		(MYPOST post, int n){};
 void 	postSetFavoriteCount	(MYPOST post, int n){};
 int 	xmlToInt				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
+long 	xmlToLong				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
 Date 	xmlToDate				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
 char * 	xmlToString				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
 char ** xmlToStringArray		(xmlAttrPtr cur, xmlDocPtr doc){return NULL;};
@@ -83,7 +84,6 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
  * @param xml 		O apontador da estrutura resultante do parsing do ficheiro xml.
  */
 void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
-	/*
 	xmlAttrPtr cur;
 
 	char flag[12] = {0};
@@ -94,88 +94,91 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				//temos de definir uma nomenclatura para não haver funções
 				//de users e posts com o mesmo nome
 
-/*
-			for(i = 0; i < 12; i++) {											//podíamos fazer isto num ciclo for
-				if(!flag[i] && xmlStrcmp(cur->name, str_matrix[i])) { 			//com dois arrays de apontadores para
-					fun1_matrix[i](post, fun2_matrix[i](cur));					//as funções correspondentes a cada
-					flag[i] = 1;												//atritbuto (tb num array de strings)
-					break;														//teriam de ser static, mas ficava uma
-				}																//cena bem feita, é ver se compensa
-			}
-*/
 
-/*
+		//	for(int i = 0; i < 12; i++) {											//podíamos fazer isto num ciclo for
+		//		if(!flag[i] && xmlStrcmp(cur->name, str_matrix[i])) { 			//com dois arrays de apontadores para
+		//			fun1_matrix[i](post, fun2_matrix[i](cur));					//as funções correspondentes a cada
+		//			flag[i] = 1;												//atritbuto (tb num array de strings)
+		//			break;														//teriam de ser static, mas ficava uma
+		//		}																//cena bem feita, é ver se compensa
+		//	}
+
+
+
 				if(!flag[0] && xmlStrcmp(cur->name, (xmlChar *) "Id") == 0) {
-					postSetId(post, xmlToLong(cur, doc));
+					setIdP(post, xmlToLong(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[1] && xmlStrcmp(cur->name, (xmlChar *) "PostTypeId") == 0) {
-					postSetPostTypeId(post, xmlToInt(cur, doc));
+					setPostTypeIdP(post, xmlToInt(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[2] && xmlStrcmp(cur->name, (xmlChar *) "ParentId") == 0) {
-					postSetParentId(post, xmlToLong(cur, doc));
+					setPIdP(post, xmlToLong(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[3] && xmlStrcmp(cur->name, (xmlChar *) "CreationDate") == 0) {
-					postSetCreationDate(post, xmlToDate(cur, doc));
+					setDateP(post, xmlToDate(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[4] && xmlStrcmp(cur->name, (xmlChar *) "Score") == 0) {
-					postSetScore(post, xmlToInt(cur, doc));
+					setScoreP(post, xmlToInt(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[5] && xmlStrcmp(cur->name, (xmlChar *) "OwnerUserId") == 0) {
-					postSetOwnerUserId(post, xmlToLong(cur, doc));
+					setOwnerIdP(post, xmlToLong(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[6] && xmlStrcmp(cur->name, (xmlChar *) "OwnerDisplayName") == 0) {
-					postSetOwnerDisplayName(post, xmlToString(cur, doc));
+					setOwnerNameP(post, xmlToString(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[7] && xmlStrcmp(cur->name, (xmlChar *) "Title") == 0) {
-					postSetTitle(post, xmlToString(cur, doc));
+					setTitleP(post, xmlToString(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[8] && xmlStrcmp(cur->name, (xmlChar *) "Tags") == 0) {
-					postSetTags(post, xmlToStringArray(cur, doc));
+					setTagsP(post, xmlToStringArray(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[9] && xmlStrcmp(cur->name, (xmlChar *) "AnswerCount") == 0) {
-					postSetAnswerCount(post, xmlToInt(cur, doc));
+					setAsnwersP(post, xmlToInt(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[10] && xmlStrcmp(cur->name, (xmlChar *) "CommentCount") == 0) {
-					postSetCommentCount(post, xmlToInt(cur, doc));
+					setCommentsP(post, xmlToInt(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
 
 				if(!flag[11] && xmlStrcmp(cur->name, (xmlChar *) "FavoriteCount") == 0) {
-					postSetFavoriteCount(post, xmlToInt(cur, doc));
+					setFavsP(post, xmlToInt(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
-	}*/
+
+   //falta inserir votos
+
+	}
 
 }
