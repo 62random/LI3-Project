@@ -332,24 +332,25 @@ int compare_mypostsAVLDate(void * data1, void * data2,void * data){
 }
 
 /**
- * @brief				Função que compara 2 ids de posts diferentes para inserir numa AVL.
- * @param				Apontador para o 1 post.
- * @param				Apontador para o 2 post.
+ * @brief				Função que compara 2 keys de posts diferentes para inserir numa AVL.
+ * @param				Apontador para o 1 key.
+ * @param				Apontador para o 2 key.
 */
 
 
-int compare_mypostsAVLID(void * post1, void * post2,void * data){
+int compare_mypostsAVLID(void * key1, void * key2,void * data){
 	long id1,id2;
         int result;
 
-        getIdP ((MYPOST ) post1 , &id1);
-	getIdP ((MYPOST ) post2 , &id2);
+        id1 = *((long *) key1);
+        id2 = *((long *) key2);
 
         if (id1 == id2)
             result = 0;
         else result = id1 > id2 ? 1 : -1 ;
 
         return result;
+
 
 }
 
