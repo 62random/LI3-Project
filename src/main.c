@@ -4,7 +4,7 @@
 
 int main(){
 
-        GTree * tree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
+        TREE tree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
 		/*
 		long key = 0;
 		MYUSER use;
@@ -19,9 +19,9 @@ int main(){
 				printf("Use:%s\n", getUsername(use));
 				printf("Bio:%s\n",getBiography(use));
 			}
-		}
+		}*/
 
-		freeTreeUSER(tree);*/
+		freeTreeUSER(tree);
 
 
 
