@@ -316,9 +316,9 @@ static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void 
 	if (a){
 		destroy_key(a->key);
 		destroy_data(a->data);
-		free(a);
 		freeAVL(a->esq,destroy_key,destroy_data);
 		freeAVL(a->dir,destroy_key,destroy_data);
+		free(a);
 	}
 };
 

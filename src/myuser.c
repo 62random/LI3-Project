@@ -53,7 +53,7 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
  * @param			Número de posts.
 */
-
+/*
 long * getNposts(MYUSER use,int n){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
@@ -63,7 +63,7 @@ long * getNposts(MYUSER use,int n){
 		//aux=aux->next;
 	}
 	return r;
-}
+}*/
 
 /**
  * @brief 			Função que altera o Id de um user.
@@ -92,7 +92,9 @@ static void setRp(MYUSER use, int rep){
  */
 
 static void setBio(MYUSER use, char * bio){
-    use->bio = mystrdup(bio);
+	if (bio)
+    	use->bio = mystrdup(bio);
+	else use->bio = NULL;
 }
 
 /**
@@ -111,6 +113,8 @@ static void setUsername(MYUSER use, char * nome){
 
 MYUSER createMYUSER(){
     MYUSER conta = malloc(sizeof(struct myuser));
+	conta->bio = NULL;
+	conta->username = NULL;
 	conta->posts = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
     return conta;
 }
@@ -124,8 +128,10 @@ void freeMYUSER(void * aux){
 	MYUSER conta;
     if (aux != NULL){
 		conta = (MYUSER) aux;
-        free(conta->bio);
-        free(conta->username);
+		if (conta->bio)
+        	free(conta->bio);
+		if (conta->username)
+        	free(conta->username);
 		free_MYLIST(conta->posts);
         free(conta);
     }
@@ -137,7 +143,7 @@ void freeMYUSER(void * aux){
  * @param				Apontador para a segunda key.
 */
 
-int compare_user(const void * key1, const void * key2,void * data){
+int compare_user(void * key1,void * key2){
     long id1,id2;
     int result;
 
@@ -168,8 +174,8 @@ void freeKey(void * a){
  * @brief				Função que liberta a memória da arvóre alocada.
 */
 
-void freeTreeUSER(GTree * tree){
-	g_tree_destroy(tree);
+void freeTreeUSER(TREE tree){
+	freeTREE_AVL(tree);
 }
 
 /**
@@ -177,10 +183,13 @@ void freeTreeUSER(GTree * tree){
  * @param				Id do user a procurar.
 */
 
-MYUSER search_USER(GTree * tree,long id){
+MYUSER search_USER(TREE tree,long id){
+	int valid;
 
-	MYUSER use = g_tree_lookup(tree,&id);
-	return use;
+	MYUSER use = search_AVL(tree,&id,&valid);
+	if (valid)
+		return use;
+	return NULL;
 }
 
 /**
@@ -191,7 +200,7 @@ MYUSER search_USER(GTree * tree,long id){
  * @param				Informação do post.
 */
 
-int setPostToUSER(GTree * tree,long id,MYDATE date,void * data){
+int setPostToUSER(TREE tree,long id,MYDATE date,void * data){
 	MYUSER use;
 	use = search_USER(tree,id);
 	if (use == NULL)
@@ -232,7 +241,7 @@ static int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
 */
 
-GTree * createMYUSERS_TREE(char * path){
+TREE createMYUSERS_TREE(char * path){
 
     xmlDocPtr doc;
 	xmlNodePtr ptr;
@@ -240,7 +249,7 @@ GTree * createMYUSERS_TREE(char * path){
 	xmlNodePtr aux;
 
 	MYUSER use = NULL;
-	GTree * tree = g_tree_new_full(&compare_user,NULL,&freeKey,&freeMYUSER);
+	TREE tree = createTREE(&compare_user,&freeKey,&freeMYUSER);
 
 	if (!(xml_file_to_struct(&doc,&ptr,path)))
 		return tree;
@@ -272,7 +281,9 @@ GTree * createMYUSERS_TREE(char * path){
                     	setUsername(use,(char*)key);
                 	}
                 	if (strcmp((char*)cur->name,"AboutMe")==0){
-                    	setBio(use,(char*)key);
+						if (key == NULL)
+							setBio(use,NULL);
+						else setBio(use,(char*)key);
                 	}
 
 					xmlFree(key);
@@ -280,7 +291,7 @@ GTree * createMYUSERS_TREE(char * path){
 				}
 				keyid = malloc(sizeof(long));
 				*keyid = id;
-				g_tree_insert(tree,keyid,use);
+				tree = insere_tree(tree,keyid,use);
 		}
 		aux = aux->next;
 	}

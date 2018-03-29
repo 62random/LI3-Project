@@ -4,19 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct lligada{
-	void * key;
-	void * data;
-	struct lligada * next;
-}*LList;
+typedef struct llligada *LList;
 
-typedef struct mylist{
-	int (*f_compare)(void *,void *);
-	void (*destroy_key)(void *);
-	void (*destroy_data)(void *);
-	int num_elementos;
-	LList lista;
-}*MYLIST;
+typedef struct mylist *MYLIST;
 
 MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data);
 

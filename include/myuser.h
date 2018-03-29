@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "mylist.h"
 #include "mydate.h"
+#include "mytree.h"
 #include "/usr/include/libxml2/libxml/parser.h"
 #include "/usr/include/libxml2/libxml/xmlwriter.h"
 #include "/usr/include/libxml2/libxml/tree.h"
@@ -22,22 +23,22 @@ char * getUsername(MYUSER use);
 
 char * getBiography(MYUSER use);
 
-long * getNposts(MYUSER use,int n);
+//long * getNposts(MYUSER use,int n);
 
 MYUSER createMYUSER();
 
 void freeMYUSER(void * aux);
 
-int compare_user(const void * key1, const void * key2,void * data);
+int compare_user(void * key1,void * key2);
 
 void freeKey(void * a);
 
-void freeTreeUSER(GTree * tree);
+void freeTreeUSER(TREE tree);
 
-MYUSER search_USER(GTree * tree,long id);
+MYUSER search_USER(TREE tree,long id);
 
-int setPostToUSER(GTree * tree,long id,MYDATE date,void * data);
+int setPostToUSER(TREE tree,long id,MYDATE date,void * data);
 
-GTree * createMYUSERS_TREE(char * path);
+TREE createMYUSERS_TREE(char * path);
 
 #endif

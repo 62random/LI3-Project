@@ -2,6 +2,20 @@
 #include <stdio.h>
 #include "mylist.h"
 
+struct llligada{
+	void * key;
+	void * data;
+	struct llligada * next;
+};
+
+struct mylist{
+	int (*f_compare)(void *,void *);
+	void (*destroy_key)(void *);
+	void (*destroy_data)(void *);
+	int num_elementos;
+	LList lista;
+};
+
 /**
  * @brief			Função inicializa a estrutura da lista.
  * @param			Apontador para a função que compara.
@@ -26,16 +40,18 @@ MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
 */
 
 void free_MYLIST(MYLIST r){
-	LList aux = r->lista;
-	while(aux){
-		if (r->destroy_key != NULL)
-			r->destroy_key(aux->key);
-		if (r->destroy_data != NULL)
-			r->destroy_data(aux->data);
-		free(aux);
-		aux = aux ->next;
+	if (r){
+		LList aux = r->lista;
+		while(aux){
+			if (r->destroy_key != NULL)
+				r->destroy_key(aux->key);
+			if (r->destroy_data != NULL)
+				r->destroy_data(aux->data);
+			free(aux);
+			aux = aux ->next;
+		}
+		free(r);
 	}
-	free(r);
 }
 
 /**
@@ -45,7 +61,7 @@ void free_MYLIST(MYLIST r){
 */
 
 LList create_box(void * key,void * data){
-	LList novo = malloc(sizeof(struct lligada));
+	LList novo = malloc(sizeof(struct llligada));
 	novo->key = key;
 	novo->data = data;
 	novo->next = NULL;
