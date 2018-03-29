@@ -40,8 +40,15 @@ void setScoreP(MYPOST post, int  score);
 void getScoreP(MYPOST post, int * score);
 MYPOST createpost();
 void freepost(MYPOST post);
+<<<<<<< HEAD
 int compare_mypostsAVL(void * data1, void * data2,void * data);
 int compare_mypostsLIST(void * data1, void * data2);
 void freeKeyId(void * a);
 void freeKeyDate(void * a);
+=======
+int compare_mypostsAVLDate(void * data1, void * data2,void * data);
+int compare_mypostsLISTDate(void * data1, void * data2);
+int compare_mypostsAVLID(void * post1, void * post2,void * data);
+
+>>>>>>> d79d180900734dcf25e34f75d5b9385a5de75820
 #endif
