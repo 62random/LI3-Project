@@ -9,7 +9,7 @@ struct mypost {
 	long 		id;
 	int		typeid;
 	long 		parent_id;
-	Date		cdate;
+	MYDATE		cdate;
 	int 		score;
 	long 		ownerid;
 	char *		ownername;
@@ -111,7 +111,7 @@ void setPIdP(MYPOST post, long  id){
  * @param 			Apontador para a struct do post.
  * @param			Apontador para struct onde a função devolve a data do post.
  */
-void getDateP(MYPOST post, Date data){
+void getDateP(MYPOST post, MYDATE data){
   memcpy(data, post->cdate, date_size());
 }
 
@@ -122,7 +122,7 @@ void getDateP(MYPOST post, Date data){
  * @param 			Apontador para a struct do post.
  * @param			Nova data do post.
  */
-void setDateP(MYPOST post, Date data){
+void setDateP(MYPOST post, MYDATE data){
   post->cdate=data;
 }
 
@@ -314,6 +314,8 @@ void freepost(MYPOST post) {
 	free(post->title);
 	free(post->ownername);
 	free(post->tags);
+	free_MYdate(post->cdate);
+	free(post);
 }
 
 

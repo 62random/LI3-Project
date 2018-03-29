@@ -178,7 +178,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
    //falta inserir votos
-
+ 
 	}
 
 }
