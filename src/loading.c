@@ -5,49 +5,6 @@
  */
 #include <loading.h>
 
-<<<<<<< HEAD
-=======
-/*
-	Aqui vai ficar definida as funções que carregam
-	dos ficheiros do dump a informação para a nossa estrutura
-	de dados, e etc.
-	Funções neste ficheiro (ver tipagem de argumentos no interface.h):
-		-> TAD_community init();
-		-> TAD_community load();#include "gmodule.h"
-		-> TAD_community clean();
-
-
-
-
-	defines para os file paths dos ficheiros do dump
-
-#define				F_USERS
-#define				F_POSTS
-
-*/
-
-//isto tá aqui para nao dar erros.
-//substituir quando criar as funções
-//made by 54
-void 	postSetId				(MYPOST post, long l){};
-void 	postSetPostTypeId		(MYPOST post, int n){};
-void 	postSetParentId			(MYPOST post, long l){};
-void 	postSetCreationDate		(MYPOST post, Date d){};
-void 	postSetScore			(MYPOST post, int n){};
-void 	postSetOwnerUserId		(MYPOST post, long l){};
-void 	postSetOwnerDisplayName	(MYPOST post, char * str){};
-void 	postSetTitle			(MYPOST post, char * str){};
-void 	postSetTags				(MYPOST post, char ** strs){};
-void 	postSetAnswerCount		(MYPOST post, int n){};
-void 	postSetCommentCount		(MYPOST post, int n){};
-void 	postSetFavoriteCount	(MYPOST post, int n){};
-int 	xmlToInt				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
-long 	xmlToLong				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
-MYDATE 	xmlToMyDate				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
-char * 	xmlToString				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
-char ** xmlToStringArray		(xmlAttrPtr cur, xmlDocPtr doc){return NULL;};
-
->>>>>>> d79d180900734dcf25e34f75d5b9385a5de75820
 
 
 /**
@@ -200,17 +157,12 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 					continue;
 				}
 
-<<<<<<< HEAD
 				if(!flag[3] && strcmp((char *) cur->name, "CreationDate") == 0) {
 					setDateP(post, xmlToMYDATE(value));
 					flag[3] = 1;
-=======
-				if(!flag[3] && xmlStrcmp(cur->name, (xmlChar *) "CreationDate") == 0) {
-					setDateP(post, xmlToMyDate(cur, doc));
-					flag[0] = 1;
->>>>>>> d79d180900734dcf25e34f75d5b9385a5de75820
 					continue;
 				}
+				
 
 				if(!flag[4] && strcmp((char *) cur->name, "Score") == 0) {
 					setScoreP(post, atoi(value));
@@ -260,11 +212,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 					continue;
 				}
 
-<<<<<<< HEAD
 				free(value);
-=======
-   //falta inserir votos
->>>>>>> d79d180900734dcf25e34f75d5b9385a5de75820
 
 	}
 
