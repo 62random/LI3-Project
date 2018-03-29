@@ -100,7 +100,7 @@ MYDATE xmlToMYDATE(char * value) {
  * @brief 			Função que processa a string correspondente ao valor Tags a transforma num array de strings.
  * @param value		A string com o valor Tags.
  */
-char ** xmlToStringArray(char * value) {
+char ** xmlToStringArray(char * value) { //depois acabo isto
 	/*
 	int i, n = strlen(value);
 	int tag_counter;
@@ -162,7 +162,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 					flag[3] = 1;
 					continue;
 				}
-				
+
 
 				if(!flag[4] && strcmp((char *) cur->name, "Score") == 0) {
 					setScoreP(post, atoi(value));
