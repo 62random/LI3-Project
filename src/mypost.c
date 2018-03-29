@@ -41,6 +41,7 @@ void getScoreP(MYPOST post, int * score){
   *score = post->score;
 }
 
+
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o Id de um post.
