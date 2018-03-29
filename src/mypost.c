@@ -320,25 +320,47 @@ void freepost(MYPOST post) {
 
 
 /**
- * @brief				Função que compara 2 keys de posts diferentes para inserir numa AVL.
+ * @brief				Função que compara 2 datas de posts diferentes para inserir numa AVL.
  * @param				Apontador para a primeira data.
  * @param				Apontador para a segunda data.
 */
 
 
-int compare_mypostsAVL(void * data1, void * data2,void * data){
+int compare_mypostsAVLDate(void * data1, void * data2,void * data){
 	return  compare_MYDATE_AVL(data1,data2);
 
 }
 
 /**
- * @brief				Função que compara 2 keys de posts diferentes para inserir numa LIST.
+ * @brief				Função que compara 2 ids de posts diferentes para inserir numa AVL.
+ * @param				Apontador para o 1 post.
+ * @param				Apontador para o 2 post.
+*/
+
+
+int compare_mypostsAVLID(void * post1, void * post2,void * data){
+	long id1,id2;
+        int result;
+
+        getIdP ((MYPOST ) post1 , &id1);
+	getIdP ((MYPOST ) post2 , &id2);
+
+        if (id1 == id2)
+            result = 0;
+        else result = id1 > id2 ? 1 : -1 ;
+
+        return result;
+
+}
+
+/**
+ * @brief				Função que compara 2 data de posts diferentes para inserir numa LIST.
  * @param				Apontador para a primeira data.
  * @param				Apontador para a segunda data.
 */
 
 
-int compare_mypostsLIST(void * data1, void * data2){
+int compare_mypostsLISTDate(void * data1, void * data2){
 	return  compare_MYDATE_LIST(data1,data2);
 
 }

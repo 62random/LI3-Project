@@ -41,7 +41,7 @@ void 	postSetCommentCount		(MYPOST post, int n){};
 void 	postSetFavoriteCount	(MYPOST post, int n){};
 int 	xmlToInt				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
 long 	xmlToLong				(xmlAttrPtr cur, xmlDocPtr doc){return 0;}
-Date 	xmlToDate				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
+MYDATE 	xmlToMyDate				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
 char * 	xmlToString				(xmlAttrPtr cur, xmlDocPtr doc){return NULL;}
 char ** xmlToStringArray		(xmlAttrPtr cur, xmlDocPtr doc){return NULL;};
 
@@ -124,7 +124,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
 				if(!flag[3] && xmlStrcmp(cur->name, (xmlChar *) "CreationDate") == 0) {
-					setDateP(post, xmlToDate(cur, doc));
+					setDateP(post, xmlToMyDate(cur, doc));
 					flag[0] = 1;
 					continue;
 				}
@@ -178,7 +178,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
    //falta inserir votos
- 
+
 	}
 
 }
