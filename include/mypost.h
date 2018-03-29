@@ -42,5 +42,6 @@ MYPOST createpost();
 void freepost(MYPOST post);
 int compare_mypostsAVL(void * data1, void * data2,void * data);
 int compare_mypostsLIST(void * data1, void * data2);
-
+void freeKeyId(void * a);
+void freeKeyDate(void * a);
 #endif

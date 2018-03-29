@@ -319,6 +319,8 @@ void freepost(MYPOST post) {
 }
 
 
+
+
 /**
  * @brief				Função que compara 2 keys de posts diferentes para inserir numa AVL.
  * @param				Apontador para a primeira data.

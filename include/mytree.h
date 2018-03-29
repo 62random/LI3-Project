@@ -1,10 +1,10 @@
 #ifndef __MYTREE_H__
 #define __MYTREE_H__
 
-#import <stdio.h>
-#import <string.h>
-#import <stdlib.h>
-#import <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
 
 typedef struct AVBin * AVL;
 

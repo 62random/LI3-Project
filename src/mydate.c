@@ -30,6 +30,7 @@ int get_MYday(MYDATE d) {
     return d->day;
 }
 
+
 /**
  * @brief			Função devolve a informação para o mês da data.
  * @param			Apontador para a data.
@@ -39,6 +40,7 @@ int get_MYmonth(MYDATE d) {
     return d->month; //change to enum? (Acho que sim. Desta forma já garantimos a limitação necessária)
 }
 
+
 /**
  * @brief			Função devolve a informação para o ano da data.
  * @param			Apontador para a data.
@@ -47,6 +49,7 @@ int get_MYmonth(MYDATE d) {
 int get_MYyear(MYDATE d) {
     return d->year;
 }
+
 
 /**
  * @brief			Função liberta a memória da data.
