@@ -7,7 +7,7 @@ typedef struct mypost *MYPOST;
 
 struct mypost {
 	long 		id;
-	int		typeid;
+	int			typeid;
 	long 		parent_id;
 	MYDATE		cdate;
 	int 		score;
@@ -16,9 +16,9 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int		commcount;
-	int		favcount;
-	int		votecount;			//contruir ao dar load
+	int			commcount;
+	int			favcount;
+	int			votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
 };
 /**
@@ -112,8 +112,8 @@ void setPIdP(MYPOST post, long  id){
  * @param 			Apontador para a struct do post.
  * @param			Apontador para struct onde a função devolve a data do post.
  */
-void getDateP(MYPOST post, MYDATE data){
-  memcpy(data, post->cdate, date_size());
+void getDateP(MYPOST post, MYDATE * data){
+  *data = post->cdate;
 }
 
 
@@ -146,7 +146,7 @@ void getOwnerIdP(MYPOST post, long * id){
  * @param			Novo OwnerId do post.
  */
 void setOwnerIdP(MYPOST post, long  id){
-  post->ownerid=id;
+  post->ownerid = id;
 }
 
 /**
@@ -156,6 +156,10 @@ void setOwnerIdP(MYPOST post, long  id){
  * @param			Apontador onde afunção devolve o nome do post.
  */
 void getOwnerNameP(MYPOST post, char * name){
+	if(post->ownername == NULL) {
+		*name = '\0';
+		return;
+	}
 	strcpy(name, post->ownername);
 }
 
@@ -166,7 +170,7 @@ void getOwnerNameP(MYPOST post, char * name){
  * @param			Novo OwnerName do post.
  */
 void setOwnerNameP(MYPOST post, char *  name){
-  post->ownername=name;
+  post->ownername = name;
 }
 
 /**
@@ -176,6 +180,10 @@ void setOwnerNameP(MYPOST post, char *  name){
  * @param 			Apontador onde a funcao devolve o titulo do post.
  */
 void getTitleP(MYPOST post,char* title){
+	if(post->title == NULL) {
+		*title = '\0';
+		return;
+	}
 	strcpy(title, post->title);
 }
 
@@ -195,13 +203,23 @@ void setTitleP(MYPOST post, char* title){
  * @param 			Apontador para a struct do post.
  * @param 			Apontador para a lista de strings onde vao ser devolvidas as tags do post.
  */
+void getTagsP(MYPOST post,char *** tags){
+	if(post->tags == NULL) {
+		*tags = NULL;
+		return;
+	}
 
- // esta merda pode estar a foder testar isto
-void getTagsP(MYPOST post,char** tags){
 	int i ;
-	for(i= 0; tags[i] != NULL; i++)
-		strcpy(tags[i], post->tags[i]);
-	tags[i] = NULL;
+
+	for(i= 0; post->tags[i] != NULL; i++)
+		;
+	*tags = malloc(sizeof(char *)*(i + 1));
+
+	for(i= 0; post->tags[i] != NULL; i++) {
+		(*tags)[i] = malloc(strlen(post->tags[i]) + 1);
+		strcpy((*tags)[i], post->tags[i]);
+	}
+	(*tags)[i] = NULL;
 }
 
 /**
@@ -302,8 +320,38 @@ void setVotesP(MYPOST post, int votes){
  */
 MYPOST createpost() {
 	MYPOST post = malloc(sizeof(struct mypost));
+	post->ownername = NULL;
+	post->tags 		= NULL;
+	post->cdate		= NULL;
+	post->title		= NULL;
+	post->parent_id = 0;
+	post->votecount = 0;
 	return post;
 }
+
+
+
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que liberta a memória alocada para as tags de um post.
+ * @param  array	Apontador para o array de strings que representa as tags.
+ */
+void freeTags(char ** array) {
+	if(array == NULL)
+		return;
+
+	int i;
+	for(i = 0; array[i]; i++)
+		if(array[i] != NULL)
+			free(array[i]);
+
+	if(array[i] != NULL)
+		free(array[i]);
+
+	free(array);
+}
+
 
 
 /**
@@ -312,10 +360,18 @@ MYPOST createpost() {
  * @param 			Apontador para a struct do post.
  */
 void freepost(MYPOST post) {
-	free(post->title);
-	free(post->ownername);
-	free(post->tags);
+	if(post == NULL)
+		return;
+
+	if(post->title != NULL)
+		free(post->title);
+
+	if(post->ownername != NULL)
+		free(post->ownername);
+
+	freeTags(post->tags);
 	free_MYdate(post->cdate);
+
 	free(post);
 }
 
@@ -371,9 +427,30 @@ int compare_mypostsLISTDate(void * data1, void * data2){
 
 
 /**
-
-void inserepost(long id_user,Date dopost, void * data){
-
-
-}
+ * @brief				Função que procura um post pelo id na estrutura.
+ * @param				Id do post a procurar.
 */
+
+MYPOST search_POSTID(TREE tree,long id){
+	int valid;
+
+	MYPOST post = search_AVL(tree, &id, &valid);
+	if (valid)
+		return post;
+	return NULL;
+}
+
+
+/**
+ * @brief				Função que procura um post pela data de criação na estrutura.
+ * @param				Id do post a procurar.
+*/
+
+MYPOST search_POSTDATA(TREE tree,MYDATE date){
+	int valid;
+
+	MYPOST post = search_AVL(tree, date, &valid);
+	if (valid)
+		return post;
+	return NULL;
+}

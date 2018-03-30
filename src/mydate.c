@@ -57,7 +57,8 @@ int get_MYyear(MYDATE d) {
 */
 
 void free_MYdate(MYDATE d) {
-    free(d);
+	if(d != NULL)
+    	free(d);
 }
 
 /**

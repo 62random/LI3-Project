@@ -322,6 +322,37 @@ static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void 
 	}
 };
 
+
+
+/**
+ * @brief			Função liberta a memória referente às chaves de uma AVL.
+ * @param			Apontador para a AVL.
+ * @param			Apontador para a função que destroi a key.
+*/
+static void freeAVL_keyOnly(AVL a,void (*destroy_key)(void *)){
+	if (a){
+		destroy_key(a->key);
+		freeAVL_keyOnly(a->esq,destroy_key);
+		freeAVL_keyOnly(a->dir,destroy_key);
+		free(a);
+	}
+};
+
+/**
+ * @brief			Função liberta a memória referente aos dados de uma AVL, quando a sua chave está contida neles.
+ * @param			Apontador para a AVL.
+ * @param			Apontador para a função que destroi os dados.
+*/
+static void freeAVL_dataOnly(AVL a,void (*destroy_data)(void *)){
+	if (a){
+		destroy_data(a->data);
+		freeAVL_dataOnly(a->esq,destroy_data);
+		freeAVL_dataOnly(a->dir,destroy_data);
+		free(a);
+	}
+};
+
+
 /**
  * @brief			Função liberta a memória da estrutura Tree.
  * @param			Apontador para a tree.
@@ -333,6 +364,28 @@ void freeTREE_AVL(TREE tre){
 		free(tre);
 	}
 }
+
+
+
+/**
+ * @brief			Função liberta a memória das estruturas TREE dos posts.
+ * @param			Apontador para a tree ordenada por id.
+ * @param			Apontador para a tree ordenada por data de criação.
+*/
+
+void freeTREES_POSTS(TREE postTreeId, TREE postTreeData) {
+	if(postTreeData) {
+		freeAVL_dataOnly(postTreeData->arv, postTreeData->destroy_data);
+		free(postTreeData);
+	}
+
+	if(postTreeId) {
+		freeAVL_keyOnly(postTreeId->arv, postTreeId->destroy_key);
+		free(postTreeId);
+	}
+
+}
+
 
 /**
  *@brief			Função que procura um elemento na árvore.

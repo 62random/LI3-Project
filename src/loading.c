@@ -62,7 +62,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date) {
 
 			keyid 	= malloc(sizeof(long));
 			getIdP(post, keyid);
-			getDateP(post, keydate);
+			getDateP(post, &keydate);
 
 			insere_tree(treeid, keyid, post);								//Insere este nodo na árvore ordenada por id's.
 			insere_tree(treedate, keydate, post);							//Insere este nodo na árvore ordenada cronológicamente.
@@ -73,6 +73,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date) {
 	*tree_date 	= treedate;
 
 	xmlFreeDoc(doc);
+	xmlFreeNode(cur);
 	xmlCleanupParser();
 
 	return 1;
@@ -100,25 +101,43 @@ MYDATE xmlToMYDATE(char * value) {
  * @brief 			Função que processa a string correspondente ao valor Tags a transforma num array de strings.
  * @param value		A string com o valor Tags.
  */
-char ** xmlToStringArray(char * value) { //depois acabo isto
-	/*
-	int i, n = strlen(value);
-	int tag_counter;
+char ** xmlToStringArray(char * value) {
 
-	for(i = 0; i < n; i++)								//Conta o número de tags
+	int i, n = strlen(value);
+	int tag_counter = 0;
+
+	for(i = 0; i < n; i++)									//Conta o número de tags
 		if(value[i] == '<')
 			tag_counter++;
 
-	if(tag_counter == 0)								//Retorna NULL se não há tags
+	if(tag_counter == 0)									//Retorna NULL se não há tags
 		return NULL;
 
-	char ** arr = malloc(tag_counter*sizeof(char *));	//Aloca memória para o numero de apontadores necessários para as tags.
+	char ** arr = malloc((tag_counter + 1)*sizeof(char *));	//Aloca memória para o numero de apontadores necessários para as tags.
 
-	for(i = 0; i < tag_counter; i++)
+	int j = 0, k = 0;
+	int starts[tag_counter];
+	char format[10];
+
+	for(i = 0; i < n; i++) {								//Percrre a string value que contém as tags
+		if(value[i] == '<') {								//Se for  início de outra tag, dá reset ao contador de tamanho
+			j = 0;											//regista o início desta tag
+			starts[k] = i + 1;
+		}
+		else if (value[i] == '>') {							//Se for o fim de uma tag
+			arr[k] = malloc((sizeof(char) + 1)*j);			//Aloca a memória necessária para a mesma
+			sprintf(format, "%%%ds", j);					//Regista o formato auxiliar ao sscanf
+			sscanf(&value[starts[k]], format, arr[k]);		//Copia a tag para a string do array
+			arr[k][j] = '\0';								//Sinaliza o final da string de cada tag com EOF.
+			k++;											//Incrementa o índice do array de strings
+		}
+		else
+			j++;											//Incrementa o registo do tamanho da tag atual
+	}
+
+	arr[k] = NULL;											//O último apontador deste array aponta para NULL
 
 	return arr;
-	*/
-	return NULL;
 }
 
 
@@ -133,8 +152,9 @@ char ** xmlToStringArray(char * value) { //depois acabo isto
 void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 	xmlAttrPtr cur;
 
-	char flag[12] = {0};	//flag para não estar constantemente a chamar a strcmp()
+	char flag[12] = {0};	//flags para não estar constantemente a chamar a strcmp()
 	char * value;
+	char * aloc;
 
 	for(cur = xml->properties; cur; cur = cur->next) {
 				value = (char *) xmlNodeListGetString(doc, cur->children, 1);
@@ -142,24 +162,28 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				if(!flag[0] && strcmp((char *) cur->name, "Id") == 0) {
 					setIdP(post, atol(value));
 					flag[0] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[1] && strcmp((char *) cur->name, "PostTypeId") == 0) {
 					setPostTypeIdP(post, atoi(value));
 					flag[1] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[2] && strcmp((char *) cur->name, "ParentId") == 0) {
 					setPIdP(post, atol(value));
 					flag[2] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[3] && strcmp((char *) cur->name, "CreationDate") == 0) {
 					setDateP(post, xmlToMYDATE(value));
 					flag[3] = 1;
+					free(value);
 					continue;
 				}
 
@@ -167,48 +191,60 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				if(!flag[4] && strcmp((char *) cur->name, "Score") == 0) {
 					setScoreP(post, atoi(value));
 					flag[4] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[5] && strcmp((char *) cur->name, "OwnerUserId") == 0) {
 					setOwnerIdP(post, atol(value));
 					flag[5] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[6] && strcmp((char *) cur->name, "OwnerDisplayName") == 0) {
-					setOwnerNameP(post, value);
+					aloc = (char *) malloc((strlen(value) + 1)*sizeof(char));
+					strcpy(aloc, value);
+					setOwnerNameP(post, aloc);
 					flag[6] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[7] && strcmp((char *) cur->name, "Title") == 0) {
-					setTitleP(post, value);
+					aloc = (char *) malloc((strlen(value) + 1)*sizeof(char));
+					strcpy(aloc, value);
+					setTitleP(post, aloc);
 					flag[7] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[8] && strcmp((char *) cur->name, "Tags") == 0) {
 					setTagsP(post, xmlToStringArray(value));
 					flag[8] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[9] && strcmp((char *) cur->name, "AnswerCount") == 0) {
 					setAsnwersP(post, atoi(value));
 					flag[9] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[10] && strcmp((char *) cur->name, "CommentCount") == 0) {
 					setCommentsP(post, atoi(value));
 					flag[10] = 1;
+					free(value);
 					continue;
 				}
 
 				if(!flag[11] && strcmp((char *) cur->name, "FavoriteCount") == 0) {
 					setFavsP(post, atoi(value));
 					flag[11] = 1;
+					free(value);
 					continue;
 				}
 
