@@ -314,8 +314,10 @@ TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data){
 
 static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void *)){
 	if (a){
-		destroy_key(a->key);
-		destroy_data(a->data);
+		if (destroy_key != NULL)
+			destroy_key(a->key);
+		if (destroy_data != NULL)
+			destroy_data(a->data);
 		freeAVL(a->esq,destroy_key,destroy_data);
 		freeAVL(a->dir,destroy_key,destroy_data);
 		free(a);
