@@ -84,7 +84,9 @@ int main(){
 
 
 		//freeTreeUSER(usertree);
-		freeTREES_POSTS(postTreeId, postTreeData);
+		//freeTREES_POSTS(postTreeId, postTreeData);
+		freeTREE_AVL(postTreeId);
+		freeTREE_AVL(postTreeData);
 
 
 

@@ -53,7 +53,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date) {
 	long * 	keyid;
 	MYDATE 	keydate = NULL;
 	TREE 	treeid 		= createTREE(&compare_user, &freeKey, &freepost);
-	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, &freepost);
+	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, NULL);
 
 	for(cur = cur->children; cur; cur = cur->next) {						// Percorre os posts todos.
 		if(strcmp("row", (char *) cur->name) == 0) {
