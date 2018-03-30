@@ -7,7 +7,7 @@ typedef struct mypost *MYPOST;
 
 struct mypost {
 	long 		id;
-	int			typeid;
+	int		typeid;
 	long 		parent_id;
 	MYDATE		cdate;
 	int 		score;
@@ -16,9 +16,9 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int			commcount;
-	int			favcount;
-	int			votecount;			//contruir ao dar load
+	int		commcount;
+	int		favcount;
+	int		votecount;			//contruir ao dar load
 	//lista de votos (so com o id do user)
 };
 /**
@@ -321,9 +321,9 @@ void setVotesP(MYPOST post, int votes){
 MYPOST createpost() {
 	MYPOST post = malloc(sizeof(struct mypost));
 	post->ownername = NULL;
-	post->tags 		= NULL;
-	post->cdate		= NULL;
-	post->title		= NULL;
+	post->tags 	= NULL;
+	post->cdate	= NULL;
+	post->title	= NULL;
 	post->parent_id = 0;
 	post->votecount = 0;
 	return post;
@@ -335,7 +335,7 @@ MYPOST createpost() {
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que liberta a memória alocada para as tags de um post.
- * @param  array	Apontador para o array de strings que representa as tags.
+ * @param  array		Apontador para o array de strings que representa as tags.
  */
 void freeTags(char ** array) {
 	if(array == NULL)
