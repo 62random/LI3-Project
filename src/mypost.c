@@ -113,7 +113,12 @@ void setPIdP(MYPOST post, long  id){
  * @param			Apontador para struct onde a função devolve a data do post.
  */
 void getDateP(MYPOST post, MYDATE * data){
-  *data = post->cdate;
+	int dia,mes,ano;
+	dia = get_MYday(post->cdate);
+	mes = get_MYmonth(post->cdate);
+	ano = get_MYyear(post->cdate);
+	MYDATE aux = createMYDate(dia,mes,ano);
+	*data = aux;
 }
 
 
