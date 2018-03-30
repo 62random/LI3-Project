@@ -96,6 +96,8 @@ MYDATE xmlToMYDATE(char * value) {
 }
 
 
+
+
 /**
  * @date 			29 Mar 2018
  * @brief 			Função que processa a string correspondente ao valor Tags a transforma num array de strings.
@@ -154,7 +156,8 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 
 	char flag[12] = {0};	//flags para não estar constantemente a chamar a strcmp()
 	char * value;
-	char * aloc;
+	char ** arr;
+	MYDATE date;
 
 	for(cur = xml->properties; cur; cur = cur->next) {
 				value = (char *) xmlNodeListGetString(doc, cur->children, 1);
@@ -181,9 +184,11 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
 				if(!flag[3] && strcmp((char *) cur->name, "CreationDate") == 0) {
-					setDateP(post, xmlToMYDATE(value));
+					date = xmlToMYDATE(value);
+					setDateP(post, date);
 					flag[3] = 1;
 					free(value);
+					free_MYdate(date);
 					continue;
 				}
 
@@ -203,27 +208,25 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
 				if(!flag[6] && strcmp((char *) cur->name, "OwnerDisplayName") == 0) {
-					aloc = (char *) malloc((strlen(value) + 1)*sizeof(char));
-					strcpy(aloc, value);
-					setOwnerNameP(post, aloc);
+					setOwnerNameP(post, value);
 					flag[6] = 1;
 					free(value);
 					continue;
 				}
 
 				if(!flag[7] && strcmp((char *) cur->name, "Title") == 0) {
-					aloc = (char *) malloc((strlen(value) + 1)*sizeof(char));
-					strcpy(aloc, value);
-					setTitleP(post, aloc);
+					setTitleP(post, value);
 					flag[7] = 1;
 					free(value);
 					continue;
 				}
 
 				if(!flag[8] && strcmp((char *) cur->name, "Tags") == 0) {
-					setTagsP(post, xmlToStringArray(value));
+					arr = xmlToStringArray(value);
+					setTagsP(post, arr);
 					flag[8] = 1;
 					free(value);
+					free_StringArray(arr);
 					continue;
 				}
 

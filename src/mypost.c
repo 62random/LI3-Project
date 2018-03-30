@@ -115,9 +115,9 @@ void setPIdP(MYPOST post, long  id){
  */
 void getDateP(MYPOST post, MYDATE * data){
 	MYDATE date;
-
-	date = createMYDate(get_MYday(post->cdate), get_MYmonth(post->cdate), get_MYmonth(post->cdate));
-
+	date = createMYDate(get_MYday(post->cdate),
+						get_MYmonth(post->cdate),
+					 	get_MYyear(post->cdate));
   	*data = date;
 }
 
@@ -131,7 +131,9 @@ void getDateP(MYPOST post, MYDATE * data){
 void setDateP(MYPOST post, MYDATE data){
 	MYDATE date;
 
-	date = createMYDate(get_MYday(data), get_MYmonth(data), get_MYmonth(data));
+	date = createMYDate(get_MYday(data),
+						get_MYmonth(data),
+						get_MYyear(data));
 
   	post->cdate = date;
 }
@@ -164,8 +166,8 @@ void setOwnerIdP(MYPOST post, long  id){
  * @param 			Apontador para a struct do post.
  * @param			Apontador onde afunção devolve o nome do post.
  */
-void getOwnerNameP(MYPOST post, char * name){
-	name = mystrdup(post->ownername);
+void getOwnerNameP(MYPOST post, char ** name){
+	*name = mystrdup(post->ownername);
 }
 
 /**
@@ -184,8 +186,8 @@ void setOwnerNameP(MYPOST post, char *  name){
  * @param 			Apontador para a struct do post.
  * @param 			Apontador onde a funcao devolve o titulo do post.
  */
-void getTitleP(MYPOST post,char* title){
-	title = mystrdup(post->title);
+void getTitleP(MYPOST post,char ** title){
+	*title = mystrdup(post->title);
 }
 
 /**
@@ -335,36 +337,16 @@ void setVotesP(MYPOST post, int votes){
 MYPOST createpost() {
 	MYPOST post = malloc(sizeof(struct mypost));
 	post->ownername = NULL;
-	post->tags 	= NULL;
-	post->cdate	= NULL;
-	post->title	= NULL;
+	post->tags 		= NULL;
+	post->cdate		= NULL;
+	post->title		= NULL;
 	post->parent_id = 0;
 	post->votecount = 0;
+	post->favcount	= 0;
+	post->anscount	= 0;
 	return post;
 }
 
-
-
-
-/**
- * @date 			24 Mar 2018
- * @brief 			Função que liberta a memória alocada para as tags de um post.
- * @param  array		Apontador para o array de strings que representa as tags.
- */
-void freeTags(char ** array) {
-	if(array == NULL)
-		return;
-
-	int i;
-	for(i = 0; array[i]; i++)
-		if(array[i] != NULL)
-			free(array[i]);
-
-	if(array[i] != NULL)
-		free(array[i]);
-
-	free(array);
-}
 
 
 
@@ -383,13 +365,27 @@ void freepost(MYPOST post) {
 	if(post->ownername != NULL)
 		free(post->ownername);
 
-	freeTags(post->tags);
+	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
 
 	free(post);
 }
 
 
+/**
+ * @date 			29 Mar 2018
+ * @brief 			Função que liberta um array de strings.
+ * @param value		O array de strings.
+ */
+void free_StringArray(char ** arr) {
+	if(arr == NULL)
+		return;
+
+	int i;
+	for(i = 0; arr[i]; i++)
+		free(arr[i]);
+	free(arr);
+}
 
 
 /**
