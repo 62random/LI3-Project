@@ -1,3 +1,4 @@
+#include <common.h>
 #include <mypost.h>
 #include <date.h>
 
@@ -113,7 +114,11 @@ void setPIdP(MYPOST post, long  id){
  * @param			Apontador para struct onde a função devolve a data do post.
  */
 void getDateP(MYPOST post, MYDATE * data){
-  *data = post->cdate;
+	MYDATE date;
+
+	date = createMYDate(get_MYday(post->cdate), get_MYmonth(post->cdate), get_MYmonth(post->cdate));
+
+  	*data = date;
 }
 
 
@@ -124,7 +129,11 @@ void getDateP(MYPOST post, MYDATE * data){
  * @param			Nova data do post.
  */
 void setDateP(MYPOST post, MYDATE data){
-  post->cdate=data;
+	MYDATE date;
+
+	date = createMYDate(get_MYday(data), get_MYmonth(data), get_MYmonth(data));
+
+  	post->cdate = date;
 }
 
 
@@ -156,11 +165,7 @@ void setOwnerIdP(MYPOST post, long  id){
  * @param			Apontador onde afunção devolve o nome do post.
  */
 void getOwnerNameP(MYPOST post, char * name){
-	if(post->ownername == NULL) {
-		*name = '\0';
-		return;
-	}
-	strcpy(name, post->ownername);
+	name = mystrdup(post->ownername);
 }
 
 /**
@@ -170,7 +175,7 @@ void getOwnerNameP(MYPOST post, char * name){
  * @param			Novo OwnerName do post.
  */
 void setOwnerNameP(MYPOST post, char *  name){
-  post->ownername = name;
+	post->ownername = mystrdup(name);
 }
 
 /**
@@ -180,11 +185,7 @@ void setOwnerNameP(MYPOST post, char *  name){
  * @param 			Apontador onde a funcao devolve o titulo do post.
  */
 void getTitleP(MYPOST post,char* title){
-	if(post->title == NULL) {
-		*title = '\0';
-		return;
-	}
-	strcpy(title, post->title);
+	title = mystrdup(post->title);
 }
 
 /**
@@ -194,7 +195,7 @@ void getTitleP(MYPOST post,char* title){
  * @param			Novo titulo do post.
  */
 void setTitleP(MYPOST post, char* title){
-  post->title=title;
+	post->title = mystrdup(title);
 }
 
 /**
@@ -215,10 +216,9 @@ void getTagsP(MYPOST post,char *** tags){
 		;
 	*tags = malloc(sizeof(char *)*(i + 1));
 
-	for(i= 0; post->tags[i] != NULL; i++) {
-		(*tags)[i] = malloc(strlen(post->tags[i]) + 1);
-		strcpy((*tags)[i], post->tags[i]);
-	}
+	for(i= 0; post->tags[i] != NULL; i++)
+		(*tags)[i] = mystrdup(post->tags[i]);
+
 	(*tags)[i] = NULL;
 }
 
@@ -228,8 +228,22 @@ void getTagsP(MYPOST post,char *** tags){
  * @param 			Apontador para a struct do post.
  * @param			Nova lista de tags do post.
  */
-void setTagsP(MYPOST post, char** tags){
-  post->tags=tags;
+void setTagsP(MYPOST post, char ** tags){
+	if(tags == NULL) {
+		post->tags = NULL;
+		return;
+	}
+
+	int i ;
+
+	for(i= 0; tags[i] != NULL; i++)
+		;
+	post->tags = malloc(sizeof(char *)*(i + 1));
+
+	for(i= 0; tags[i] != NULL; i++)
+		post->tags[i] = mystrdup(tags[i]);
+
+	post->tags[i] = NULL;
 }
 
 
@@ -250,7 +264,7 @@ void getAnswersP(MYPOST post,int *answer){
  * @param			Novo numero de respostas do post.
  */
 void setAsnwersP(MYPOST post, int answer){
-  post->anscount=answer;
+  	post->anscount=answer;
 }
 
 /**
@@ -270,7 +284,7 @@ void getCommentsP(MYPOST post,int *comments){
  * @param			Novo comentarios de respostas do post.
  */
 void setCommentsP(MYPOST post, int comments){
-  post->commcount=comments;
+  	post->commcount=comments;
 }
 
 /**
@@ -290,7 +304,7 @@ void getFavsP(MYPOST post,int *fav){
  * @param			Novo favoritos de respostas do post.
  */
 void setFavsP(MYPOST post, int fav){
-  post->favcount=fav;
+  	post->favcount=fav;
 }
 
 /**
