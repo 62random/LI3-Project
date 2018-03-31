@@ -41,14 +41,16 @@ MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
 
 void free_MYLIST(MYLIST r){
 	if (r){
+		LList aux2;
 		LList aux = r->lista;
 		while(aux){
 			if (r->destroy_key != NULL)
 				r->destroy_key(aux->key);
 			if (r->destroy_data != NULL)
 				r->destroy_data(aux->data);
-			free(aux);
+			aux2 = aux;
 			aux = aux ->next;
+			free(aux2);
 		}
 		free(r);
 	}
