@@ -83,6 +83,34 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 
 
 /**
+ * @date 			31 Mar 2018
+ * @brief 			Função que processa a informação necessária relativa aos votes.
+ * @param path		O ficheiro Votes.xml.
+ * @param tree_id 	A árvore ordenada segundo id's.
+ */
+int xmlVotes(char * path, TREE treeid) {
+	xmlDocPtr 	doc;
+	xmlNodePtr	cur = NULL;
+
+	if( !xml_file_to_struct(&doc, &cur, path)) {							//Load para a estrutura do libxml2 a partir do ficheiro.
+		fprintf(stderr, "Could process votes from %s\n", path);
+		return -1;
+	}
+
+	for(cur = cur->children; cur; cur = cur->next)  						// Percorre os votes todos.
+		if(strcmp("row", (char *) cur->name) == 0)
+			xmlVoteToPost(cur, doc, treeid);
+
+	xmlFreeDoc(doc);
+	xmlFreeNode(cur);
+	xmlCleanupParser();
+	return 1;
+}
+
+
+
+
+/**
  * @date 			29 Mar 2018
  * @brief 			Função que processa a string correspondente ao valor Creation date e a transforma numa struct mydate.
  * @param value		A string com o valor CreationDate.
@@ -145,12 +173,60 @@ char ** xmlToStringArray(char * value) {
 
 
 
+/**
+ * @date 			31 Mar 2018
+ * @brief 			Função que modifica a informação de um post para registar um vote.
+ * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
+ * @param doc		O apontador para o documento xml. (libxml2)
+ * @param treeid	O apontador para a àrvore de posts ordenada por id.
+ */
+void xmlVoteToPost(xmlNodePtr ptr, xmlDocPtr doc, TREE treeid){
+	xmlAttrPtr cur;
+
+	char * value;
+	int type = 0;
+	long postid = 0;
+	char flag_id = 0, flag_type = 0;
+
+	for(cur = ptr->properties; (!flag_id || !flag_type) && cur; cur = cur->next) {
+		value = (char *) xmlNodeListGetString(doc, cur->children, 1);
+
+		if((!flag_id) && strcmp((char *) cur->name, "PostId") == 0) {
+			postid = atol(value);
+			flag_id = 1;
+			free(value);
+			continue;
+		}
+
+		if((!flag_type) && strcmp((char *) cur->name, "VoteTypeId") == 0) {
+			type = atoi(value);
+			flag_type = 1;
+			free(value);
+			continue;
+		}
+
+		free(value);
+	}
+
+	MYPOST post = NULL;
+	post = search_POSTID(treeid, postid);
+
+
+	if(post) {
+		if(type == 2)
+			sumVotesP(post, 1);
+		else if(type == 3)
+			sumVotesP(post, -1);
+	}
+
+}
 
 /**
  * @date 			25 Mar 2018
  * @brief 			Função que copia informação de um nodo da estrutura do libxml2 para o análogo da nossa estrutura.
  * @param post		O apontador da nossa estrutura.
  * @param xml 		O apontador da estrutura resultante do parsing do ficheiro xml.
+ * @param doc		O apontador para o documento xml. (libxml2)
  * @param treeid	O apontador para a àrvore de posts ordenada por id.
  * @param treeusers O apontador para a árvore de users.
  */
@@ -267,7 +343,5 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 				}
 
 				free(value);
-
 	}
-
 }

@@ -31,6 +31,7 @@ void 	getFavsP				(MYPOST post, int *fav);
 void 	setFavsP				(MYPOST post, int fav);
 void 	getVotesP				(MYPOST post, int *votes);
 void 	setVotesP				(MYPOST post, int votes);
+void 	sumVotesP				(MYPOST post, int votes);
 void 	getPIdP					(MYPOST post, long * p_id);
 void 	setPIdP					(MYPOST post, long  id);
 void 	setScoreP				(MYPOST post, int  score);
