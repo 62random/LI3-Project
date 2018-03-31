@@ -39,8 +39,9 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
  * @param path		O ficheiro Posts.xml.
  * @param tree_id 	O apontador onde ficará apontada a àrvore ordenada segundo id's.
  * @param tree_date	O apontador onde ficará apontada a àrvore ordenada segundo datas de criação.
+ * @param treeusers A árvore de users.
  */
-int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date) {
+int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeusers) {
 	xmlDocPtr 	doc;
 	xmlNodePtr	cur = NULL;
 
@@ -58,7 +59,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date) {
 	for(cur = cur->children; cur; cur = cur->next) {						// Percorre os posts todos.
 		if(strcmp("row", (char *) cur->name) == 0) {
 			post 	= createpost();											//Cria um nodo post.
-			xmltoMYPOST(post, cur, doc);									//Preenche essa struct post.
+			xmltoMYPOST(post, cur, doc, treeid, treeusers);					//Preenche essa struct post.
 
 			keyid 	= malloc(sizeof(long));
 			getIdP(post, keyid);
@@ -150,14 +151,19 @@ char ** xmlToStringArray(char * value) {
  * @brief 			Função que copia informação de um nodo da estrutura do libxml2 para o análogo da nossa estrutura.
  * @param post		O apontador da nossa estrutura.
  * @param xml 		O apontador da estrutura resultante do parsing do ficheiro xml.
+ * @param treeid	O apontador para a àrvore de posts ordenada por id.
+ * @param treeusers O apontador para a árvore de users.
  */
-void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
+void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE treeusers) {
 	xmlAttrPtr cur;
 
 	char flag[12] = {0};	//flags para não estar constantemente a chamar a strcmp()
 	char * value;
 	char ** arr;
 	MYDATE date;
+	MYPOST parent;
+	long l;
+	int n = 0;
 
 	for(cur = xml->properties; cur; cur = cur->next) {
 				value = (char *) xmlNodeListGetString(doc, cur->children, 1);
@@ -177,7 +183,13 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
 				if(!flag[2] && strcmp((char *) cur->name, "ParentId") == 0) {
-					setPIdP(post, atol(value));
+					l = atol(value);
+					parent = search_POSTID(treeid, l);
+					if(parent) {
+						getAnswersP(parent, &n);
+						setAsnwersP(parent, n + 1);
+					}
+					setPIdP(post, l);
 					flag[2] = 1;
 					free(value);
 					continue;
@@ -201,7 +213,10 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc) {
 				}
 
 				if(!flag[5] && strcmp((char *) cur->name, "OwnerUserId") == 0) {
-					setOwnerIdP(post, atol(value));
+					l = atol(value);
+					setOwnerIdP(post, l);
+					getDateP(post, &date);
+					setPostToUSER(treeusers, l, date, post);
 					flag[5] = 1;
 					free(value);
 					continue;
