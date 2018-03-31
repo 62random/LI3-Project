@@ -3,12 +3,9 @@
 #include <date.h>
 
 
-typedef struct mypost *MYPOST;
-
-
 struct mypost {
 	long 		id;
-	int		typeid;
+	int			typeid;
 	long 		parent_id;
 	MYDATE		cdate;
 	int 		score;
@@ -17,10 +14,9 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int		commcount;
-	int		favcount;
-	int		votecount;			//contruir ao dar load
-	//lista de votos (so com o id do user)
+	int			commcount;
+	int			favcount;
+	int			votecount;
 };
 /**
  * @date 			27 Mar 2018
@@ -327,6 +323,16 @@ void getVotesP(MYPOST post,int *votes){
  */
 void setVotesP(MYPOST post, int votes){
   post->votecount=votes;
+}
+
+/**
+ * @date 			31 Mar 2018
+ * @brief 			Função que soma um valor ao número de votos do post.
+ * @param 			Apontador para a struct do post.
+ * @param			Variação do número de votos.
+ */
+void sumVotesP(MYPOST post, int votes){
+  post->votecount+=votes;
 }
 
 /**

@@ -9,6 +9,7 @@ int main(){
         TREE usertree = createMYUSERS_TREE("/home/pedro/Desktop/bla/Users.xml");
 		TREE postTreeId = NULL, postTreeData = NULL;
 		createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
+		xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
 
 		printf("Enter ID\n");
 		long key = 0;
