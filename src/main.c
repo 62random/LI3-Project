@@ -6,16 +6,11 @@
 
 int main(){
 
-        TREE usertree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android/Users.xml");
+        TREE usertree = createMYUSERS_TREE("/home/pedro/Desktop/bla/Users.xml");
 		TREE postTreeId = NULL, postTreeData = NULL;
-<<<<<<< HEAD
-		createMYPOST_TREES("/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android/Posts.xml", &postTreeId, &postTreeData, usertree);
-		/*
-=======
 		createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
 		xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
 
->>>>>>> efcfb2c26e1abe020436390eb7ac84b1e69f9ce3
 		printf("Enter ID\n");
 		long key = 0;
 		//MYUSER use;
@@ -84,7 +79,7 @@ int main(){
 				getScoreP(post, &n);
 				printf("Score: %d\n\n", n);
 			}
-		}*/
+		}
 
 
 		freeTreeUSER(usertree);
