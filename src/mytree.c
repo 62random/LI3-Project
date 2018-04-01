@@ -408,6 +408,41 @@ static int isSearch(AVL a,TREE tree){
     return r;
 }
 
+/**
+ *@brief			Função que conta o número de nodos que satisfazem uma condição.
+ *@param			Apontador para a AVL.
+ *@param			Apontador para a data1 a comparar.
+ *@param			Apontador para a data2 a comparar.
+ *@param			Apontador para a função que compara.
+*/
+
+static int count_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *)){
+	int nnodes = 0,a1,a2;
+	if(aux){
+		a1 =f_compare(inicio,aux->key);
+		a2 =f_compare(fim,aux->key);
+		if ((a1 > 0 && a2 < 0) || (a1==0) || (a2==0)){
+			nnodes = 1 + count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare) + count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare);
+		}
+		else if (a1 > 0)
+			nnodes += count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare);
+		else if (a2 < 0)
+			nnodes += count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare);
+	}
+	return nnodes;
+}
+
+/**
+ *@brief			Função que conta o número de nodos que satisfazem uma condição.
+ *@param			Apontador para a estrutura que contém a árvore.
+ *@param			Apontador para a data1 a comparar.
+ *@param			Apontador para a data2 a comparar.
+*/
+
+int count_nodes_With_Condition(TREE tree, void * data1, void * data2){
+	return count_nodes_With_key_Condition(tree->arv,data1,data2,tree->f_compare);
+}
+
 
 /**
  *@brief			Função que testa as propriedas da tree.

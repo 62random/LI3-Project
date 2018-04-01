@@ -152,7 +152,7 @@ int compare_user(void * key1,void * key2){
 
     if (id1 == id2)
         result = 0;
-    else result = id1 > id2 ? 1 : -1 ;
+    else result = id2 > id1 ? 1 : -1 ;
 
     return result;
 }
