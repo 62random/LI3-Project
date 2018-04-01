@@ -125,15 +125,25 @@ MYLIST insere_list(MYLIST r,void * key,void * data){
 }
 
 /**
- * @brief			Função que imprime uma lista.
- * @param			Apontador para a lista.
+ * @brief			Função devolve a data da caixa de uma lista.
+ * @param			Caixa de onde se vai tirar o elemento.
 */
 
-void print_List(LList r){
-	long aux;
-	while(r){
-		aux = *((long * ) r->key);
-		printf("%ld -> ",aux);
-		r = r->next;
+void * getElemente_LList(LList r){
+	if (r){
+		return r->data;
 	}
+	return NULL;
+}
+
+/**
+ * @brief			Função devolve a data da caixa de uma lista.
+ * @param			Caixa de onde se vai tirar o elemento.
+*/
+
+void * getNext_LList(LList r){
+	if (r){
+		return r->next;
+	}
+	return NULL;
 }

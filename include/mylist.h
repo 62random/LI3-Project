@@ -12,6 +12,7 @@ void 	free_MYLIST		(MYLIST r);
 LList 	create_box		(void * key,void * data);
 int 	search_list		(MYLIST pai,void * key);
 MYLIST 	insere_list		(MYLIST r,void * key,void * data);
-void 	print_List		(LList r);
+void * getElemente_LList(LList r);
+void * getNext_LList(LList r);
 
 #endif
