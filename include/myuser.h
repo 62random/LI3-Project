@@ -8,6 +8,7 @@
 #include "mylist.h"
 #include "mydate.h"
 #include "mytree.h"
+#include "mypost.h"
 #include "/usr/include/libxml2/libxml/parser.h"
 #include "/usr/include/libxml2/libxml/xmlwriter.h"
 #include "/usr/include/libxml2/libxml/tree.h"
@@ -19,7 +20,7 @@ long 	getIdMYUSER			(MYUSER use);
 int 	getREPMYUSER		(MYUSER use);
 char * 	getUsername			(MYUSER use);
 char * 	getBiography		(MYUSER use);
-//long * getNposts			(MYUSER use,int n);
+long * getNposts			(MYUSER use,int n);
 MYUSER 	createMYUSER		();
 void 	freeMYUSER			(void * aux);
 int 	compare_user		(void * key1,void * key2);

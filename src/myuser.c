@@ -53,17 +53,21 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
  * @param			Número de posts.
 */
-/*
+//tem bugs;
 long * getNposts(MYUSER use,int n){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
-	LList aux = use->posts->lista;
-	while(aux && i != n){
-		//r[i++] = getId(aux->data)
-		//aux=aux->next;
+	MYPOST post = NULL;
+	LList aux = getFirst_BOX(use->posts);
+
+	for(i=0; i < n && aux != NULL; i++){
+		post = (MYPOST) getElemente_LList(aux);
+		if (post != NULL){
+			getIdP(post,r+i);
+		}
 	}
 	return r;
-}*/
+}
 
 /**
  * @brief 			Função que altera o Id de um user.

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 typedef struct llligada *LList;
 typedef struct mylist *MYLIST;
 
@@ -13,6 +14,7 @@ LList 	create_box		(void * key,void * data);
 int 	search_list		(MYLIST pai,void * key);
 MYLIST 	insere_list		(MYLIST r,void * key,void * data);
 void * getElemente_LList(LList r);
-void * getNext_LList(LList r);
+LList getNext_LList(LList r);
+LList getFirst_BOX(MYLIST r);
 
 #endif

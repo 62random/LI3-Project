@@ -141,9 +141,20 @@ void * getElemente_LList(LList r){
  * @param			Caixa de onde se vai tirar o elemento.
 */
 
-void * getNext_LList(LList r){
+LList getNext_LList(LList r){
 	if (r){
 		return r->next;
 	}
+	return NULL;
+}
+
+/**
+ * @brief			Função a lista dentro do MYLIST.
+ * @param			Caixa inicial.
+*/
+
+LList getFirst_BOX(MYLIST r){
+	if (r)
+		return r->lista;
 	return NULL;
 }
