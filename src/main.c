@@ -6,30 +6,30 @@
 
 int main(){
 
-        TREE usertree = createMYUSERS_TREE("/home/pedro/Desktop/bla/Users.xml");
-		TREE postTreeId = NULL, postTreeData = NULL;
-		createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
-		xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
+        TREE usertree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
+		//TREE postTreeId = NULL, postTreeData = NULL;
+		//createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
+		//xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
 
 		printf("Enter ID\n");
 		long key = 0;
-		//MYUSER use;
-		MYPOST post;
-
-		while(scanf("%ld",&key) && key != 0){
-			//use = search_USER(tree,key);
-			post = search_POSTID(postTreeId, key);
-			//if (!use)
-			if (!post)
+		MYUSER use;
+		//MYPOST post;
+		while(scanf("%ld",&key)){
+		//while(scanf("%ld",&key) && key != 0){
+			use = search_USER(usertree,key);
+			//post = search_POSTID(postTreeId, key);
+			if (!use)
+			//if (!post)
 				printf("Não encontrou\n");
 			else{
 
-				//printf("ID:%ld\n",getIdMYUSER(use));
-				//printf("Rep:%d\n",getREPMYUSER(use));
-				//printf("Use:%s\n", getUsername(use));
-				//printf("Bio:%s\n",getBiography(use));
+				printf("ID:%ld\n",getIdMYUSER(use));
+				printf("Rep:%d\n",getREPMYUSER(use));
+				printf("Use:%s\n", getUsername(use));
+				printf("Bio:%s\n",getBiography(use));
 				//printf("ID: %ld\n",getIdP(post));
-
+				/*
 				int n;
 				MYDATE date = NULL;
 				char * names;
@@ -78,13 +78,14 @@ int main(){
 
 				getScoreP(post, &n);
 				printf("Score: %d\n\n", n);
+				*/
 			}
 		}
 
 
 		freeTreeUSER(usertree);
-		freeTREE_AVL(postTreeId);
-		freeTREE_AVL(postTreeData);
+		//freeTREE_AVL(postTreeId);
+		//freeTREE_AVL(postTreeData);
 
 
 
