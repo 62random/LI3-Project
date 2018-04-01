@@ -76,25 +76,25 @@ int MYdate_size() {
 */
 
 int compare_MYDATE_AVL(void * data1, void * data2){
-
-	MYDATE a = (MYDATE) data1;
-	MYDATE b = (MYDATE) data2;
-
-	if (a->year == b->year && a->month == b->month && a->day==b->day)
-		return 0;
-	if (a->year == b->year && a->month == b->month && a->day < b->day)
-		return -1;
-	if (a->year == b->year && a->month == b->month && a->day > b->day)
-		return 1;
-	if (a->year == b->year && a->month > b->month)
-		return 1;
-	if (a->year == b->year && a->month < b->month)
-		return -1;
-	if (a->year > b->year)
-		return 1;
-
-	return -1;
-
+    
+    MYDATE a = (MYDATE) data1;
+    MYDATE b = (MYDATE) data2;
+    
+    if (a->year == b->year && a->month == b->month && a->day==b->day)
+        return 0;
+    if (a->year == b->year && a->month == b->month && a->day < b->day)
+        return 1;
+    if (a->year == b->year && a->month == b->month && a->day > b->day)
+        return -1;
+    if (a->year == b->year && a->month > b->month)
+        return -1;
+    if (a->year == b->year && a->month < b->month)
+        return 1;
+    if (a->year > b->year)
+        return -1;
+    
+    return 1;
+    
 }
 
 /**

@@ -414,22 +414,26 @@ static int isSearch(AVL a,TREE tree){
  *@param			Apontador para a data1 a comparar.
  *@param			Apontador para a data2 a comparar.
  *@param			Apontador para a função que compara.
+ *@param			Função a aplicar em todos os nodos.
+ *@param			Aparametro 1 a passar à função que aplica nos nodos.
+ *@param			Aparametro 2 a passar à função que aplica nos nodos.
 */
 
-static int count_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *)){
-	int nnodes = 0,a1,a2;
+static void count_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *),void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
+	int a1,a2;
 	if(aux){
 		a1 =f_compare(inicio,aux->key);
 		a2 =f_compare(fim,aux->key);
 		if ((a1 > 0 && a2 < 0) || (a1==0) || (a2==0)){
-			nnodes = 1 + count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare) + count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare);
+			f_nodo(aux->data,data3,data4);
+			count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
+			count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
 		}
 		else if (a1 > 0)
-			nnodes += count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare);
+			count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
 		else if (a2 < 0)
-			nnodes += count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare);
+			count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
 	}
-	return nnodes;
 }
 
 /**
@@ -437,10 +441,13 @@ static int count_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (
  *@param			Apontador para a estrutura que contém a árvore.
  *@param			Apontador para a data1 a comparar.
  *@param			Apontador para a data2 a comparar.
+ *@param			Função a aplicar em todos os nodos.
+ *@param			Aparametro 1 a passar à função que aplica nos nodos.
+ *@param			Aparametro 2 a passar à função que aplica nos nodos.
 */
 
-int count_nodes_With_Condition(TREE tree, void * data1, void * data2){
-	return count_nodes_With_key_Condition(tree->arv,data1,data2,tree->f_compare);
+void count_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
+	count_nodes_With_key_Condition(tree->arv,data1,data2,tree->f_compare,f_nodo,data3,data4);
 }
 
 
