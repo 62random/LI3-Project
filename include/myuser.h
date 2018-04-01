@@ -20,7 +20,7 @@ long 	getIdMYUSER			(MYUSER use);
 int 	getREPMYUSER		(MYUSER use);
 char * 	getUsername			(MYUSER use);
 char * 	getBiography		(MYUSER use);
-long * getNposts			(MYUSER use,int n);
+long * getNposts(MYUSER use,int n,int * n_elem);
 MYUSER 	createMYUSER		();
 void 	freeMYUSER			(void * aux);
 int 	compare_user		(void * key1,void * key2);

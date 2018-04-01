@@ -54,7 +54,7 @@ char * getBiography(MYUSER use){
  * @param			Número de posts.
 */
 //tem bugs;
-long * getNposts(MYUSER use,int n){
+long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
 	MYPOST post = NULL;
@@ -66,6 +66,7 @@ long * getNposts(MYUSER use,int n){
 			getIdP(post,r+i);
 		}
 	}
+	*n_elem = i;
 	return r;
 }
 
