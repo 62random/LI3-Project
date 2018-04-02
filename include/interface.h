@@ -3,7 +3,14 @@
 #include "list.h"
 #include "user.h"
 #include "gmodule.h"
-
+#include "mylist.h"
+#include "myuser.h"
+#include "mypost.h"
+#include "mytree.h"
+#include "mydate.h"
+#include "loading.h"
+#include "stdlib.h"
+#include "stdio.h"
 
 typedef struct TCD_community * TAD_community;
 
@@ -13,7 +20,7 @@ TAD_community init();
 TAD_community load(TAD_community com, char* dump_path);  //diretoria onde estarão os ficheiros do dump
 
 // query 1
-STR_pair info_from_post(TAD_community com, int id);
+STR_pair info_from_post(TAD_community com, long id);
 
 // query 2
 LONG_list top_most_active(TAD_community com, int N);
@@ -40,9 +47,9 @@ LONG_list contains_word(TAD_community com, char* word, int N);
 LONG_list both_participated(TAD_community com, long id1, long id2, int N);
 
 // query 10
-LONG_list better_answer(TAD_community com, int id);
+long better_answer(TAD_community com, long id);
 
 // query 11
-LONG_LIST most_used_best_rep(TAD_community com, int N, Date begin, Date end);
+LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
 
 TAD_community clean(TAD_community com);

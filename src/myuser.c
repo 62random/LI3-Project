@@ -65,6 +65,7 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 		if (post != NULL){
 			getIdP(post,r+i);
 		}
+		aux = getNext_LList(aux);
 	}
 	*n_elem = i;
 	return r;
