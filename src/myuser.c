@@ -49,6 +49,16 @@ char * getBiography(MYUSER use){
 }
 
 /**
+ * @brief			Função que devolve a lista de posts de um USER.
+ * @param			Apontador para o user.
+*/
+
+MYLIST getMYLISTuser(MYUSER use){
+	if (use) return use->posts;
+	return NULL;
+}
+
+/**
  * @brief			Função que devolve os ultimos N posts de um dado utilizador.
  * @param			Apontador para o user.
  * @param			Número de posts.
