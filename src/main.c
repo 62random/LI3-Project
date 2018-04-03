@@ -7,9 +7,10 @@
 int main(){
 
         TREE usertree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
-		//TREE postTreeId = NULL, postTreeData = NULL;
-		//createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
-		//xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
+		TREE postTreeId = NULL, postTreeData = NULL;
+		createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
+		xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
+                /*
 
 		printf("Enter ID\n");
 		long key = 0;
@@ -29,7 +30,6 @@ int main(){
 				printf("Use:%s\n", getUsername(use));
 				printf("Bio:%s\n",getBiography(use));
 				//printf("ID: %ld\n",getIdP(post));
-				/*
 				int n;
 				MYDATE date = NULL;
 				char * names;
@@ -79,13 +79,13 @@ int main(){
 				getScoreP(post, &n);
 				printf("Score: %d\n\n", n);
 				*/
-			}
-		}
+			//}
+	//	}
 
 
 		freeTreeUSER(usertree);
-		//freeTREE_AVL(postTreeId);
-		//freeTREE_AVL(postTreeData);
+		freeTREE_AVL(postTreeId);
+		freeTREE_AVL(postTreeData);
 
 
 

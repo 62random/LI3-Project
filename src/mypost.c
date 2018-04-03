@@ -5,7 +5,7 @@
 
 struct mypost {
 	long 		id;
-	int			typeid;
+	int		typeid;
 	long 		parent_id;
 	MYDATE		cdate;
 	int 		score;
@@ -14,9 +14,10 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int			commcount;
-	int			favcount;
-	int			votecount;
+	int		commcount;
+	int		favcount;
+	int		votecount;
+	MYLIST 		filhos;
 };
 /**
  * @date 			27 Mar 2018
@@ -37,6 +38,47 @@ void setScoreP(MYPOST post, int  score){
 void getScoreP(MYPOST post, int * score){
   *score = post->score;
 }
+
+/**
+ * @date 			27 Mar 2018
+ * @brief 			Função que altera os filhos e de um post.
+ * @param 			Apontador para a struct do post.
+ * @param			Novos filhos do post.
+
+void setFilhosP(MYPOST post, MYPOST  filhos){
+	post->filhos=filhos;
+
+	/**
+	 * @date 			24 Mar 2018
+	 * @brief 			Função que obtém os filhos de um post.
+	 * @param 			Apontador para a struct do post.
+	 * @param			Apontador onde a função devolve os filhos do post.
+void getFilhosP(MYPOST post, MYPOST filhos){
+
+	*score = post->filhos;
+}
+*/
+
+
+/**
+ * @brief				Função mete um post nos filhos desse mesmo post.
+ * @param				Árvore de posts.
+ * @param				Identificador do post.
+ * @param				Key do filhos a inserir.
+ * @param				Informação do post.
+*/
+
+int setPostToPost(TREE tree,long id,MYDATE date,void * data){
+		MYPOST filhos;
+		filhos = search_POSTID(tree,id);
+		if (filhos == NULL)
+			return -1;
+		filhos->filhos = insere_list(filhos->filhos,date,data);
+		return 1;
+}
+
+
+
 
 
 /**
@@ -128,8 +170,8 @@ void setDateP(MYPOST post, MYDATE data){
 	MYDATE date;
 
 	date = createMYDate(get_MYday(data),
-						get_MYmonth(data),
-						get_MYyear(data));
+	get_MYmonth(data),
+	get_MYyear(data));
 
   	post->cdate = date;
 }
@@ -343,13 +385,14 @@ void sumVotesP(MYPOST post, int votes){
 MYPOST createpost() {
 	MYPOST post = malloc(sizeof(struct mypost));
 	post->ownername = NULL;
-	post->tags 		= NULL;
-	post->cdate		= NULL;
-	post->title		= NULL;
+	post->tags 	= NULL;
+	post->cdate	= NULL;
+	post->title	= NULL;
 	post->parent_id = 0;
 	post->votecount = 0;
 	post->favcount	= 0;
 	post->anscount	= 0;
+	post->filhos = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
 	return post;
 }
 
@@ -373,6 +416,7 @@ void freepost(MYPOST post) {
 
 	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
+	free_MYLIST(post->filhos);
 
 	free(post);
 }
