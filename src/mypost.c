@@ -61,11 +61,11 @@ void getFilhosP(MYPOST post, MYLIST * filhos){
 */
 
 int setPostToPost(TREE tree,long id,MYDATE date,void * data){
-		MYPOST filhos;
-		filhos = search_POSTID(tree,id);
-		if (filhos == NULL)
+		MYPOST post;
+		post = search_POSTID(tree,id);
+		if (post == NULL)
 			return -1;
-		filhos->filhos = insere_list(filhos->filhos,date,data);
+		post->filhos = insere_list(post->filhos,date,data);
 		return 1;
 }
 

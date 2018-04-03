@@ -256,12 +256,15 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 					flag[1] = 1;
 					free(value);
 					continue;
+
 				}
 
 				if(!flag[2] && strcmp((char *) cur->name, "ParentId") == 0) {
 					l = atol(value);
 					parent = search_POSTID(treeid, l);
 					if(parent) {
+						getDateP(post, &date);
+						setPostToPost(treeid,l,date,post);
 						getAnswersP(parent, &n);
 						setAsnwersP(parent, n + 1);
 					}
