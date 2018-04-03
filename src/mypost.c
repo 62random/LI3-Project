@@ -39,26 +39,18 @@ void getScoreP(MYPOST post, int * score){
   *score = post->score;
 }
 
+
 /**
- * @date 			27 Mar 2018
- * @brief 			Função que altera os filhos e de um post.
+ * @date 			24 Mar 2018
+ * @brief 			Função que obtém os filhos de um post.
  * @param 			Apontador para a struct do post.
- * @param			Novos filhos do post.
+ * @param			Apontador onde a função devolve os filhos do post.
+ */
 
-void setFilhosP(MYPOST post, MYPOST  filhos){
-	post->filhos=filhos;
 
-	/**
-	 * @date 			24 Mar 2018
-	 * @brief 			Função que obtém os filhos de um post.
-	 * @param 			Apontador para a struct do post.
-	 * @param			Apontador onde a função devolve os filhos do post.
-void getFilhosP(MYPOST post, MYPOST filhos){
-
-	*score = post->filhos;
+void getFilhosP(MYPOST post, MYLIST * filhos){
+	(*filhos) = post->filhos;
 }
-*/
-
 
 /**
  * @brief				Função mete um post nos filhos desse mesmo post.
