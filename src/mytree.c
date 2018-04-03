@@ -10,6 +10,8 @@ struct AVBin {
     struct AVBin * esq, * dir;
 };
 
+typedef struct AVBin * AVL;
+
 struct tree{
     AVL arv;
     int nnodes;
@@ -409,6 +411,33 @@ static int isSearch(AVL a,TREE tree){
 }
 
 /**
+ *@brief			Função que vai ser aplicada a todos os nodos.
+ *@param			Apontador para a arvore.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar à função a aplicar.
+*/
+
+static void all_nodes_trans(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+	if (aux){
+		f_nodo(aux->data,data1);
+		all_nodes_trans(aux->esq,f_nodo,data1);
+		all_nodes_trans(aux->dir,f_nodo,data1);
+	}
+}
+
+/**
+ *@brief			Função que vai ser aplicada a todos os nodos.
+ *@param			Apontador para a estrutura que contem a AVL.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar à função a aplicar.
+*/
+
+void all_nodes_TREE(TREE e,void (*f_nodo)(void *,void *),void * data1){
+	if (f_nodo != NULL)
+		all_nodes_trans(e->arv,f_nodo,data1);
+}
+
+/**
  *@brief			Função que conta o número de nodos que satisfazem uma condição.
  *@param			Apontador para a AVL.
  *@param			Apontador para a data1 a comparar.
@@ -419,20 +448,20 @@ static int isSearch(AVL a,TREE tree){
  *@param			Aparametro 2 a passar à função que aplica nos nodos.
 */
 
-static void count_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *),void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
+static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *),void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
 	int a1,a2;
 	if(aux){
 		a1 =f_compare(inicio,aux->key);
 		a2 =f_compare(fim,aux->key);
 		if ((a1 > 0 && a2 < 0) || (a1==0) || (a2==0)){
 			f_nodo(aux->data,data3,data4);
-			count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
-			count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
+			all_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
+			all_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
 		}
 		else if (a1 > 0)
-			count_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
+			all_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
 		else if (a2 < 0)
-			count_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
+			all_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
 	}
 }
 
@@ -446,8 +475,8 @@ static void count_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int 
  *@param			Aparametro 2 a passar à função que aplica nos nodos.
 */
 
-void count_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
-	count_nodes_With_key_Condition(tree->arv,data1,data2,tree->f_compare,f_nodo,data3,data4);
+void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
+	all_nodes_With_key_Condition(tree->arv,data1,data2,tree->f_compare,f_nodo,data3,data4);
 }
 
 

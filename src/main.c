@@ -14,17 +14,17 @@ int main(){
 
 		printf("Enter ID\n");
 		long key = 0;
-		MYUSER use;
-		//MYPOST post;
+		//MYUSER use;
+		MYPOST post;
 		while(scanf("%ld",&key)){
 		//while(scanf("%ld",&key) && key != 0){
-			use = search_USER(usertree,key);
-			//post = search_POSTID(postTreeId, key);
-			if (!use)
-			//if (!post)
+			//use = search_USER(usertree,key);
+			post = search_POSTID(postTreeId, key);
+			//if (!use)
+			if (!post)
 				printf("Não encontrou\n");
 			else{
-				print_post_MYUSER(use);
+				print_posts_MYPOST(post);
 				//printf("ID:%ld\n",getIdMYUSER(use));
 				//printf("Rep:%d\n",getREPMYUSER(use));
 				//printf("Use:%s\n", getUsername(use));
