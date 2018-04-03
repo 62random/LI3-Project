@@ -8,11 +8,7 @@
 #include "mylist.h"
 #include "mydate.h"
 #include "mytree.h"
-#include "mypost.h"
-#include "/usr/include/libxml2/libxml/parser.h"
-#include "/usr/include/libxml2/libxml/xmlwriter.h"
-#include "/usr/include/libxml2/libxml/tree.h"
-#include "/usr/include/libxml2/libxml/xmlmemory.h"
+#include "loading.h"
 
 typedef struct myuser * MYUSER;
 
@@ -20,7 +16,8 @@ long 	getIdMYUSER			(MYUSER use);
 int 	getREPMYUSER		(MYUSER use);
 char * 	getUsername			(MYUSER use);
 char * 	getBiography		(MYUSER use);
-long * getNposts(MYUSER use,int n,int * n_elem);
+long * 	getNposts			(MYUSER use,int n,int * n_elem);
+void 	print_post_MYUSER	(MYUSER use);
 MYUSER 	createMYUSER		();
 void 	freeMYUSER			(void * aux);
 int 	compare_user		(void * key1,void * key2);

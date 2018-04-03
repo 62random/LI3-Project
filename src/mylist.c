@@ -190,3 +190,13 @@ LList getFirst_BOX(MYLIST r){
 		return r->lista;
 	return NULL;
 }
+
+/**
+ * @brief			Função que retorna o número de elementos na lista.
+ * @param			Lista.
+*/
+
+int get_NUM_ele(MYLIST r){
+	if (r) return r->num_elementos;
+	return 0;
+}

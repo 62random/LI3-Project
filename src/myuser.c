@@ -53,7 +53,6 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
  * @param			Número de posts.
 */
-//tem bugs;
 long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
@@ -69,6 +68,34 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	}
 	*n_elem = i;
 	return r;
+}
+
+/**
+ * @brief			Função que imprime os id dos post de um utilizador.
+ * @param			Apontador para o user.
+*/
+
+void print_post_MYUSER(MYUSER use){
+	LList aux = getFirst_BOX(use->posts);
+	MYPOST post = NULL;
+	MYDATE data;
+	long ld=0;
+	int i = 0;
+	printf("Ne:%d\n",get_NUM_ele(use->posts));
+	while(aux){
+		post = (MYPOST) getElemente_LList(aux);
+		if (post != NULL){
+			getIdP(post,&ld);
+			getDateP(post,&data);
+			if (data != NULL){
+				printf("Data-> D:%d M:%d A:%d || ID:%ld \n",get_MYday(data),get_MYmonth(data),get_MYyear(data),ld);
+				free_MYdate(data);
+			}
+		}
+		i++;
+		aux = getNext_LList(aux);
+	}
+	printf("I=%d\n",i);
 }
 
 /**
@@ -212,33 +239,6 @@ int setPostToUSER(TREE tree,long id,MYDATE date,void * data){
 	if (use == NULL)
 		return -1;
 	use->posts = insere_list(use->posts,date,data);
-
-	return 1;
-}
-
-/**
- * @date 			24 Mar 2018
- * @brief 			Função que (recorrendo à biblioteca libxml2) efetua o parsing de um ficheiro xml.
- * @param doc		O apontador do ficheiro xml.
- * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
- * @param filepath 	O filepath do ficheiro xml a ser lido e carregado.
- */
-
-static int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
-
-	*doc = xmlParseFile(filepath);
-
-	if (!(*doc)) {
-		fprintf(stderr, "Document %s not parsed successfully\n", filepath);
-		return -1;
-	}
-
-	*ptr = xmlDocGetRootElement(*doc);
-
-	if (!(*ptr)) {
-		fprintf(stderr, "%s is an empty document\n", filepath);
-		return -2;
-	}
 
 	return 1;
 }

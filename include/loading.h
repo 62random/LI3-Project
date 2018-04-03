@@ -4,6 +4,10 @@
 #include <mypost.h>
 #include <myuser.h>
 #include <mydate.h>
+#include "/usr/include/libxml2/libxml/parser.h"
+#include "/usr/include/libxml2/libxml/xmlwriter.h"
+#include "/usr/include/libxml2/libxml/tree.h"
+#include "/usr/include/libxml2/libxml/xmlmemory.h"
 
 
 //Estes protótipos são temporários, apenas para que os ficheiros compilem

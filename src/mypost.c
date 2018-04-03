@@ -392,6 +392,7 @@ MYPOST createpost() {
 	post->tags 	= NULL;
 	post->cdate	= NULL;
 	post->title	= NULL;
+	post->ownerid = -2;
 	post->parent_id = -2;
 	post->votecount = 0;
 	post->favcount	= 0;
@@ -517,4 +518,32 @@ MYPOST search_POSTDATA(TREE tree,MYDATE date){
 	if (valid)
 		return post;
 	return NULL;
+}
+
+/**
+ * @brief			Função que imprime os ids das respostas a um post.
+ * @param			Apontador para o post.
+*/
+
+void print_posts_MYPOST(MYPOST post){
+	LList aux = getFirst_BOX(post->filhos);
+	MYPOST post2 = NULL;
+	MYDATE data;
+	long ld=0;
+	int i = 0;
+	printf("Ne:%d\n",get_NUM_ele(post->filhos));
+	while(aux){
+		post2 = (MYPOST) getElemente_LList(aux);
+		if (post != NULL){
+			getIdP(post2,&ld);
+			getDateP(post2,&data);
+			if (data != NULL){
+				printf("Data-> D:%d M:%d A:%d || ID:%ld \n",get_MYday(data),get_MYmonth(data),get_MYyear(data),ld);
+				free_MYdate(data);
+			}
+		}
+		i++;
+		aux = getNext_LList(aux);
+	}
+	printf("I=%d\n",i);
 }
