@@ -89,12 +89,12 @@ int search_list(MYLIST pai,void * key){
 }
 
 /**
- * @brief			Função que insere um novo elemento na lista.
+ * @brief			Função que insere um novo elemento na lista com comparador.
  * @param			Apontador para a chave a inserir.
  * @param			Apontador para a data a inserir.
 */
 
-MYLIST insere_list(MYLIST r,void * key,void * data){
+static MYLIST insere_with_comp(MYLIST r,void * key,void * data){
 	LList ant = NULL,novo;
 	LList percorre = r->lista, pai = r->lista;
 
@@ -120,6 +120,38 @@ MYLIST insere_list(MYLIST r,void * key,void * data){
 	}
 	r->lista = pai;
 	r->num_elementos++;
+
+	return r;
+}
+
+/**
+ * @brief			Função que insere um novo elemento na lista sem comparador.
+ * @param			Apontador para a chave a inserir.
+ * @param			Apontador para a data a inserir.
+*/
+
+static MYLIST insere_with_no_comp(MYLIST r,void * key,void * data){
+	LList pai = r->lista;
+	LList novo;
+
+	novo = create_box(key,data);
+	novo->next = pai;
+
+	r->lista = novo;
+	r->num_elementos++;
+	return r;
+}
+
+/**
+ * @brief			Função que insere um novo elemento na lista.
+ * @param			Apontador para a chave a inserir.
+ * @param			Apontador para a data a inserir.
+*/
+
+MYLIST 	insere_list	(MYLIST r,void * key,void * data){
+	if (r->f_compare != NULL)
+		r = insere_with_comp(r,key,data);
+	else r = insere_with_no_comp(r,key,data);
 
 	return r;
 }
