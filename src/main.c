@@ -3,9 +3,10 @@
 #include <myuser.h>
 #include <mypost.h>
 #include <loading.h>
+#include <interface.h>
 
 int main(){
-
+		/*
         TREE usertree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
 		TREE postTreeId = NULL, postTreeData = NULL;
 		createMYPOST_TREES("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Posts.xml", &postTreeId, &postTreeData, usertree);
@@ -30,7 +31,7 @@ int main(){
 				//printf("Use:%s\n", getUsername(use));
 				//printf("Bio:%s\n",getBiography(use));
 				//printf("ID: %ld\n",getIdP(post));
-				/*
+
 				int n;
 				MYDATE date = NULL;
 				char * names;
@@ -79,16 +80,19 @@ int main(){
 
 				getScoreP(post, &n);
 				printf("Score: %d\n\n", n);
-				*/
+
 			}
 		}
 
 
 		freeTreeUSER(usertree);
 		freeTREE_AVL(postTreeId);
-		freeTREE_AVL(postTreeData);
+		freeTREE_AVL(postTreeData);*/
 
-
+		TAD_community com = init();
+		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android");
+		com = clean(com);
+		free(com);
 
         return 1;
 }

@@ -9,51 +9,6 @@ struct TCD_community {
 	MYLIST user_ord;
 };
 
-/**
- * @brief			Função que dita a ordem de uma lista.
- * @param			Apontador para o primeiro elemento.
- * @param			Apontador para o segundo elemento.
-*/
-
-
-int ord_menor(void * data1,void * data2){
-	int key1 = *(int *) data1;
-	int key2 = *(int *) data2;
-
-	return key2 > key1;
-}
-
-/**
- * @brief			Função que adiciona um elemento a uma lista.
- * @param			Apontador para o elemento.
- * @param			Apontador para a lista.
-*/
-
-
-void constroi_list(void * data1,void * data2){
-	MYLIST aux = *(MYLIST *) data2;
-	MYUSER use = (MYUSER) data1;
-	MYLIST use_list = getMYLISTuser(use);
-
-	int * key = malloc(sizeof(int));
-	*key = get_NUM_ele(use_list);
-	aux = insere_list(aux,key,use);
-	*(MYLIST *)data2 = aux;
-}
-
-/**
- * @brief			Função que monta a lista dos users ordenada.
- * @param			Estrutura onde está contiga a árvore.
-*/
-
-
-MYLIST monta_N_resp_user(TREE users){
-	MYLIST aux = init_MYLIST(&ord_menor,&free,NULL);
-
-	all_nodes_TREE(users,&constroi_list,&aux);
-
-	return aux;
-}
 
 /**
  * @brief			Função inicializa a estrutura da comunidade.
@@ -64,6 +19,7 @@ TAD_community init(){
 	TAD_community aux = malloc(sizeof(struct TCD_community));
 	return aux;
 }
+
 
 /**
  * @brief			Função dá load aos ficheiros xml.
@@ -87,7 +43,6 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->users = users;
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
-	com->user_ord = monta_N_resp_user(users);
 
 	return com;
 }

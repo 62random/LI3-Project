@@ -17,5 +17,6 @@ void * 	getElemente_LList	(LList r);
 LList 	getNext_LList		(LList r);
 LList 	getFirst_BOX		(MYLIST r);
 int 	get_NUM_ele			(MYLIST r);
+void * 	get_key_box			(LList aux);
 
 #endif

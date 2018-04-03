@@ -200,3 +200,14 @@ int get_NUM_ele(MYLIST r){
 	if (r) return r->num_elementos;
 	return 0;
 }
+
+/**
+ * @brief			Função que retorna a key de uma box.
+ * @param			Box.
+*/
+
+void * get_key_box(LList aux){
+	if (aux)
+		return aux->key;
+	return NULL;
+}
