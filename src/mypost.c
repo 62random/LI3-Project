@@ -69,6 +69,18 @@ int setPostToPost(TREE tree,long id,MYDATE date,void * data){
 		return 1;
 }
 
+/**
+ * @brief				Função mete um post nos filhos desse mesmo post.
+ * @param				Identificador do post.
+ * @param				Key do filhos a inserir.
+ * @param				Informação do post.
+*/
+
+void setFilhosNoPost(MYPOST post,MYDATE date,void * data){
+		if (post == NULL)
+			return;
+		post->filhos = insere_list(post->filhos,date,data);
+}
 
 
 
@@ -380,7 +392,7 @@ MYPOST createpost() {
 	post->tags 	= NULL;
 	post->cdate	= NULL;
 	post->title	= NULL;
-	post->parent_id = 0;
+	post->parent_id = -2;
 	post->votecount = 0;
 	post->favcount	= 0;
 	post->anscount	= 0;

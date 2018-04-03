@@ -8,8 +8,8 @@ int main(){
 
         TREE usertree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
 		TREE postTreeId = NULL, postTreeData = NULL;
-		createMYPOST_TREES("/home/pedro/Desktop/bla/Posts.xml", &postTreeId, &postTreeData, usertree);
-		xmlVotes("/home/pedro/Desktop/bla/Votes.xml", postTreeId);
+		createMYPOST_TREES("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Posts.xml", &postTreeId, &postTreeData, usertree);
+		xmlVotes("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Votes.xml", postTreeId);
                 /*
 
 		printf("Enter ID\n");

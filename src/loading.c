@@ -237,7 +237,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 	char * value;
 	char ** arr;
 	MYDATE date;
-	MYPOST parent;
+	MYPOST parent = NULL;
 	long l;
 	int n = 0;
 
@@ -263,8 +263,6 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 					l = atol(value);
 					parent = search_POSTID(treeid, l);
 					if(parent) {
-						getDateP(post, &date);
-						setPostToPost(treeid,l,date,post);
 						getAnswersP(parent, &n);
 						setAsnwersP(parent, n + 1);
 					}
@@ -346,5 +344,11 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 				}
 
 				free(value);
+	}
+
+	if(parent){
+		getDateP(post,&date);
+		getPIdP(post,&l);
+		setFilhosNoPost(parent,date,post);
 	}
 }

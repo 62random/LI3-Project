@@ -20,6 +20,7 @@ TAD_community init(){
 
 /**
  * @brief			Função dá load aos ficheiros xml.
+ * @param			Estrutura que guarda as outras estruturas.
  * @param			String com a diretoria onde se encontram os ficheiros.
 */
 
@@ -39,6 +40,19 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->users = users;
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
+
+	return com;
+}
+
+/**
+ * @brief			Função que liberta a memória da estrutura.
+ * @param			Estrutura que guarda as outras estruturas.
+*/
+
+TAD_community clean(TAD_community com){
+	freeTreeUSER(com->users);
+	freeTREE_AVL(com->posts_Id);
+	freeTREE_AVL(com->posts_Date);
 
 	return com;
 }

@@ -20,7 +20,7 @@ struct mylist{
  * @brief			Função inicializa a estrutura da lista.
  * @param			Apontador para a função que compara.
  * @param			Apontador para a função que dá free à key.
-  * @param			Apontador para a função que dá free à data.
+ * @param			Apontador para a função que dá free à data.
 */
 
 MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
