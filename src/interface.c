@@ -59,7 +59,7 @@ TAD_community clean(TAD_community com){
 
 	return com;
 }
-
+//3
 /**
  * @brief			Função retorna a informacao de um post.
  * @param			Estrutura que guarda as outras estruturas.
@@ -68,11 +68,17 @@ TAD_community clean(TAD_community com){
 STR_pair info_from_post(TAD_community com, long id){
 	char * title = NULL;
 	char * user = NULL;
+	long iduser = -2;
 	int tipopost = -1;
 	long pai = -1;
 	STR_pair result = NULL;
 
 	MYPOST post = search_POSTID(com->posts_Id,id);
+
+	if(!post){
+		freepost(post);
+		return result;
+	}
 
 	getPostTypeIdP(post,&tipopost);
 	if(tipopost == 2){ // resposta
@@ -81,11 +87,46 @@ STR_pair info_from_post(TAD_community com, long id){
 	}
 
 	getTitleP(post,&title);
-	getOwnerNameP(post,&user);
+	getOwnerIdP(post,&iduser);
+	MYUSER us = search_USER(com->users,iduser);
+	user = getUsername(us);
 	result = create_str_pair(title,user);
-
 
 	return result;
 
 
+}
+
+void filtraPerguntasRespostas(void * nodo ,void * perguntas, void *respostas){
+
+	if (nodo){
+		MYPOST post =(MYPOST) nodo;
+		int type;
+		long aux;
+		getPostTypeIdP(post,&type);
+		if (type == 1){ // pergunta
+			aux = *(long*)perguntas;
+			aux++;
+			*(long*)perguntas = aux;
+		}
+		if (type == 2){ // respotas
+			aux = *(long*)respostas;
+			aux++;
+			*(long*)respostas = aux;
+		}
+	}
+}
+
+
+/**
+ * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+LONG_pair total_posts(TAD_community com, Date begin, Date end){
+	long res1, res2 ;
+	res1 = res2 = 0;
+	all_nodes_With_Condition(com->posts_Date,begin,end,&(filtraPerguntasRespostas),&res1,&res2);
+	LONG_pair result = create_long_pair(res1,res2);
+	return result;
 }

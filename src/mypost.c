@@ -397,7 +397,7 @@ MYPOST createpost() {
 	post->votecount = 0;
 	post->favcount	= 0;
 	post->anscount	= 0;
-	post->filhos = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
+	post->filhos = init_MYLIST(NULL,&free_MYdate,NULL);
 	return post;
 }
 

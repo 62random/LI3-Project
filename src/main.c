@@ -90,7 +90,17 @@ int main(){
 		freeTREE_AVL(postTreeData);*/
 
 		TAD_community com = init();
-		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android");
+		com = load(com,"/home/alexrone/Desktop/dump exemplo/dump exemplo/android/android");
+							LONG_pair teste;
+							Date di = createDate(1,1,2000);
+							Date df = createDate(30,12,2001);
+							teste = total_posts(com,di,df);
+							printf("Perguntas %ld ||||  Respotas  %ld\n",get_fst_long(teste),get_snd_long(teste));
+
+							STR_pair teste2;
+							teste2 = info_from_post(com,629);
+							printf("Titulo %s  ||||| User  %s\n",get_fst_str(teste2),get_snd_str(teste2));
+
 		com = clean(com);
 		free(com);
 
