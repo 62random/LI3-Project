@@ -59,3 +59,33 @@ TAD_community clean(TAD_community com){
 
 	return com;
 }
+
+/**
+ * @brief			Função retorna a informacao de um post.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+STR_pair info_from_post(TAD_community com, long id){
+	char * title = NULL;
+	char * user = NULL;
+	int tipopost = -1;
+	long pai = -1;
+	STR_pair result = NULL;
+
+	MYPOST post = search_POSTID(com->posts_Id,id);
+
+	getPostTypeIdP(post,&tipopost);
+	if(tipopost == 2){ // resposta
+		getPIdP(post,&pai);
+		post = search_POSTID(com->posts_Id,pai); // se for uma respota vai buscar o seu pai( sua pergunta )
+	}
+
+	getTitleP(post,&title);
+	getOwnerNameP(post,&user);
+	result = create_str_pair(title,user);
+
+
+	return result;
+
+
+}

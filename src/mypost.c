@@ -5,7 +5,7 @@
 
 struct mypost {
 	long 		id;
-	int		typeid;
+	int			typeid;
 	long 		parent_id;
 	MYDATE		cdate;
 	int 		score;
@@ -14,9 +14,9 @@ struct mypost {
 	char *		title;
 	char **		tags;
 	int 		anscount;
-	int		commcount;
-	int		favcount;
-	int		votecount;
+	int			commcount;
+	int			favcount;
+	int			votecount;
 	MYLIST 		filhos;
 };
 /**
