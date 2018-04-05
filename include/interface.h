@@ -8,6 +8,7 @@
 #include "mypost.h"
 #include "mytree.h"
 #include "mydate.h"
+#include "myheap.h"
 #include "loading.h"
 #include "stdlib.h"
 #include "stdio.h"
