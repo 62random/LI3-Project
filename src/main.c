@@ -90,6 +90,18 @@ int main(){
 		freeTREE_AVL(postTreeData);*/
 
 		TAD_community com = init();
+<<<<<<< HEAD
+		com = load(com,"/home/alexrone/a/ubuntu");
+		//					LONG_pair teste;
+		//					Date di = createDate(1,1,2016);
+		//					Date df = createDate(11,11,2200);
+		//					teste = total_posts(com,di,df);
+		//					printf("Perguntas %ld ||||  Respotas  %ld\n",get_fst_long(teste),get_snd_long(teste));
+
+							STR_pair teste2;
+							teste2 = info_from_post(com,51);
+							printf("Titulo %s  ||||| User  %s\n",get_fst_str(teste2),get_snd_str(teste2));
+=======
 		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android");
 		/*
 							LONG_pair teste;
@@ -101,6 +113,7 @@ int main(){
 							STR_pair teste2;
 							teste2 = info_from_post(com,629);
 							printf("Titulo %s  ||||| User  %s\n",get_fst_str(teste2),get_snd_str(teste2));*/
+>>>>>>> 1d635490874bcade5ba2b71c0644534a039cd489
 
 		com = clean(com);
 		free(com);
