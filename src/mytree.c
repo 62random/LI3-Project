@@ -14,7 +14,8 @@ typedef struct AVBin * AVL;
 
 struct tree{
     AVL arv;
-    int nnodes;
+    long nnodes;
+	void (*replace_fun)(void *,void *);
     int (*f_compare)(void *,void *);
 	void (*destroy_key)(void *);
 	void (*destroy_data)(void *);
@@ -222,11 +223,13 @@ static int count_nodes(AVL a){
  * @param			Apontador para a key a inserir.
  * @param			Apontador para a data a inserir.
 */
-
+/*
 TREE insere_tree(TREE gl, void * key, void * data){
 
     AVL queue[MAX_SIZE];
     AVL a = gl->arv;
+	int replace = 0;
+	int side;
 
     int idx = 0;
     queue[idx++] = NULL;
@@ -236,7 +239,8 @@ TREE insere_tree(TREE gl, void * key, void * data){
     }
     else{
         while(1){
-            if ((gl->f_compare(a->key,key)>0)){
+			side = (gl->f_compare(a->key,key);
+            if (side > 0){
                 if (a->dir){
                     queue[idx++] = a;
                     a = a->dir;
@@ -285,6 +289,81 @@ TREE insere_tree(TREE gl, void * key, void * data){
 
     return gl;
 
+}*/
+
+TREE insere_tree(TREE gl, void * key, void * data){
+
+    AVL queue[MAX_SIZE];
+    AVL a = gl->arv;
+	int replace = 0;
+	int side;
+
+    int idx = 0;
+    queue[idx++] = NULL;
+
+    if (!a){
+        a = create_new_node(key,data);
+		gl->arv = a;
+    }
+    else{
+        while(1){
+			side = (gl->f_compare(a->key,key));
+			if (side == 0){
+				if (gl->replace_fun != NULL){
+					replace = 1;
+					gl->replace_fun(a->data,data);
+					break;
+				}
+			}
+            if (side > 0){
+                if (a->dir){
+                    queue[idx++] = a;
+                    a = a->dir;
+                }
+                else {
+                    a->dir = create_new_node(key,data);
+                    break;
+                }
+            }
+            else {
+                if (a->esq){
+                    queue[idx++] = a;
+                    a = a->esq;
+                }
+                else{
+                    a->esq = create_new_node(key,data);
+                    break;
+                }
+            }
+        }
+
+        AVL pai;
+        int check_side, balan;
+		if (replace == 0){
+        	while(1){
+            	pai = queue[--idx];
+            	check_side = ((!pai) ||pai->esq == a);
+            	implementa_alt(&a);
+            	balan = altura(a->dir) - altura(a->esq);
+            	if (balan < -1 || balan > 1){
+                	a = balance(a);
+                	if (!pai)
+                    	break;
+                	else if (check_side)
+                    	pai->esq = a;
+                	else pai->dir = a;
+            	}
+            	if(!pai)
+                	break;
+            	a = pai;
+        	}
+			gl->arv = a;
+		}
+    }
+	gl->nnodes++;
+
+    return gl;
+
 }
 
 /**
@@ -299,6 +378,7 @@ TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data){
     a->nnodes = 0;
     a->heigth = 0;
     a->arv = NULL;
+	a->replace_fun = NULL;
     a->f_compare = f_compare;
 	a->destroy_key = destroy_key;
 	a->destroy_data = destroy_data;
@@ -494,4 +574,13 @@ int test_TREE_PROP(TREE tree){
 
 
 	return nodos && balanceada && alturas && procura;
+}
+
+/**
+ *@brief			Função que devolve o número de nodos da árvore.
+ *@param			Estrutura que contém a árvore.
+*/
+
+long NUM_nodes(TREE t){
+	return t->nnodes;
 }
