@@ -49,12 +49,12 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 		fprintf(stderr, "Could not create user tree from %s\n", path);
 		return -1;
 	}
-
+	MYLIST	list;
 	MYPOST	post;
 	long * 	keyid;
 	MYDATE 	keydate = NULL;
 	TREE 	treeid 		= createTREE(&compare_user, &freeKey, &freepost,NULL);
-	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, NULL,NULL);
+	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, &free_MYLIST,&concat_LIST);
 
 	for(cur = cur->children; cur; cur = cur->next) {						// Percorre os posts todos.
 		if(strcmp("row", (char *) cur->name) == 0) {
@@ -65,8 +65,11 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 			getIdP(post, keyid);
 			getDateP(post, &keydate);
 
+			list = init_MYLIST(NULL,NULL,NULL);
+			list = insere_list(list,NULL,post);
+
 			insere_tree(treeid, keyid, post);								//Insere este nodo na árvore ordenada por id's.
-			insere_tree(treedate, keydate, post);							//Insere este nodo na árvore ordenada cronológicamente.
+			insere_tree(treedate, keydate, list);							//Insere este nodo na árvore ordenada cronológicamente.
 		}
 	}
 

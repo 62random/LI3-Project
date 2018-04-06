@@ -15,7 +15,7 @@ typedef struct AVBin * AVL;
 struct tree{
     AVL arv;
     long nnodes;
-	void (*replace_fun)(void *,void *);
+	void * (*replace_fun)(void *,void *);
     int (*f_compare)(void *,void *);
 	void (*destroy_key)(void *);
 	void (*destroy_data)(void *);
@@ -311,7 +311,9 @@ TREE insere_tree(TREE gl, void * key, void * data){
 			if (side == 0){
 				if (gl->replace_fun != NULL){
 					replace = 1;
-					gl->replace_fun(a->data,data);
+					a->data=gl->replace_fun(a->data,data);
+					if (gl->destroy_key != NULL)
+						gl->destroy_key(key);
 					break;
 				}
 			}
@@ -573,7 +575,8 @@ int test_TREE_PROP(TREE tree){
 	procura = isSearch(tree->arv,tree);
 
 
-	return nodos && balanceada && alturas && procura;
+	//return nodos && balanceada && alturas && procura;
+	return balanceada && alturas && procura;
 }
 
 /**

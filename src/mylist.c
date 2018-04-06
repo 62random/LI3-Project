@@ -211,3 +211,37 @@ void * get_key_box(LList aux){
 		return aux->key;
 	return NULL;
 }
+
+/**
+ * @brief			Função concateneia duas listas.
+ * @param			Lista 1.
+ * @param			Lista 2.
+*/
+
+
+MYLIST concat_LIST(MYLIST r1, MYLIST r2){
+	LList aux,ant = NULL,pai;
+	if (r1 != NULL && r2 != NULL){
+		aux = r2->lista;
+		pai = r1->lista;
+
+		while(aux){
+			ant = aux;
+			aux = aux->next;
+		}
+		if (ant != NULL){
+			ant->next = pai;
+			pai = r2->lista;
+		}
+		r1->lista = pai;
+		r1->num_elementos +=r2->num_elementos;
+		free(r2);
+
+		return r1;
+	}
+	if (!r1)
+		return r2;
+	if (!r2)
+		return r1;
+	return NULL;
+}
