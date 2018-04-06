@@ -18,7 +18,7 @@ void 	getOwnerIdP				(MYPOST post, long * id);
 void 	setOwnerIdP				(MYPOST post, long  id);
 void 	getDateP				(MYPOST post, MYDATE * data);
 void 	setDateP				(MYPOST post, MYDATE data);
-void 	setIdP					(MYPOST post, long  id);
+void 	setIdP					(MYPOST post, long  id);//
 void 	getOwnerNameP			(MYPOST post, char ** name);
 void 	setOwnerNameP			(MYPOST post, char *  name);
 void 	getTitleP				(MYPOST post, char ** title);

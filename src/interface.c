@@ -43,6 +43,7 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->users = users;
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
+	//printf("U:%d, IDP:%d\n",test_TREE_PROP(users),test_TREE_PROP(posts_ID));
 
 	return com;
 }

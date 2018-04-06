@@ -265,7 +265,7 @@ TREE createMYUSERS_TREE(char * path){
 	xmlNodePtr aux;
 
 	MYUSER use = NULL;
-	TREE tree = createTREE(&compare_user,&freeKey,&freeMYUSER);
+	TREE tree = createTREE(&compare_user,&freeKey,&freeMYUSER,NULL);
 
 	if (!(xml_file_to_struct(&doc,&ptr,path)))
 		return tree;

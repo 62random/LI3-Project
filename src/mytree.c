@@ -373,12 +373,12 @@ TREE insere_tree(TREE gl, void * key, void * data){
  * @param			Apontador para a função que dá free à data.
 */
 
-TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data){
+TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data,void * replace){
     TREE a = malloc(sizeof(struct tree));
     a->nnodes = 0;
     a->heigth = 0;
     a->arv = NULL;
-	a->replace_fun = NULL;
+	a->replace_fun = replace;
     a->f_compare = f_compare;
 	a->destroy_key = destroy_key;
 	a->destroy_data = destroy_data;
