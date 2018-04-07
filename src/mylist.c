@@ -218,22 +218,19 @@ void * get_key_box(LList aux){
  * @param			Lista 2.
 */
 
-
 MYLIST concat_LIST(MYLIST r1, MYLIST r2){
-	LList aux,ant = NULL,pai;
+	LList aux;
 	if (r1 != NULL && r2 != NULL){
 		aux = r2->lista;
-		pai = r1->lista;
 
-		while(aux){
-			ant = aux;
+		while(aux && aux->next != NULL){
 			aux = aux->next;
 		}
-		if (ant != NULL){
-			ant->next = pai;
-			pai = r2->lista;
+		if (aux != NULL){
+			aux->next = r1->lista;
+			r1->lista = r2->lista;
 		}
-		r1->lista = pai;
+
 		r1->num_elementos +=r2->num_elementos;
 		free(r2);
 

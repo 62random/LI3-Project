@@ -48,7 +48,7 @@ void getScoreP(MYPOST post, int * score){
  * @param			Apontador onde a função devolve os filhos do post.
  */
 
-
+//quebra o encap
 void getFilhosP(MYPOST post, MYLIST * filhos){
 	if(post)
 		(*filhos) = post->filhos;
