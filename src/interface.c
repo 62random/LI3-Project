@@ -6,7 +6,8 @@ struct TCD_community {
 	TREE users;
 	TREE posts_Date;
 	TREE posts_Id;
-	HEAP n_with_more_posts;
+	HEAP num_posts;
+	STACK pre_posts;
 };
 
 
@@ -20,6 +21,22 @@ TAD_community init(){
 	return aux;
 }
 
+
+/**
+ * @brief			Função adiciona a informação da data de um nodo numa heap.
+ * @param			Apontador para a data do nodo.
+ * @param			Apontador para a heap.
+*/
+
+
+static void num_posts_na_HEAP(void * data,void * dataaux){
+	HEAP h = *(HEAP *) dataaux;
+	MYUSER user = (MYUSER) data;
+
+	long n_post = get_NUM_ele(getMYLISTuser(user));
+	h = insereHEAP(h,n_post,getIdMYUSER(user));
+	*(HEAP*) dataaux = h;
+}
 
 /**
  * @brief			Função dá load aos ficheiros xml.
@@ -43,6 +60,9 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->users = users;
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
+	com->num_posts = initHEAP(NUM_nodes(users));
+	com->pre_posts = NULL;
+	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
 
 	return com;
 }
@@ -56,9 +76,43 @@ TAD_community clean(TAD_community com){
 	freeTreeUSER(com->users);
 	freeTREE_AVL(com->posts_Id);
 	freeTREE_AVL(com->posts_Date);
+	freeSTACK(com->pre_posts);
+	freeMYHEAP(com->num_posts);
 
 	return com;
 }
+
+/**
+ * @brief			Função que calcula os N utilizadores com mais posts.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Número de jogadores.
+*/
+
+LONG_list top_most_active(TAD_community com, int N){
+	LONG_list l = create_list(N);
+	int i;
+	long id,key;
+
+	if (com->pre_posts == NULL)
+		com->pre_posts = initSTACK((long)N);
+
+	if (((long) N) <= get_NUM_eleSTACK(com->pre_posts)){
+		for(i=0; i < N; i++){
+			set_list(l,i,get_ELE_index(com->pre_posts,i));
+		}
+	}
+	else{
+		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
+			set_list(l,i,get_ELE_index(com->pre_posts,i));
+		for(; i < N; i++){
+			com->num_posts = pop(com->num_posts,&key,&id);
+			com->pre_posts = insereSTACK(com->pre_posts,id);
+			set_list(l,i,id);
+		}
+	}
+	return l;
+}
+
 //3
 /**
  * @brief			Função retorna a informacao de um post.
@@ -96,6 +150,7 @@ STR_pair info_from_post(TAD_community com, long id){
 
 
 }
+
 /**
  * @brief			Função que corre num nodo e calcula se é resposta ou pergunta.
  * @param			Apontador para a informação a filtar.

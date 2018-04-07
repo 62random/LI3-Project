@@ -89,8 +89,9 @@ int main(){
 		freeTREE_AVL(postTreeId);
 		freeTREE_AVL(postTreeData);*/
 		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
+		int i;
 		TAD_community com = init();
-		com = load(com,"/home/alexrone/a/android");
+		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);
 					//		Date df = createDate(31,6,2010);
@@ -111,9 +112,23 @@ int main(){
 					//		printf("\n");
 					//		free_user(teste3);
 
-							long teste4 = better_answer(com,2);
-							printf("\n%ld\n",teste4 );
-
+//							long teste4 = better_answer(com,2);
+//							printf("\n%ld\n",teste4 );
+							LONG_list l;
+							l = top_most_active(com,1);
+							for(i=0;i < 1; i++)
+								printf("%ld\n",get_list(l,i));
+							free_list(l);
+							printf("lalalalal\n");
+							l = top_most_active(com,2);
+							for(i=0;i < 2; i++)
+								printf("%ld\n",get_list(l,i));
+							free_list(l);
+							printf("lalalalal\n");
+							l = top_most_active(com,3);
+							for(i=0;i < 3; i++)
+								printf("%ld\n",get_list(l,i));
+							free_list(l);
 
 		com = clean(com);
 		free(com);
