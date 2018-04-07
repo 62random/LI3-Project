@@ -88,15 +88,15 @@ int main(){
 		freeTreeUSER(usertree);
 		freeTREE_AVL(postTreeId);
 		freeTREE_AVL(postTreeData);*/
-
+		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
 		TAD_community com = init();
-		com = load(com,"/home/alexrone/a/android");
+		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
 							LONG_pair teste;
 							Date di = createDate(1,1,2010);
-							Date df = createDate(11,11,2200);
+							Date df = createDate(31,6,2010);
 							teste = total_posts(com,di,df);
 							printf("Perguntas %ld ||||  Respotas  %ld\n\n",get_fst_long(teste),get_snd_long(teste));
-
+							/*
 							STR_pair teste2;
 							teste2 = info_from_post(com,51);
 							printf("Titulo %s  ||||| User  %s\n\n",get_fst_str(teste2),get_snd_str(teste2));
@@ -107,7 +107,7 @@ int main(){
 							long * auxl = get_10_latest_posts(teste3);
 							for(int i = 0; i<10;i++)
 								printf("%ld --",auxl[i] );
-							printf("\n");
+							printf("\n");*/
 
 		com = clean(com);
 		free(com);

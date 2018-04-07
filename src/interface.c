@@ -43,7 +43,6 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->users = users;
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
-	//printf("U:%d,D:%d ,IDP:%d\n",test_TREE_PROP(users),test_TREE_PROP(postsDate),test_TREE_PROP(posts_ID));
 
 	return com;
 }
@@ -77,7 +76,7 @@ STR_pair info_from_post(TAD_community com, long id){
 	MYPOST post = search_POSTID(com->posts_Id,id);
 
 	if(!post){
-		freepost(post);
+		//freepost(post);
 		return result;
 	}
 
@@ -97,27 +96,39 @@ STR_pair info_from_post(TAD_community com, long id){
 
 
 }
+/**
+ * @brief			Função que corre num nodo e calcula se é resposta ou pergunta.
+ * @param			Apontador para a informação a filtar.
+ * @param			Número de perguntas.
+ * @param			Número de respostas.
+*/
 
-void filtraPerguntasRespostas(void * nodo ,void * perguntas, void *respostas){
-
-	if (nodo){
-		MYPOST post =(MYPOST) nodo;
-		int type;
-		long aux;
-		getPostTypeIdP(post,&type);
-		if (type == 1){ // pergunta
-			aux = *(long*)perguntas;
-			aux++;
-			*(long*)perguntas = aux;
-		}
-		if (type == 2){ // respotas
-			aux = *(long*)respostas;
-			aux++;
-			*(long*)respostas = aux;
+static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
+	MYLIST r;
+	long aux;
+	int type;
+	LList lista2;
+	MYPOST post;
+	if (data != NULL){
+		r = (MYLIST) data;
+		lista2 = getFirst_BOX(r);
+		while(lista2){
+			post = (MYPOST) getElemente_LList(lista2);
+			getPostTypeIdP(post,&type);
+			if (type == 1){ // pergunta
+				aux = *(long*)perguntas;
+				aux++;
+				*(long*)perguntas = aux;
+			}
+			if (type == 2){ // respotas
+				aux = *(long*)respostas;
+				aux++;
+				*(long*)respostas = aux;
+			}
+			lista2 = getNext_LList(lista2);
 		}
 	}
 }
-
 
 /**
  * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
@@ -128,7 +139,14 @@ void filtraPerguntasRespostas(void * nodo ,void * perguntas, void *respostas){
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	long res1, res2 ;
 	res1 = res2 = 0;
-	all_nodes_With_Condition(com->posts_Date,begin,end,&(filtraPerguntasRespostas),&res1,&res2);
+	MYDATE nbegin,nend;
+	nbegin = DatetoMYDATE(begin);
+	nend = DatetoMYDATE(end);
+	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraPerguntasRespostas),&res1,&res2);
+
+	free_MYdate(nbegin);
+	free_MYdate(nend);
+
 	LONG_pair result = create_long_pair(res1,res2);
 	return result;
 }
@@ -146,7 +164,7 @@ USER get_user_info(TAD_community com, long id){
 	long * posts;
 	posts = getNposts(user,10,&aux);
 	if(aux != 10){
-		for(aux;aux < 10; aux ++)
+		for(;aux < 10; aux++)
 			posts[aux] = -1;
 	}
 	USER info = create_user(getBiography(user),posts);
