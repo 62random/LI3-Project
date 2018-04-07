@@ -90,24 +90,32 @@ int main(){
 		freeTREE_AVL(postTreeData);*/
 
 		TAD_community com = init();
+//			char buf[300];
+//			printf("Poe a merda do path o fdp\n");
+//			gets(buf);
+//			load(com,buf);
 		com = load(com,"/home/alexrone/a/android");
 							LONG_pair teste;
 							Date di = createDate(1,1,2010);
 							Date df = createDate(11,11,2200);
 							teste = total_posts(com,di,df);
-							printf("Perguntas %ld ||||  Respotas  %ld\n\n",get_fst_long(teste),get_snd_long(teste));
+					//		printf("Perguntas %ld ||||  Respotas  %ld\n\n",get_fst_long(teste),get_snd_long(teste));
 
 							STR_pair teste2;
 							teste2 = info_from_post(com,51);
-							printf("Titulo %s  ||||| User  %s\n\n",get_fst_str(teste2),get_snd_str(teste2));
+					//		printf("Titulo %s  ||||| User  %s\n\n",get_fst_str(teste2),get_snd_str(teste2));
 
 							USER teste3;
 							teste3 = get_user_info(com,100);
-							printf("BIO = %s",get_bio(teste3) );
+					//		printf("BIO = %s",get_bio(teste3) );
 							long * auxl = get_10_latest_posts(teste3);
-							for(int i = 0; i<10;i++)
-								printf("%ld --",auxl[i] );
-							printf("\n");
+					//		for(int i = 0; i<10;i++)
+					//			printf("%ld --",auxl[i] );
+					//		printf("\n");
+							free_user(teste3);
+
+							long teste4 = better_answer(com,1034);
+							printf("\n%ld\n",teste4 );
 
 		com = clean(com);
 		free(com);

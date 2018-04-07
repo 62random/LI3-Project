@@ -36,7 +36,8 @@ void setScoreP(MYPOST post, int  score){
  * @param			Apontador onde a função devolve o score do post.
  */
 void getScoreP(MYPOST post, int * score){
-  *score = post->score;
+	if(post)
+  		*score = post->score;
 }
 
 
@@ -49,7 +50,8 @@ void getScoreP(MYPOST post, int * score){
 
 
 void getFilhosP(MYPOST post, MYLIST * filhos){
-	(*filhos) = post->filhos;
+	if(post)
+		(*filhos) = post->filhos;
 }
 
 /**
@@ -92,7 +94,8 @@ void setFilhosNoPost(MYPOST post,MYDATE date,void * data){
  * @param			Apontador onde a função devolve o id do post.
  */
 void getIdP(MYPOST post, long * id){
-  *id = post->id;
+	if(post)
+  		*id = post->id;
 }
 
 /**
@@ -113,7 +116,8 @@ void setIdP(MYPOST post, long  id){
  * @param			Apontador onde a função devolve o TypeId do post.
  */
 void getPostTypeIdP(MYPOST post, int * id){
-  *id = post->typeid;
+	if(post)
+  		*id = post->typeid;
 }
 
 /**
@@ -135,7 +139,8 @@ void setPostTypeIdP(MYPOST post, long  id){
  * @param			Apontador onde a função devolve o ParentId do post.
  */
 void getPIdP(MYPOST post, long * p_id){
-  *p_id = post->parent_id;
+	if(post)
+  		*p_id = post->parent_id;
 }
 
 /**
@@ -156,11 +161,13 @@ void setPIdP(MYPOST post, long  id){
  * @param			Apontador para struct onde a função devolve a data do post.
  */
 void getDateP(MYPOST post, MYDATE * data){
-	MYDATE date;
-	date = createMYDate(get_MYday(post->cdate),
-						get_MYmonth(post->cdate),
-					 	get_MYyear(post->cdate));
-  	*data = date;
+	if(post){
+		MYDATE date;
+		date = createMYDate(get_MYday(post->cdate),
+							get_MYmonth(post->cdate),
+					 		get_MYyear(post->cdate));
+  		*data = date;
+	}
 }
 
 
@@ -189,7 +196,8 @@ void setDateP(MYPOST post, MYDATE data){
  * @param			Apontador onde a função devolve o id do owner post.
  */
 void getOwnerIdP(MYPOST post, long * id){
-  *id = post->ownerid;
+	if(post)
+  		*id = post->ownerid;
 }
 
 /**
@@ -209,7 +217,8 @@ void setOwnerIdP(MYPOST post, long  id){
  * @param			Apontador onde afunção devolve o nome do post.
  */
 void getOwnerNameP(MYPOST post, char ** name){
-	*name = mystrdup(post->ownername);
+	if(post)
+		*name = mystrdup(post->ownername);
 }
 
 /**
@@ -229,7 +238,8 @@ void setOwnerNameP(MYPOST post, char *  name){
  * @param 			Apontador onde a funcao devolve o titulo do post.
  */
 void getTitleP(MYPOST post,char ** title){
-	*title = mystrdup(post->title);
+	if(post)
+		*title = mystrdup(post->title);
 }
 
 /**
@@ -249,21 +259,23 @@ void setTitleP(MYPOST post, char* title){
  * @param 			Apontador para a lista de strings onde vao ser devolvidas as tags do post.
  */
 void getTagsP(MYPOST post,char *** tags){
-	if(post->tags == NULL) {
-		*tags = NULL;
-		return;
+	if(post){
+		if(post->tags == NULL) {
+			*tags = NULL;
+			return;
+		}
+
+		int i ;
+
+		for(i= 0; post->tags[i] != NULL; i++)
+			;
+			*tags = malloc(sizeof(char *)*(i + 1));
+
+		for(i= 0; post->tags[i] != NULL; i++)
+			(*tags)[i] = mystrdup(post->tags[i]);
+
+		(*tags)[i] = NULL;
 	}
-
-	int i ;
-
-	for(i= 0; post->tags[i] != NULL; i++)
-		;
-	*tags = malloc(sizeof(char *)*(i + 1));
-
-	for(i= 0; post->tags[i] != NULL; i++)
-		(*tags)[i] = mystrdup(post->tags[i]);
-
-	(*tags)[i] = NULL;
 }
 
 /**
@@ -298,7 +310,8 @@ void setTagsP(MYPOST post, char ** tags){
  * @param 			Apontador onde a funcao devolve o numero de respostas do post.
  */
 void getAnswersP(MYPOST post,int *answer){
-	*answer = post->anscount;
+	if(post)
+		*answer = post->anscount;
 }
 
 /**
@@ -318,7 +331,8 @@ void setAsnwersP(MYPOST post, int answer){
  * @param 			Apontador onde a funcao devolve o numero de comentarios do post.
  */
 void getCommentsP(MYPOST post,int *comments){
-	*comments = post->commcount;
+	if(post)
+		*comments = post->commcount;
 }
 
 /**
@@ -338,7 +352,8 @@ void setCommentsP(MYPOST post, int comments){
  * @param 			Apontador onde a funcao devolve o numero de favoritos do post.
  */
 void getFavsP(MYPOST post,int *fav){
-	*fav = post->favcount;
+	if(post)
+		*fav = post->favcount;
 }
 
 /**
@@ -358,7 +373,8 @@ void setFavsP(MYPOST post, int fav){
  * @param 			Apontador onde a funcao devolve o numero de votos do post.
  */
 void getVotesP(MYPOST post,int *votes){
-	*votes = post->votecount;
+	if(post)
+		*votes = post->votecount;
 }
 
 /**

@@ -146,9 +146,52 @@ USER get_user_info(TAD_community com, long id){
 	long * posts;
 	posts = getNposts(user,10,&aux);
 	if(aux != 10){
-		for(aux;aux < 10; aux ++)
+		for(;aux < 10; aux ++)
 			posts[aux] = -1;
 	}
 	USER info = create_user(getBiography(user),posts);
 	return info;
+}
+
+/**
+ * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+long better_answer(TAD_community com, long id){
+		MYLIST respostas;
+		MYUSER men;
+		long user;
+		int scr,rep,comt;
+		int scoreatual,scoremax;
+		scr=rep=comt=scoremax=scoreatual=0;
+		long	 id2 = -2;
+		LList aux;
+
+		MYPOST post = search_POSTID(com->posts_Id,id);
+		getFilhosP(post,&respostas);
+
+		printf("1\n" );
+		for (aux = getFirst_BOX(respostas); aux; aux=getNext_LList(aux)){
+			printf("1\n" );
+			post = (MYPOST)getElemente_LList(aux);
+			printf("1\n" );
+
+			print_posts_MYPOST(post);
+			printf("1\n" );
+			
+			getScoreP(post,&scr);
+			getCommentsP(post,&scr);
+			getOwnerIdP(post,&user);
+			men = search_USER(com->users,user);
+			rep = getREPMYUSER(men);
+			scoreatual =(scr * 0.45 + rep * 0.25 + scr * 0.2 + comt * 0.1);
+			if (scoreatual > scoremax){
+				scoremax = scoreatual;
+				getIdP(post,&id2);
+			}
+
+		}
+		return id2;
+
 }
