@@ -12,6 +12,18 @@ struct heap{
 	GEN * array;
 };
 
+struct stack{
+	long size;
+	long n_elem;
+	long * array;
+};
+
+/**
+ * @brief			Função troca 2 elementos no array.
+ * @param			Posição do 1 elemento.
+ * @param			Posição do 2 elemento.
+*/
+
 void swap(GEN * v,int i, int d){
 	long aux1 = v[i].key;
 	long aux2 = v[i].data;
@@ -23,7 +35,13 @@ void swap(GEN * v,int i, int d){
 	v[d].data = aux2;
 }
 
-HEAP initHEAP(int size){
+/**
+ * @brief			Função que inicializa um heap.
+ * @param			Tamanho original da heap.
+*/
+
+
+HEAP initHEAP(long size){
 	HEAP aux = malloc(sizeof(struct heap));
 	aux->size = size;
 	aux->n_elem = 0;
@@ -31,6 +49,11 @@ HEAP initHEAP(int size){
 
 	return aux;
 }
+
+/**
+ * @brief			Função que coloca o último elemento adicionado na sua posição correta.
+ * @param			Apontador para a heap.
+*/
 
 void bubble_up(HEAP * main){
 	HEAP h = * main;
@@ -46,6 +69,11 @@ void bubble_up(HEAP * main){
 	}
 	*main = h;
 }
+
+/**
+ * @brief			Função que realiza as operações necessárias depois de se retirar um elemento.
+ * @param			Apontador para a heap.
+*/
 
 void bubble_down(HEAP * main){
 	HEAP h = * main;
@@ -72,6 +100,13 @@ void bubble_down(HEAP * main){
 	*main = h;
 }
 
+/**
+ * @brief			Função que insere um novo elemento na heap.
+ * @param			Heap.
+ * @param			Valor da key a inserir.
+ * @param			Valor da data a inserir.
+*/
+
 HEAP insere(HEAP h, long key, long data){
 	if (h->n_elem > h->size){
 		h->array = realloc(h->array,h->size*2);
@@ -84,6 +119,13 @@ HEAP insere(HEAP h, long key, long data){
 	return h;
 }
 
+/**
+ * @brief			Função que retira um elemento na heap.
+ * @param			Heap.
+ * @param			Apontador para o sítio onde a key fica guardada.
+ * @param			Apontador para o sítio onde a data fica guardada.
+*/
+
 HEAP pop (HEAP h, long * key, long * data){
 	if (h->n_elem > 0){
 		*key =h->array[0].key;
@@ -92,3 +134,17 @@ HEAP pop (HEAP h, long * key, long * data){
 	}
 	return h;
 }
+
+/**
+ * @brief			Função dá free à heap.
+ * @param			Heap.
+*/
+
+void freeMYHEAP(HEAP h){
+	if (h){
+		free(h->array);
+		free(h);
+	}
+}
+
+//STACK initSTACK(long size)

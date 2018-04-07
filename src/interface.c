@@ -6,7 +6,7 @@ struct TCD_community {
 	TREE users;
 	TREE posts_Date;
 	TREE posts_Id;
-	MYLIST user_ord;
+	HEAP n_with_more_posts;
 };
 
 
