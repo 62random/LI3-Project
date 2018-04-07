@@ -184,20 +184,23 @@ long better_answer(TAD_community com, long id){
 		int scoreatual,scoremax;
 		scr=rep=comt=scoremax=scoreatual=0;
 		long	 id2 = -2;
+		int type;
 		LList aux;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
+		if (!post){
+			printf("Post inexistente\n");
+			return -3;
+		}
+		getPostTypeIdP(post,&type);
+		if(type == 2){
+			printf("Post não é uma pergunta\n");
+			return -4;
+		}
+
 		getFilhosP(post,&respostas);
-
-		printf("1\n" );
 		for (aux = getFirst_BOX(respostas); aux; aux=getNext_LList(aux)){
-			printf("1\n" );
 			post = (MYPOST)getElemente_LList(aux);
-			printf("1\n" );
-
-			print_posts_MYPOST(post);
-			printf("1\n" );
-
 			getScoreP(post,&scr);
 			getCommentsP(post,&scr);
 			getOwnerIdP(post,&user);
@@ -207,6 +210,7 @@ long better_answer(TAD_community com, long id){
 			if (scoreatual > scoremax){
 				scoremax = scoreatual;
 				getIdP(post,&id2);
+				printf("score = %d ; post = %ld\n",scoreatual,id2 );
 			}
 
 		}
