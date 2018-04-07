@@ -122,7 +122,8 @@ void filtraPerguntasRespostas(void * nodo ,void * perguntas, void *respostas){
 /**
  * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
  * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
+ * @param			Data inicial da procura
+ * @param			Data final da procura
 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	long res1, res2 ;
@@ -130,4 +131,24 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	all_nodes_With_Condition(com->posts_Date,begin,end,&(filtraPerguntasRespostas),&res1,&res2);
 	LONG_pair result = create_long_pair(res1,res2);
 	return result;
+}
+
+
+
+/**
+ * @brief			Função que dado um id de um user devolve informacao sobre este mesmo.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+USER get_user_info(TAD_community com, long id){
+	MYUSER user = search_USER(com->users,id);
+	int aux = 0;
+	long * posts;
+	posts = getNposts(user,10,&aux);
+	if(aux != 10){
+		for(aux;aux < 10; aux ++)
+			posts[aux] = -1;
+	}
+	USER info = create_user(getBiography(user),posts);
+	return info;
 }
