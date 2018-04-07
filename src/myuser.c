@@ -286,7 +286,7 @@ TREE createMYUSERS_TREE(char * path){
 					key = xmlNodeListGetString(doc,cur->children,1);
 
 			    	if (strcmp((char*)cur->name,"Id")==0){
-                    	id = atoi((char*)key);
+                    	id = atol((char*)key);
                     	setIdUSER(use,id);
                 	}
                 	if (strcmp((char*)cur->name,"Reputation")==0){

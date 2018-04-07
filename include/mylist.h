@@ -19,5 +19,6 @@ LList 	getFirst_BOX		(MYLIST r);
 int 	get_NUM_ele			(MYLIST r);
 void * 	get_key_box			(LList aux);
 MYLIST 	concat_LIST			(MYLIST r1, MYLIST r2);
+long 	count_ELE_MYLIST	(MYLIST r);
 
 #endif

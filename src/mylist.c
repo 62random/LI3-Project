@@ -245,3 +245,20 @@ MYLIST concat_LIST(MYLIST r1, MYLIST r2){
 		return r1;
 	return NULL;
 }
+
+/**
+ * @brief			Função conta o número de elementos de uma lista.
+ * @param			Lista 1.
+*/
+
+long count_ELE_MYLIST(MYLIST r){
+	long i = 0;
+	if(r){
+		LList aux = r->lista;
+		while(aux){
+			i++;
+			aux = aux->next;
+		}
+	}
+	return i;
+}
