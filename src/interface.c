@@ -248,7 +248,7 @@ long better_answer(TAD_community com, long id){
 			return -3;
 		}
 		getPostTypeIdP(post,&type);
-		if(type == 2){
+		if(type != 1){
 			printf("Post não é uma pergunta\n");
 			return -4;
 		}
