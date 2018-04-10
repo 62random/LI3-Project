@@ -16,7 +16,6 @@ struct mypost {
 	int 		anscount;
 	int			commcount;
 	int			favcount;
-	int			votecount;
 	MYLIST 		filhos;
 };
 /**
@@ -366,36 +365,6 @@ void setFavsP(MYPOST post, int fav){
   	post->favcount=fav;
 }
 
-/**
- * @date 			24 Mar 2018
- * @brief 			Função que obtém o numero de votos de um post.
- * @param 			Apontador para a struct do post.
- * @param 			Apontador onde a funcao devolve o numero de votos do post.
- */
-void getVotesP(MYPOST post,int *votes){
-	if(post)
-		*votes = post->votecount;
-}
-
-/**
- * @date 			27 Mar 2018
- * @brief 			Função que altera o numero de votos de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo numero de votos do post.
- */
-void setVotesP(MYPOST post, int votes){
-  post->votecount=votes;
-}
-
-/**
- * @date 			31 Mar 2018
- * @brief 			Função que soma um valor ao número de votos do post.
- * @param 			Apontador para a struct do post.
- * @param			Variação do número de votos.
- */
-void sumVotesP(MYPOST post, int votes){
-  post->votecount+=votes;
-}
 
 /**
  * @date 			24 Mar 2018
@@ -410,7 +379,6 @@ MYPOST createpost() {
 	post->title	= NULL;
 	post->ownerid = -2;
 	post->parent_id = -2;
-	post->votecount = 0;
 	post->favcount	= 0;
 	post->anscount	= 0;
 	post->filhos = init_MYLIST(NULL,&free_MYdate,NULL);
@@ -544,7 +512,7 @@ MYPOST search_POSTDATA(TREE tree,MYDATE date){
 void print_posts_MYPOST(MYPOST post){
 	LList aux = getFirst_BOX(post->filhos);
 	MYPOST post2 = NULL;
-	MYDATE data;
+	MYDATE data = NULL;
 	long ld=0;
 	int i = 0;
 	printf("Ne:%d\n",get_NUM_ele(post->filhos));

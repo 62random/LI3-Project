@@ -272,7 +272,7 @@ TREE createMYUSERS_TREE(char * path){
 
 
 
-    long id;
+    long id = 0;
 	long * keyid = NULL;
     int rep;
 

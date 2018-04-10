@@ -19,7 +19,5 @@ int 	createMYPOST_TREES		(char * path, TREE * tree_id, TREE * tree_date, TREE tr
 MYDATE 	xmlToMYDATE				(char * value);
 char ** xmlToStringArray		(char * value);
 void 	xmltoMYPOST				(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE treeusers);
-int 	xmlVotes				(char * path, TREE tree_id);
-void 	xmlVoteToPost			(xmlNodePtr ptr, xmlDocPtr doc, TREE tree_id);
 
 #endif

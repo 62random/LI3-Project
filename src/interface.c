@@ -55,7 +55,6 @@ TAD_community load(TAD_community com, char * dump_path){
 	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
 
 	sprintf(path,"%s/Votes.xml",dump_path);
-	xmlVotes(path, posts_ID);
 
 	com->users = users;
 	com->posts_Date = postsDate;
