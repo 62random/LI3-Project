@@ -114,9 +114,10 @@ int main(){
 
 //							long teste4 = better_answer(com,2);
 //							printf("\n%ld\n",teste4 );
+
 							LONG_list l;
-							l = top_most_active(com,1);
-							for(i=0;i < 1; i++)
+							l = top_most_active(com,1000);
+							for(i=0;i < 1000; i++)
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
 							printf("lalalalal\n");
