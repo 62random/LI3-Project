@@ -587,3 +587,68 @@ int test_TREE_PROP(TREE tree){
 long NUM_nodes(TREE t){
 	return t->nnodes;
 }
+
+/**
+ *@brief			Função que faz uma travessia inorder na árvore.
+ *@param			Apontador para a arvore.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar à função a aplicar.
+*/
+
+static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+	if (aux){
+		trans_inorder(a->esq,f_nodo,data1);
+		f_nodo(aux->data,data1);
+		trans_inorder(a->dir,f_nodo,data1);
+	}
+}
+
+/**
+ *@brief			Função que faz uma travessia postorder na árvore.
+ *@param			Apontador para a arvore.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar à função a aplicar.
+*/
+
+static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+	if (aux){
+		trans_inorder(a->esq,f_nodo,data1);
+		trans_inorder(a->dir,f_nodo,data1);
+		f_nodo(aux->data,data1);
+	}
+}
+
+/**
+ *@brief			Função que faz uma travessia preorder na árvore.
+ *@param			Apontador para a arvore.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar à função a aplicar.
+*/
+
+static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+	if (aux){
+		f_nodo(aux->data,data1);
+		trans_inorder(a->esq,f_nodo,data1);
+		trans_inorder(a->dir,f_nodo,data1);
+	}
+}
+
+/**
+ *@brief			Função que faz uma travessia na árvore.
+ *@param			Apontador para a estrutura arvore.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar à função a aplicar.
+ *@param			Tipo de travessia.
+*/
+
+
+void trans_tree(TREE e,void (*f_nodo)(void *,void *),void * data1,int travessia){
+	if (!e)
+		return;
+	if (travessia == 1)
+		trans_posorder(e->arv,f_nodo,data1);
+	else if (travessia == 2)
+		trans_inorder(e->arv,f_nodo,data1);
+	else if (travessia == 3)
+		trans_preorder(e->arv,f_nodo,data1);
+}

@@ -1,6 +1,10 @@
 #ifndef __MYTREE_H__
 #define __MYTREE_H__
 
+#define POSTORDER 1
+#define INORDER 2
+#define PERORDER 3
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -19,4 +23,5 @@ void 	all_nodes_TREE				(TREE e,void (*f_nodo)(void *,void *),void * data1);
 void 	all_nodes_With_Condition	(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4);
 int 	test_TREE_PROP				(TREE tree);
 long 	NUM_nodes					(TREE t);
+void 	trans_tree					(TREE e,void (*f_nodo)(void *,void *),void * data1,int travessia);
 #endif
