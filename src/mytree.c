@@ -597,9 +597,9 @@ long NUM_nodes(TREE t){
 
 static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 	if (aux){
-		trans_inorder(a->esq,f_nodo,data1);
+		trans_inorder(aux->esq,f_nodo,data1);
 		f_nodo(aux->data,data1);
-		trans_inorder(a->dir,f_nodo,data1);
+		trans_inorder(aux->dir,f_nodo,data1);
 	}
 }
 
@@ -612,8 +612,8 @@ static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 
 static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 	if (aux){
-		trans_inorder(a->esq,f_nodo,data1);
-		trans_inorder(a->dir,f_nodo,data1);
+		trans_posorder(aux->esq,f_nodo,data1);
+		trans_posorder(aux->dir,f_nodo,data1);
 		f_nodo(aux->data,data1);
 	}
 }
@@ -628,8 +628,8 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 	if (aux){
 		f_nodo(aux->data,data1);
-		trans_inorder(a->esq,f_nodo,data1);
-		trans_inorder(a->dir,f_nodo,data1);
+		trans_preorder(aux->esq,f_nodo,data1);
+		trans_preorder(aux->dir,f_nodo,data1);
 	}
 }
 

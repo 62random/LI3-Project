@@ -54,8 +54,6 @@ TAD_community load(TAD_community com, char * dump_path){
 	sprintf(path,"%s/Posts.xml",dump_path);
 	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
 
-	sprintf(path,"%s/Votes.xml",dump_path);
-
 	com->users = users;
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
@@ -270,4 +268,13 @@ long better_answer(TAD_community com, long id){
 		}
 		return id2;
 
+}
+
+
+//query 8
+LONG_list contains_word(TAD_community com, char* word, int N){
+	MYLIST l = NULL;
+	//percorre arvore de posts ordenados por data (postorder??)
+		//strstr no título do post, insere se o titulo tem a palavra
+		//parar em N
 }
