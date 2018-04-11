@@ -50,4 +50,5 @@ MYPOST 	search_POSTID			(TREE tree, long id);
 MYPOST 	search_POSTDATA			(TREE tree, MYDATE date);
 void 	free_StringArray		(char ** arr);
 void 	print_posts_MYPOST		(MYPOST post);
+int		existeTag				(MYPOST post,char * tag);
 #endif

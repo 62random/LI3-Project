@@ -269,12 +269,60 @@ long better_answer(TAD_community com, long id){
 		return id2;
 
 }
+/**
+ * @brief			Função que corre num nodo e verifica a existencia de uma tag.
+ * @param			Apontador para a informação a filtar.
+ * @param			Lista de posts com essa tag.
+ * @param			Tag a verificar.
+*/
 
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado,r;
+	int existe = 0;
+	long idp = -2;
+	LList lista2;
+	MYPOST post;
+	if (data != NULL){
+		r = (MYLIST)data;
+		lista2 = getFirst_BOX(r	);
+		while(lista2){
+			post = (MYPOST)getElemente_LList(lista2);
+			existe = existeTag(post,tag);
 
-//query 8
-LONG_list contains_word(TAD_community com, char* word, int N){
-	MYLIST l = NULL;
-	//percorre arvore de posts ordenados por data (postorder??)
-		//strstr no título do post, insere se o titulo tem a palavra
-		//parar em N
+			if (existe){
+				print_posts_MYPOST(post);
+				getIdP(post,&idp);
+				printf("%ld\n",idp );
+				resultado =  *(MYLIST*)result;
+				resultado = insere_list(resultado,idp,NULL);
+				 *(MYLIST*)result = resultado;
+			}
+			lista2 = getNext_LList(lista2);
+		}
+	}
+}
+
+/**
+ * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Data inicial da procura
+ * @param			Data final da procura
+*/
+LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
+	MYDATE nbegin,nend;
+ 	nbegin = DatetoMYDATE(begin);
+ 	nend   = DatetoMYDATE(end);
+	MYLIST result = init_MYLIST(NULL,NULL,NULL);
+	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result,&tag);
+	free_MYdate(nbegin);
+	free_MYdate(nend);
+
+	LONG_list final= create_list(get_NUM_ele(result));
+	LList lista2 = getFirst_BOX(result);
+	int i=0;
+	for(i=0;lista2;lista2=getNext_LList(lista2),i++)
+		set_list(final,i,(long)get_key_box(lista2));
+
+	free_MYLIST(result);
+	return final;
 }

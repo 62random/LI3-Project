@@ -91,7 +91,7 @@ int main(){
 		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
 		int i;
 		TAD_community com = init();
-		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
+		com = load(com,"/home/alexrone/a/android");
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);
 					//		Date df = createDate(31,6,2010);
@@ -115,7 +115,7 @@ int main(){
 //							long teste4 = better_answer(com,2);
 //							printf("\n%ld\n",teste4 );
 
-							LONG_list l;
+/*							LONG_list l;
 							l = top_most_active(com,1000);
 							for(i=0;i < 1000; i++)
 								printf("%ld\n",get_list(l,i));
@@ -130,7 +130,15 @@ int main(){
 							for(i=0;i < 3; i++)
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
-
+*/
+							Date di = createDate(1,1,2010);
+							Date df = createDate(31,6,2010);
+						  	LONG_list resp = questions_with_tag(com,"services",di,df);
+							long aux;
+							for(int i =0; i < 10;i++){
+								aux = get_list(resp,i);
+							//	printf("%ld \n", aux	);
+							}
 		com = clean(com);
 		free(com);
 

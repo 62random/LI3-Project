@@ -18,6 +18,17 @@ struct mypost {
 	int			favcount;
 	MYLIST 		filhos;
 };
+
+int		existeTag				(MYPOST post,char * tag){
+	int i;
+	char *tags[100];
+	getTagsP(post,tags);
+	for(i=0;tags[i];i++)
+		if(strcmp(tags[i],tag))
+			return 1;
+	return 0;
+}
+
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o score de um post.
