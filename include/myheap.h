@@ -15,7 +15,9 @@ void bubble_up			(HEAP * main);
 void bubble_down		(HEAP * main);
 HEAP insereHEAP			(HEAP h, long key, long data);
 HEAP pop 				(HEAP h, long * key, long * data);
+long get_NUM_eleHEAP	(HEAP a);
 void freeMYHEAP			(HEAP h);
+int  teste_heap			(HEAP a);
 
 STACK initSTACK			(long size);
 void  freeSTACK			(STACK a);

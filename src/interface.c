@@ -45,7 +45,7 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 */
 
 
-static void postList_to_HEAP_score(void * data,void * dataaux){
+static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 	HEAP h = *(HEAP *) dataaux;
 	MYLIST l = (MYLIST) data;
 	LList aux = getFirst_BOX(l);
@@ -79,25 +79,19 @@ static void postList_to_HEAP_score(void * data,void * dataaux){
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
 	HEAP h = initHEAP(NUM_nodes(com->posts_Id));
 	LONG_list l = create_list(N);
-	all_nodes_TREE(com->posts_Date,&postList_to_HEAP_score,&h);
+	MYDATE b1 = DatetoMYDATE(begin);
+	MYDATE e1 = DatetoMYDATE(end);
+	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_score,&h,NULL);
 
 	int i;
 	long key,data;
-	/*
 	for(i=0; i < N; i++){
 		h = pop(h,&key,&data);
-		printf("%ld\n",key);// tem que sair é só para testar.
-		//set_list(l,i,data);
-	}*/
-
-	i = 0;
-	while(get_NUM_eleHEAP(h) > 0 && i < 100){
-		h = pop(h,&key,&data);
-		printf("%ld\n",key);
-		i++;
+		set_list(l,i,data);
 	}
 	freeMYHEAP(h);
-	//printf("%d\n", teste_heap(h));
+	free_MYdate(b1);
+	free_MYdate(e1);
 
 	return l;
 }
