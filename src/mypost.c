@@ -18,14 +18,22 @@ struct mypost {
 	int			favcount;
 	MYLIST 		filhos;
 };
-
-int		existeTag				(MYPOST post,char * tag){
+/**
+ * @brief 			Função que verifica se existe uma data tag num post.
+ * @param 			Apontador para a struct do post.
+ * @param			Tag a verificar.
+ */
+int	existeTag(MYPOST post,char * tag){
 	int i;
-	char *tags[100];
-	getTagsP(post,tags);
-	for(i=0;tags[i];i++)
-		if(strcmp(tags[i],tag))
+	char **tags;
+	getTagsP(post,(&tags));
+	for(i=0;tags[i];i++){
+		printf("%s == %s\n",tags[i],tag );
+		if(strcmp(tags[i],tag) == 0 )
+			{printf("YUPI\n");
 			return 1;
+			}
+		}
 	return 0;
 }
 
@@ -281,10 +289,17 @@ void getTagsP(MYPOST post,char *** tags){
 			;
 			*tags = malloc(sizeof(char *)*(i + 1));
 
-		for(i= 0; post->tags[i] != NULL; i++)
+		for(i= 0; post->tags[i] != NULL; i++){
 			(*tags)[i] = mystrdup(post->tags[i]);
+			printf("%s\n", (post->tags[i]));
+		}
+
 
 		(*tags)[i] = NULL;
+
+
+		for(i=0;(*tags)[i] != NULL;i++)
+			printf("%s , %i\n",(*tags)[i],i );
 	}
 }
 
@@ -308,7 +323,6 @@ void setTagsP(MYPOST post, char ** tags){
 
 	for(i= 0; tags[i] != NULL; i++)
 		post->tags[i] = mystrdup(tags[i]);
-
 	post->tags[i] = NULL;
 }
 

@@ -127,7 +127,6 @@ STR_pair info_from_post(TAD_community com, long id){
 	MYPOST post = search_POSTID(com->posts_Id,id);
 
 	if(!post){
-		//freepost(post);
 		return result;
 	}
 
@@ -290,12 +289,12 @@ static void filtraTags(void * data, void * result, void * tag){
 			existe = existeTag(post,tag);
 
 			if (existe){
-				print_posts_MYPOST(post);
+	//			print_posts_MYPOST(post);
 				getIdP(post,&idp);
 				printf("%ld\n",idp );
-				resultado =  *(MYLIST*)result;
-				resultado = insere_list(resultado,idp,NULL);
-				 *(MYLIST*)result = resultado;
+				resultado =  (MYLIST)result;
+				resultado = insere_list(resultado,&idp,NULL);
+				result = resultado;
 			}
 			lista2 = getNext_LList(lista2);
 		}
@@ -313,7 +312,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
  	nbegin = DatetoMYDATE(begin);
  	nend   = DatetoMYDATE(end);
 	MYLIST result = init_MYLIST(NULL,NULL,NULL);
-	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result,&tag);
+	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),result, tag);
 	free_MYdate(nbegin);
 	free_MYdate(nend);
 

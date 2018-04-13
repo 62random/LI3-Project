@@ -132,13 +132,13 @@ int main(){
 							free_list(l);
 */
 							Date di = createDate(1,1,2010);
-							Date df = createDate(31,6,2010);
+							Date df = createDate(1,1,2011);
 						  	LONG_list resp = questions_with_tag(com,"services",di,df);
-							long aux;
-							for(int i =0; i < 10;i++){
-								aux = get_list(resp,i);
+//							long aux;
+	//						for(int i =0; i < 10;i++){
+		//						aux = get_list(resp,i);
 							//	printf("%ld \n", aux	);
-							}
+			//				}
 		com = clean(com);
 		free(com);
 
