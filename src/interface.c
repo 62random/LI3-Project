@@ -89,15 +89,15 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 		printf("%ld\n",key);// tem que sair é só para testar.
 		//set_list(l,i,data);
 	}*/
-	/*
+
 	i = 0;
 	while(get_NUM_eleHEAP(h) > 0 && i < 100){
 		h = pop(h,&key,&data);
 		printf("%ld\n",key);
 		i++;
 	}
-	freeMYHEAP(h);*/
-	printf("%d\n", teste_heap(h));
+	freeMYHEAP(h);
+	//printf("%d\n", teste_heap(h));
 
 	return l;
 }
