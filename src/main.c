@@ -139,10 +139,18 @@ int main(){
 								aux = get_list(resp,i);
 							//	printf("%ld \n", aux	);
 						}*/
-		Date di = createDate(1,1,2010);
-		Date df = createDate(31,6,2010);
-		LONG_list l;
-		l = most_answered_questions(com,10, di,df);
+						/*
+						Date di = createDate(1,1,2010);
+						Date df = createDate(31,6,2013);
+						LONG_list l;
+						l = most_answered_questions(com,10, di,df);
+						for(i = 0; i < 10; i++)
+							printf("Id:%ld\n",get_list(l,i));
+						free_date(di);
+						free_date(df);
+						free_list(l);*/
+
+
 		com = clean(com);
 		free(com);
 
