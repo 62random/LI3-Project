@@ -199,7 +199,7 @@ STACK insereSTACK(STACK a,long id){
 		return NULL;
 
 	if (a->size == a->n_elem){
-		a->array = realloc(a->array,a->size*2);
+		a->array = realloc(a->array,sizeof(long)*a->size*2);
 		a->size *= 2;
 	}
 	a->array[a->n_elem++] = id;
