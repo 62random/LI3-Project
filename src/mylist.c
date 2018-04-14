@@ -297,7 +297,7 @@ void my_tolonglist(void * llist, void * longlist, void * n) {
 	int * cn = (int *) n;
 
 	set_list(clonglist, *cn, (long ) cllist->key);
-	(*cn)++;
+	(*cn)--;
 }
 
 void trans_list(MYLIST lista, void (*f_box)(void *, void *, void *), void * data1, void * data2){

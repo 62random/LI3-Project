@@ -1,4 +1,5 @@
 #include "mydate.h"
+#include <stdio.h>
 
 struct mydate {
   int day;
@@ -151,4 +152,13 @@ MYDATE DatetoMYDATE(Date a){
 	aux = createMYDate(dia,mes+1,ano);
 
 	return aux;
+}
+
+/**
+ * @brief			Imprimir uma data.
+ * @param			Apontador para a data.
+*/
+
+void printMyDate(MYDATE d){
+	printf("(%d-%d-%d)", get_MYday(d), get_MYmonth(d), get_MYyear(d));
 }

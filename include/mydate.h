@@ -16,4 +16,5 @@ int 	compare_MYDATE_AVL	(void * data1, void * data2);
 int 	compare_MYDATE_LIST	(void * data1, void * data2);
 Date 	MYDATEtoDate		(MYDATE a);
 MYDATE 	DatetoMYDATE		(Date a);
+void 	printMyDate			(MYDATE d);
 #endif

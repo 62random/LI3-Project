@@ -10,6 +10,11 @@ struct TCD_community {
 	STACK pre_posts;
 };
 
+/// tirar isto depois
+TREE bla(TAD_community com){
+	return com->posts_Id;
+}
+
 
 /**
  * @brief			Função inicializa a estrutura da comunidade.
@@ -448,7 +453,7 @@ int contains_word_node(void * post, void * lista, void * word) {
 	getTitleP(cpost, &title);
 	if(strstr(title, cword) != NULL) {	// se o titulo contem a palavra
 		getIdP(cpost, &id);
-		insere_list(clista, id, NULL);
+		insere_list(clista, (void *) id, NULL);
 		return 1;
 	}
 
@@ -465,11 +470,10 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	MYLIST lista = init_MYLIST(NULL, &free, NULL);
 	trans_tree(com->posts_Id, &contains_word_node, lista, word, 4, N);
 
+	int n = get_NUM_ele(lista) - 1;
+	LONG_list res = create_list(n + 1);
 
-	LONG_list res = create_list(get_NUM_ele(lista));
-	
-	int i = 0;
-	trans_list(lista, &my_tolonglist, res, &i);
+	trans_list(lista, &my_tolonglist, res, &n);
 
 	return res;
 }

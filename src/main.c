@@ -91,6 +91,7 @@ int main(){
 		freeTREE_AVL(postTreeData);*/
 		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
 		int i;
+		MYDATE date;
 		clock_t t;
 		t = clock();
 		TAD_community com = init();
@@ -131,21 +132,31 @@ int main(){
 		printf("Q3->%fms\n",a6);
 
 		t = clock();
-		l = contains_word(com, "ubuntu", 20);
+		l = contains_word(com, "ubuntu", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("\n\nQ8v1->%fms\nIDs:",a3);
-		for(i = 0; i < get_listsize(l); i++)
-			printf("\t%ld", get_list(l, i));
+		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);						//
+		for(i = 0; i < get_listsize(l); i++){							//
+			printf("\t(%ld, ", get_list(l, i));							//
+			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);		//
+			printMyDate(date);											//  TESTES
+			printf(")");												//
+		}																//
+		printf("\n%d resultados\n", i);									//
 		free_list(l);
 
 		t = clock();
-		l = contains_word(com, "java", 100);
+		l = contains_word(com, "root", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("\n\nQ8v2->%fms\nIDs:",a3);
-		for(i = 0; i < get_listsize(l); i++)
-			printf("\t%ld", get_list(l, i));
+		printf("\n\nQ8v2->%fms\n(IDs, Dates):",a3);
+		for(i = 0; i < get_listsize(l); i++){							//
+			printf("\t(%ld, ", get_list(l, i));							//
+			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);		//
+			printMyDate(date);											//  TESTES
+			printf(")");												//
+		}																//
+		printf("\n%d resultados\n", i);									//
 		free_list(l);
 
 
