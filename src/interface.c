@@ -455,17 +455,23 @@ long better_answer(TAD_community com, long id){
 
 }
 
-int contains_word_node(void * post, void * lista, void * word) {
-	if (post == NULL)					// se o apontador for
-		return 0;							//null, então retornar
 
-	MYPOST cpost = (MYPOST) post;
+/**
+ * @brief			Função a aplicar aos posts a ser visitados na travessia, auxiliar á query 8.
+ * @param			Post a ser visitado.
+ * @param			Lista onde serão guardados os id's dos posts relevantes.
+ * @param			Palavra a ser procurada nos títulos.
+ * @param			Número máximo de resultados N.
+*/
+void contains_word_node(void * listbox, void * lista, void * word, void * n){
+	if(listbox == NULL || *((int *) n) <= 0)
+		return;
 
+	MYPOST cpost = getElemente_LList((LList) listbox);
 	int i;								// se não for
 	getPostTypeIdP(cpost, &i);			// uma pergunta
 	if(i != 1)							// então
-		return -1;						// retornar
-
+		return;							// retornar
 
 	MYLIST clista = (MYLIST) lista;
 	char * cword = (char *) word, * title;
@@ -475,10 +481,27 @@ int contains_word_node(void * post, void * lista, void * word) {
 	if(strstr(title, cword) != NULL) {	// se o titulo contem a palavra
 		getIdP(cpost, &id);
 		insere_list(clista, (void *) id, NULL);
-		return 1;
+		int * cn = (int *) n;
+		(*cn)--;
 	}
 
-	return -2;
+}
+
+
+/**
+ * @brief			Função a aplicar à lista de posts efetuados no mesmo dia, auxiliar á query 8.
+ * @param			Lista onde estão armazenados os ids de posts de resposta à query.
+ * @param			Número máximo de resultados N.
+ * @param			Palavra a ser procurada nos títulos.
+ * @param			Número máximo de resultados N.
+*/
+void contains_word_list(void * lista, void * res, void * word, void * n){
+	if(lista == NULL)
+		return;
+
+	MYLIST clista = (MYLIST) lista;
+	MYLIST cres = (MYLIST) res;
+	trans_list(clista, &contains_word_node, cres, word, n);
 }
 
 /**
@@ -489,12 +512,14 @@ int contains_word_node(void * post, void * lista, void * word) {
 */
 LONG_list contains_word(TAD_community com, char* word, int N){
 	MYLIST lista = init_MYLIST(NULL, &free, NULL);
-	trans_tree(com->posts_Id, &contains_word_node, lista, word, 4, N);
+	trans_tree(com->posts_Date, &contains_word_list, lista, word, 4, N);
 
 	int n = get_NUM_ele(lista) - 1;
+
 	LONG_list res = create_list(n + 1);
 
-	trans_list(lista, &my_tolonglist, res, &n);
+	trans_list(lista, &my_tolonglist, res, &n, NULL);
+
 
 	return res;
 }
