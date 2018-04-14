@@ -259,3 +259,24 @@ long count_ELE_MYLIST(MYLIST r){
 	}
 	return i;
 }
+
+/**
+ * @brief			Função faz reverse a uma lista.
+ * @param			Lista.
+*/
+
+MYLIST reverse (MYLIST h){
+	LList aux1,aux2;
+	LList fim = NULL;
+	if (h){
+		aux1 = h->lista;
+		while(aux1){
+			aux2 = aux1;
+			aux2->next = fim;
+			fim = aux2;
+			aux1 = aux1->next;
+		}
+		h->lista = fim;
+	}
+	return h;
+}

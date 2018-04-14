@@ -536,8 +536,8 @@ static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*
 		a1 =f_compare(inicio,aux->key);
 		a2 =f_compare(fim,aux->key);
 		if ((a1 > 0 && a2 < 0) || (a1==0) || (a2==0)){
-			f_nodo(aux->data,data3,data4);
 			all_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
+			f_nodo(aux->data,data3,data4);
 			all_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
 		}
 		else if (a1 > 0)
