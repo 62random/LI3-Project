@@ -20,5 +20,6 @@ int 	get_NUM_ele			(MYLIST r);
 void * 	get_key_box			(LList aux);
 MYLIST 	concat_LIST			(MYLIST r1, MYLIST r2);
 long 	count_ELE_MYLIST	(MYLIST r);
-
+void 	trans_list			(MYLIST lista, void (*f_box)(void *, void *, void *), void * data1, void * data2);
+void 	my_tolonglist		(void * llist, void * longlist, void * n);
 #endif
