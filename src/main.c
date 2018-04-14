@@ -91,19 +91,31 @@ int main(){
 		freeTREE_AVL(postTreeData);*/
 		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
 		int i;
+		long * ks;
 		MYDATE date;
 		clock_t t;
 		t = clock();
 		TAD_community com = init();
+<<<<<<< HEAD
 		com = load(com,"/home/alexrone/a/ubuntu");
 //		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
 /*
+||||||| merged common ancestors
+		com = load(com,"/home/pedro/Desktop/dump/android");
+//		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
+
+=======
+//		com = load(com,"/home/pedro/Desktop/dump/android");
+		//com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
+
+>>>>>>> c78a478e8227f92c2a19a8ae4c243c240cbd3082
 		t = clock()-t;
 		double a1 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Init->%f\n",a1);
 
 		t = clock();
-		com = load(com,"/home/pedro/Desktop/dump/ubuntu");
+		//com = load(com,"/home/pedro/Desktop/dump/ubuntu");
+		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
@@ -135,6 +147,7 @@ int main(){
 		l = contains_word(com, "ubuntu", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
+		/*
 		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);						//
 		for(i = 0; i < get_listsize(l); i++){							//
 			printf("\t(%ld, ", get_list(l, i));							//
@@ -157,7 +170,7 @@ int main(){
 			printf(")");												//
 		}																//
 		printf("\n%d resultados\n", i);									//
-		free_list(l);
+		free_list(l);*/
 
 
 
@@ -203,11 +216,6 @@ int main(){
 							Date di = createDate(1,1,2000);
 							Date df = createDate(1,1,2020);
 						  	LONG_list resp = questions_with_tag(com,"randr",di,df);
-							long aux;
-							for(int i =0; i < 17;i++){
-								aux = get_list(resp,i);
-								printf(" r= %d %ld \n", i,aux	);
-							}
 	/*	Date di = createDate(1,1,2010);
 		Date df = createDate(31,6,2010);
 		LONG_list l;
@@ -231,12 +239,11 @@ int main(){
 						free_date(di);
 						free_date(df);
 						free_list(l);*/
-
-	//	t = clock();
-	//	com = clean(com);
-	//	t = clock()-t;
-	//	double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
-	//	printf("Free->%fms\n",a5);
+		t = clock();
+		com = clean(com);
+		t = clock()-t;
+		double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Free->%fms\n",a5);
 		free(com);
 
         return 1;
