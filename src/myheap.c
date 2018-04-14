@@ -1,5 +1,8 @@
 #include "myheap.h"
 
+#define PARENT(n) (n-1)/2
+#define LCHILD(n) (2*n +1)
+#define RCHILD(n) (2*n +2)
 
 struct generico {
 	long key;
@@ -60,11 +63,11 @@ void bubble_up(HEAP * main){
 	int pai,i;
 	if (h->n_elem > 0){
 		i = h->n_elem -1;
-		pai = i / 2;
+		pai = PARENT(i);
 		while(h->array[i].key>h->array[pai].key && i != pai){
 			swap(h->array,pai,i);
 			i = pai;
-			pai = i / 2;
+			pai = PARENT(i);
 		}
 	}
 	*main = h;
@@ -82,8 +85,8 @@ void bubble_down(HEAP * main){
 		h->n_elem--;
 		h->array[i].key = h->array[h->n_elem].key;
 		h->array[i].data = h->array[h->n_elem].data;
-		fd = 2*i + 2;
-		fe = 2*i + 1;
+		fd = RCHILD(i);
+		fe = LCHILD(i);
 
 		while(i < h->n_elem && ((fd < h->n_elem && h->array[i].key < h->array[fd].key) || (fe < h->n_elem && h->array[i].key < h->array[fe].key))){
 			if (fd < h->n_elem && fe < h->n_elem){
@@ -104,8 +107,8 @@ void bubble_down(HEAP * main){
 				swap(h->array,i,fe);
 				i = fe;
 			}
-			fe = 2*i + 1;
-			fd = 2*i + 2;
+			fd = RCHILD(i);
+			fe = LCHILD(i);
 		}
 	}
 	*main = h;
@@ -196,7 +199,7 @@ STACK insereSTACK(STACK a,long id){
 		return NULL;
 
 	if (a->size == a->n_elem){
-		a->array = realloc(a->array,a->size*2);
+		a->array = realloc(a->array,sizeof(long)*a->size*2);
 		a->size *= 2;
 	}
 	a->array[a->n_elem++] = id;

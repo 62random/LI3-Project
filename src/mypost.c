@@ -25,11 +25,12 @@ struct mypost {
  */
 int	existeTag(MYPOST post,char * tag){
 	int i;
-	printf("teste\n");
+	if(!post->tags)
+		return 0;
 	for(i=0;post->tags[i] != NULL;i++){
-//		printf("%s == %s\n",post->tags[i],tag );
+//	printf("%s == %s\n",post->tags[i],tag );
 		if(strcmp(post->tags[i],tag) == 0 )
-			{printf("YUPI\n");
+			{printf("YUPI , %ld\n",post->id);
 			return 1;
 			}
 		}

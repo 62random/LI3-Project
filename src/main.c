@@ -4,6 +4,7 @@
 #include <mypost.h>
 #include <loading.h>
 #include <interface.h>
+#include <time.h>
 
 int main(){
 		/*
@@ -90,8 +91,44 @@ int main(){
 		freeTREE_AVL(postTreeData);*/
 		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
 		int i;
+		clock_t t;
+		t = clock();
 		TAD_community com = init();
 		com = load(com,"/home/alexrone/a/android");
+//		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
+/*
+		t = clock()-t;
+		double a1 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Init->%f\n",a1);
+
+		t = clock();
+		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+		t = clock()-t;
+		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Load->%fms\n",a2);
+
+		t = clock();
+		LONG_list l = top_most_active(com,100);
+		t = clock()-t;
+		double a3 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Q2->%fms\n",a3);
+
+		t = clock();
+		l = top_most_active(com,80);
+		t = clock()-t;
+		double a4 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Q2->%fms\n",a4);
+
+		LONG_pair teste;
+		Date di = createDate(1,1,2010);
+		Date df = createDate(31,6,2019);
+		t = clock();
+		teste = total_posts(com,di,df);
+		t = clock()-t;
+		double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Q3->%fms\n",a6);
+
+*/
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);
 					//		Date df = createDate(31,6,2010);
@@ -131,21 +168,43 @@ int main(){
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
 */
-							Date di = createDate(1,1,2010);
-							Date df = createDate(1,1,2011);
+							Date di = createDate(1,1,2000);
+							Date df = createDate(1,1,2020);
 						  	LONG_list resp = questions_with_tag(com,"services",di,df);
-//							long aux;
-	//						for(int i =0; i < 10;i++){
-		//						aux = get_list(resp,i);
-							//	printf("%ld \n", aux	);
-
+							long aux;
+							for(int i =0; i < 10;i++){
+								aux = get_list(resp,i);
+								printf("%ld \n", aux	);
+							}
 	/*	Date di = createDate(1,1,2010);
 		Date df = createDate(31,6,2010);
 		LONG_list l;
 		l = most_answered_questions(com,10, di,df);
 	*/
 
-		com = clean(com);
+						//}
+			/*
+		Date di = createDate(1,1,2010);
+		Date df = createDate(31,6,2010);
+		LONG_list l;
+		l = most_answered_questions(com,10, di,df);
+						}*/
+						/*
+						Date di = createDate(1,1,2010);
+						Date df = createDate(31,6,2019);
+						LONG_list l;
+						l = most_answered_questions(com,30, di,df);
+						for(i = 0; i < 30; i++)
+							printf("Id:%ld\n",get_list(l,i));
+						free_date(di);
+						free_date(df);
+						free_list(l);*/
+
+	//	t = clock();
+	//	com = clean(com);
+	//	t = clock()-t;
+	//	double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+	//	printf("Free->%fms\n",a5);
 		free(com);
 
         return 1;
