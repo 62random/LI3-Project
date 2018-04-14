@@ -8,6 +8,8 @@ struct TCD_community {
 	TREE posts_Id;
 	HEAP num_posts;
 	STACK pre_posts;
+	HEAP rep_users;
+	STACK pre_rep;
 };
 
 /// tirar isto depois
@@ -40,6 +42,20 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 
 	long n_post = get_NUM_ele(getMYLISTuser(user));
 	h = insereHEAP(h,n_post,getIdMYUSER(user));
+	*(HEAP*) dataaux = h;
+}
+
+/**
+ * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap para reputação.
+ * @param			Apontador para a data do nodo.
+ * @param			Apontador para a heap.
+*/
+
+static void num_rep_na_HEAP(void * data,void * dataaux){
+	HEAP h = *(HEAP *) dataaux;
+	MYUSER user = (MYUSER) data;
+
+	h = insereHEAP(h,getREPMYUSER(user),getIdMYUSER(user));
 	*(HEAP*) dataaux = h;
 }
 
@@ -125,11 +141,10 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 		h = pop(h,&key,&data);
 		set_list(l,i,data);
 	}
-	/*
 	if (i < N){
 		for(; i<N ;i++)
 			set_list(l,i,-2);
-	}*/
+	}
 
 	freeMYHEAP(h);
 	free_MYdate(b1);
@@ -192,6 +207,9 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->posts_Id = posts_ID;
 	com->num_posts = initHEAP(NUM_nodes(users));
 	com->pre_posts = NULL;
+	com->rep_users = initHEAP(NUM_nodes(users));
+	com->pre_rep = NULL;
+	all_nodes_TREE(users,&num_rep_na_HEAP,&com->rep_users);
 	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
 
 	return com;
@@ -208,10 +226,45 @@ TAD_community clean(TAD_community com){
 	freeTREE_AVL(com->posts_Date);
 	freeSTACK(com->pre_posts);
 	freeMYHEAP(com->num_posts);
+	freeSTACK(com->pre_rep);
+	freeMYHEAP(com->rep_users);
 
 	return com;
 }
 
+/**
+ * @brief			Função que calcula os N utilizadores com melhor rep.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Número de jogadores.
+*/
+
+static long * n_users_with_more_rep(TAD_community com, int N){
+	int i;
+	long * array = malloc(N*sizeof(long));
+	long id,key;
+
+	if (com->pre_rep == NULL)
+		com->pre_rep = initSTACK((long)N);
+
+	if (((long) N) <= get_NUM_eleSTACK(com->pre_rep)){
+		for(i=0; i < N; i++){
+			array[i] = get_ELE_index(com->pre_rep,i);
+		}
+	}
+	else{
+		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
+			array[i] = get_ELE_index(com->pre_rep,i);
+		for(; i < N; i++){
+			com->rep_users = pop(com->rep_users,&key,&id);
+			com->pre_rep = insereSTACK(com->pre_rep,id);
+			array[i] = get_ELE_index(com->pre_rep,i);
+		}
+	}
+
+	return array;
+}
+
+//2
 /**
  * @brief			Função que calcula os N utilizadores com mais posts.
  * @param			Estrutura que guarda as outras estruturas.
