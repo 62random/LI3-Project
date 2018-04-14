@@ -406,7 +406,7 @@ static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void 
 		freeAVL(a->dir,destroy_key,destroy_data);
 		free(a);
 	}
-};
+}
 
 
 

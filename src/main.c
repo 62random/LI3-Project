@@ -138,7 +138,13 @@ int main(){
 	//						for(int i =0; i < 10;i++){
 		//						aux = get_list(resp,i);
 							//	printf("%ld \n", aux	);
-			//				}
+
+	/*	Date di = createDate(1,1,2010);
+		Date df = createDate(31,6,2010);
+		LONG_list l;
+		l = most_answered_questions(com,10, di,df);
+	*/
+
 		com = clean(com);
 		free(com);
 

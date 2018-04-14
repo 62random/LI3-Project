@@ -23,7 +23,7 @@ TAD_community init(){
 
 
 /**
- * @brief			Função adiciona a informação da data de um nodo numa heap.
+ * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap.
  * @param			Apontador para a data do nodo.
  * @param			Apontador para a heap.
 */
@@ -37,6 +37,71 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 	h = insereHEAP(h,n_post,getIdMYUSER(user));
 	*(HEAP*) dataaux = h;
 }
+
+/**
+ * @brief			Função adiciona a informação da data de um nodo MYLIST numa heap.
+ * @param			Apontador para a data do nodo.
+ * @param			Apontador para a heap.
+*/
+
+
+static void postList_to_HEAP_score(void * data,void * dataaux){
+	HEAP h = *(HEAP *) dataaux;
+	MYLIST l = (MYLIST) data;
+	LList aux = getFirst_BOX(l);
+	MYPOST post = NULL;
+	int type = -1;
+	int score = -1;
+	long id = -1;
+
+	while(aux){
+		post = getElemente_LList(aux);
+		if (post){
+			getPostTypeIdP(post,&type);
+			if (type == 2){
+				getScoreP(post,&score);
+				getIdP(post,&id);
+				h = insereHEAP(h,score,id);
+			}
+		}
+		aux = getNext_LList(aux);
+	}
+	*(HEAP*) dataaux = h;
+}
+
+/**
+ * @brief			Função que dado um intervalo de tempo calcula os N posts com melhor score.
+ * @param			Número de posts a calcular.
+ * @param			Data do começo do intervalo.
+ * @param			Data do fim do intervalo.
+*/
+
+LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
+	HEAP h = initHEAP(NUM_nodes(com->posts_Id));
+	LONG_list l = create_list(N);
+	all_nodes_TREE(com->posts_Date,&postList_to_HEAP_score,&h);
+
+	int i;
+	long key,data;
+	/*
+	for(i=0; i < N; i++){
+		h = pop(h,&key,&data);
+		printf("%ld\n",key);// tem que sair é só para testar.
+		//set_list(l,i,data);
+	}*/
+	/*
+	i = 0;
+	while(get_NUM_eleHEAP(h) > 0 && i < 100){
+		h = pop(h,&key,&data);
+		printf("%ld\n",key);
+		i++;
+	}
+	freeMYHEAP(h);*/
+	printf("%d\n", teste_heap(h));
+
+	return l;
+}
+
 
 /**
  * @brief			Função dá load aos ficheiros xml.
@@ -289,7 +354,6 @@ static void filtraTags(void * data, void * result, void * tag){
 			existe = existeTag(post,tag);
 
 			if (existe){
-	//			print_posts_MYPOST(post);
 				getIdP(post,&idp);
 				printf("%ld\n",idp );
 				resultado =  (MYLIST)result;

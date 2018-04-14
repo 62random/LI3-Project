@@ -25,11 +25,10 @@ struct mypost {
  */
 int	existeTag(MYPOST post,char * tag){
 	int i;
-	char **tags;
-	getTagsP(post,(&tags));
-	for(i=0;tags[i];i++){
-		printf("%s == %s\n",tags[i],tag );
-		if(strcmp(tags[i],tag) == 0 )
+	printf("teste\n");
+	for(i=0;post->tags[i] != NULL;i++){
+//		printf("%s == %s\n",post->tags[i],tag );
+		if(strcmp(post->tags[i],tag) == 0 )
 			{printf("YUPI\n");
 			return 1;
 			}
@@ -291,15 +290,14 @@ void getTagsP(MYPOST post,char *** tags){
 
 		for(i= 0; post->tags[i] != NULL; i++){
 			(*tags)[i] = mystrdup(post->tags[i]);
-			printf("%s\n", (post->tags[i]));
 		}
 
 
 		(*tags)[i] = NULL;
 
 
-		for(i=0;(*tags)[i] != NULL;i++)
-			printf("%s , %i\n",(*tags)[i],i );
+//		for(i=0;(*tags)[i] != NULL;i++)
+	//		printf("%s , %i\n",(*tags)[i],i );
 	}
 }
 

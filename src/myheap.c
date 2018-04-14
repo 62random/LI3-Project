@@ -58,10 +58,10 @@ HEAP initHEAP(long size){
 void bubble_up(HEAP * main){
 	HEAP h = * main;
 	int pai,i;
-	if (h->n_elem >= 2){
+	if (h->n_elem > 0){
 		i = h->n_elem -1;
 		pai = i / 2;
-		while(h->array[i].key>h->array[pai].key && i > 0){
+		while(h->array[i].key>h->array[pai].key && i != pai){
 			swap(h->array,pai,i);
 			i = pai;
 			pai = i / 2;
@@ -78,20 +78,31 @@ void bubble_up(HEAP * main){
 void bubble_down(HEAP * main){
 	HEAP h = * main;
 	int fd,fe,i = 0;
-	if (h->n_elem >= 2){
+	if (h->n_elem > 0){
 		h->n_elem--;
-		h->array[i] = h->array[h->n_elem];
+		h->array[i].key = h->array[h->n_elem].key;
+		h->array[i].data = h->array[h->n_elem].data;
 		fd = 2*i + 2;
 		fe = 2*i + 1;
 
-		while(i <= h->n_elem && fd <= h->n_elem && fe <= h->n_elem && (h->array[i].key < h->array[fe].key || h->array[i].key < h->array[fd].key)){
-			if (h->array[fe].key > h->array[fd].key){
-				swap(h->array,i,fe);
-				i = fe;
+		while(i < h->n_elem && ((fd < h->n_elem && h->array[i].key < h->array[fd].key) || (fe < h->n_elem && h->array[i].key < h->array[fe].key))){
+			if (fd < h->n_elem && fe < h->n_elem){
+				if (h->array[fe].key > h->array[fd].key){
+					swap(h->array,i,fe);
+					i = fe;
+				}
+				else{
+					swap(h->array,i,fd);
+					i = fd;
+				}
 			}
-			else{
+			else if (fd < h->n_elem){
 				swap(h->array,i,fd);
 				i = fd;
+			}
+			else {
+				swap(h->array,i,fe);
+				i = fe;
 			}
 			fe = 2*i + 1;
 			fd = 2*i + 2;
@@ -109,11 +120,12 @@ void bubble_down(HEAP * main){
 
 HEAP insereHEAP(HEAP h, long key, long data){
 	if (h->n_elem >= h->size){
-		h->array = realloc(h->array,h->size*2);
+		h->array = realloc(h->array,sizeof(struct generico)*h->size*2);
 		h->size *= 2;
 	}
 	h->array[h->n_elem].key = key;
-	h->array[h->n_elem++].data = data;
+	h->array[h->n_elem].data = data;
+	h->n_elem++;
 	bubble_up(&h);
 
 	return h;
@@ -215,4 +227,39 @@ long get_ELE_index(STACK a,int index){
 	if ((!a) || a->n_elem <= index)
 		return -1;
 	return a->array[index];
+}
+
+/**
+ * @brief			Função calcula o número de elementos na heap.
+ * @param			HEAP.
+*/
+
+long get_NUM_eleHEAP(HEAP a){
+	long x;
+	return (x = a ? a->n_elem : 0);
+}
+
+int teste_heap(HEAP h){
+	int fd,fe;
+	int i = 0;
+
+	while(i != h->n_elem){
+		fe = 2*i + 1;
+		fd = 2*i + 2;
+		if (fd < h->n_elem){
+			if (h->array[i].key < h->array[fd].key){
+				printf("%d\n",i);
+				return -1;
+			}
+		}
+		if (fe < h->n_elem){
+			if (h->array[i].key < h->array[fe].key){
+				printf("%d\n",i);
+				return -1;
+			}
+		}
+		i++;
+	}
+
+	return 0;
 }
