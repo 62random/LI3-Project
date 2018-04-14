@@ -207,7 +207,7 @@ static AVL create_new_node(void * key, void * data){
  * @brief			Função conta o número de nodos da árvore.
  * @param			Apontador para a árvore.
 */
-
+/*
 static int count_nodes(AVL a){
     int r = 0;
     if (a){
@@ -215,7 +215,7 @@ static int count_nodes(AVL a){
     }
 
     return r;
-}
+}*/
 
 /**
  * @brief			Função insere um elemento na árvore.
@@ -536,8 +536,8 @@ static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*
 		a1 =f_compare(inicio,aux->key);
 		a2 =f_compare(fim,aux->key);
 		if ((a1 > 0 && a2 < 0) || (a1==0) || (a2==0)){
-			f_nodo(aux->data,data3,data4);
 			all_nodes_With_key_Condition(aux->esq,inicio,fim,f_compare,f_nodo,data3,data4);
+			f_nodo(aux->data,data3,data4);
 			all_nodes_With_key_Condition(aux->dir,inicio,fim,f_compare,f_nodo,data3,data4);
 		}
 		else if (a1 > 0)
