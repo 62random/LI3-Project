@@ -207,7 +207,7 @@ static AVL create_new_node(void * key, void * data){
  * @brief			Função conta o número de nodos da árvore.
  * @param			Apontador para a árvore.
 */
-
+/*
 static int count_nodes(AVL a){
     int r = 0;
     if (a){
@@ -215,7 +215,7 @@ static int count_nodes(AVL a){
     }
 
     return r;
-}
+}*/
 
 /**
  * @brief			Função insere um elemento na árvore.

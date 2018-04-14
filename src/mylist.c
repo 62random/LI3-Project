@@ -262,6 +262,27 @@ long count_ELE_MYLIST(MYLIST r){
 	return i;
 }
 
+/**
+ * @brief			Função que dá reverse a uma lista.
+ * @param			Lista.
+*/
+
+
+MYLIST reverse(MYLIST l){
+	if (l){
+		LList aux1 = l->lista;
+		LList aux2,final = NULL;
+		while(aux1){
+			aux2 = aux1;
+			aux2->next = final;
+			final = aux2;
+			aux1 = aux1->next;
+		}
+		l->lista = final;
+	}
+	return l;
+}
+
 
 /**
  * @brief			Função passa as keys da nossa estrutura MYLIST para lista de longs dos professores.
