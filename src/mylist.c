@@ -290,7 +290,7 @@ MYLIST reverse(MYLIST l){
  * @param			LONG_list onde serão guardadas as keys.
  * @param			número
 */
-void my_tolonglist(void * llist, void * longlist, void * n) {
+void my_tolonglist(void * llist, void * longlist, void * n, void * a) {
 
 	LList cllist = (LList) llist;
 	LONG_list clonglist = (LONG_list) longlist;
@@ -300,14 +300,14 @@ void my_tolonglist(void * llist, void * longlist, void * n) {
 	(*cn)--;
 }
 
-void trans_list(MYLIST lista, void (*f_box)(void *, void *, void *), void * data1, void * data2){
+void trans_list(MYLIST lista, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3){
 	if(lista == NULL)
 		return;
-
+		
 	LList aux = lista->lista;
 
 	while(aux){
-		f_box(aux, data1, data2);
+		f_box(aux, data1, data2, data3);
 		aux = aux->next;
 	}
 
