@@ -23,5 +23,5 @@ void 	all_nodes_TREE				(TREE e,void (*f_nodo)(void *,void *),void * data1);
 void 	all_nodes_With_Condition	(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4);
 int 	test_TREE_PROP				(TREE tree);
 long 	NUM_nodes					(TREE t);
-void 	trans_tree					(TREE e,void (*f_nodo)(void *,void *, void *),void * data1, void * data2, int travessia, int n);
+void 	trans_tree					(TREE e,int (*f_nodo)(void *,void *, void *),void * data1, void * data2, int travessia, int n);
 #endif

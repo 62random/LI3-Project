@@ -94,9 +94,9 @@ int main(){
 		clock_t t;
 		t = clock();
 		TAD_community com = init();
-		com = load(com,"/home/alexrone/a/android");
+		com = load(com,"/home/pedro/Desktop/dump/android");
 //		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
-/*
+
 		t = clock()-t;
 		double a1 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Init->%f\n",a1);
@@ -131,17 +131,21 @@ int main(){
 		printf("Q3->%fms\n",a6);
 
 		t = clock();
-		l = contains_word(com, "android", 20);
+		l = contains_word(com, "ubuntu", 20);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("Q8v1->%fms\n",a3);
+		printf("\n\nQ8v1->%fms\nIDs:",a3);
+		for(i = 0; i < get_listsize(l); i++)
+			printf("\t%ld", get_list(l, i));
 		free_list(l);
 
 		t = clock();
 		l = contains_word(com, "java", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("Q8v2->%fms\n",a3);
+		printf("\n\nQ8v2->%fms\nIDs:",a3);
+		for(i = 0; i < get_listsize(l); i++)
+			printf("\t%ld", get_list(l, i));
 		free_list(l);
 
 
@@ -185,8 +189,8 @@ int main(){
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
 */
-							Date di = createDate(1,1,2000);
-							Date df = createDate(1,1,2020);
+							di = createDate(1,1,2000);
+							df = createDate(1,1,2020);
 						  	LONG_list resp = questions_with_tag(com,"services",di,df);
 							long aux;
 							for(int i =0; i < 10;i++){

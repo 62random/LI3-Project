@@ -27,3 +27,7 @@ void free_list(LONG_list l) {
         free(l);
     }
 }
+
+int get_listsize(LONG_list l){
+	return l->size;
+}

@@ -429,16 +429,17 @@ static void filtraTags(void * data, void * result, void * tag){
 }
 
 
-void contains_word_node(void * post, void * lista, void * word) {
+int contains_word_node(void * post, void * lista, void * word) {
 	if (post == NULL)					// se o apontador for
-		return;							//null, então retornar
+		return 0;							//null, então retornar
 
 	MYPOST cpost = (MYPOST) post;
 
 	int i;								// se não for
 	getPostTypeIdP(cpost, &i);			// uma pergunta
 	if(i != 1)							// então
-		return;							// retornar
+		return -1;						// retornar
+
 
 	MYLIST clista = (MYLIST) lista;
 	char * cword = (char *) word, * title;
@@ -447,10 +448,11 @@ void contains_word_node(void * post, void * lista, void * word) {
 	getTitleP(cpost, &title);
 	if(strstr(title, cword) != NULL) {	// se o titulo contem a palavra
 		getIdP(cpost, &id);
-		insere_list(clista, &id, NULL);
+		insere_list(clista, id, NULL);
+		return 1;
 	}
 
-
+	return -2;
 }
 
 /**
@@ -461,14 +463,14 @@ void contains_word_node(void * post, void * lista, void * word) {
 */
 LONG_list contains_word(TAD_community com, char* word, int N){
 	MYLIST lista = init_MYLIST(NULL, &free, NULL);
-	trans_tree(com->posts_Date, &contains_word_node, lista, word, 1, N);
+	trans_tree(com->posts_Id, &contains_word_node, lista, word, 4, N);
 
-	int n = get_NUM_ele(lista) - 1;
-	LONG_list res = create_list(n + 1);
 
-	trans_list(lista, &my_tolonglist, res, &n);
+	LONG_list res = create_list(get_NUM_ele(lista));
+	
+	int i = 0;
+	trans_list(lista, &my_tolonglist, res, &i);
 
-	free_MYLIST(lista);
 	return res;
 }
 
