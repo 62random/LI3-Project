@@ -114,8 +114,8 @@ int main(){
 		printf("Init->%f\n",a1);
 
 		t = clock();
-		//com = load(com,"/home/pedro/Desktop/dump/ubuntu");
-		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+		com = load(com,"/home/pedro/Desktop/dump/ubuntu");
+		//com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
@@ -147,7 +147,7 @@ int main(){
 		l = contains_word(com, "ubuntu", 1000);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
-		/*
+
 		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);						//
 		for(i = 0; i < get_listsize(l); i++){							//
 			printf("\t(%ld, ", get_list(l, i));							//
@@ -170,7 +170,7 @@ int main(){
 			printf(")");												//
 		}																//
 		printf("\n%d resultados\n", i);									//
-		free_list(l);*/
+		free_list(l);
 
 
 
