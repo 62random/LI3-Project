@@ -94,6 +94,9 @@ int main(){
 		clock_t t;
 		t = clock();
 		TAD_community com = init();
+		com = load(com,"/home/alexrone/a/android");
+//		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
+/*
 		t = clock()-t;
 		double a1 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Init->%f\n",a1);
@@ -181,14 +184,27 @@ int main(){
 							for(i=0;i < 3; i++)
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
-*/							/*
-							Date di = createDate(1,1,2010);
-							Date df = createDate(31,6,2010);
+*/
+							Date di = createDate(1,1,2000);
+							Date df = createDate(1,1,2020);
 						  	LONG_list resp = questions_with_tag(com,"services",di,df);
 							long aux;
 							for(int i =0; i < 10;i++){
 								aux = get_list(resp,i);
-							//	printf("%ld \n", aux	);
+								printf("%ld \n", aux	);
+							}
+	/*	Date di = createDate(1,1,2010);
+		Date df = createDate(31,6,2010);
+		LONG_list l;
+		l = most_answered_questions(com,10, di,df);
+	*/
+
+						//}
+			/*
+		Date di = createDate(1,1,2010);
+		Date df = createDate(31,6,2010);
+		LONG_list l;
+		l = most_answered_questions(com,10, di,df);
 						}*/
 						/*
 						Date di = createDate(1,1,2010);
@@ -201,11 +217,11 @@ int main(){
 						free_date(df);
 						free_list(l);*/
 
-		t = clock();
-		com = clean(com);
-		t = clock()-t;
-		double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("Free->%fms\n",a5);
+	//	t = clock();
+	//	com = clean(com);
+	//	t = clock()-t;
+	//	double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+	//	printf("Free->%fms\n",a5);
 		free(com);
 
         return 1;
