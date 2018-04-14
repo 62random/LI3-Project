@@ -401,38 +401,6 @@ long better_answer(TAD_community com, long id){
 		return id2;
 
 }
-/**
- * @brief			Função que corre num nodo e verifica a existencia de uma tag.
- * @param			Apontador para a informação a filtar.
- * @param			Lista de posts com essa tag.
- * @param			Tag a verificar.
-*/
-
-static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado,r;
-	int existe = 0;
-	long idp = -2;
-	LList lista2;
-	MYPOST post;
-	if (data != NULL){
-		r = (MYLIST)data;
-		lista2 = getFirst_BOX(r	);
-		while(lista2){
-			post = (MYPOST)getElemente_LList(lista2);
-			existe = existeTag(post,tag);
-
-			if (existe){
-				getIdP(post,&idp);
-				printf("%ld\n",idp );
-				resultado =  *(MYLIST*)result;
-				resultado = insere_list(resultado,&idp,NULL);
-				 *(MYLIST*)result = resultado;
-			}
-			lista2 = getNext_LList(lista2);
-		}
-	}
-}
-
 
 int contains_word_node(void * post, void * lista, void * word) {
 	if (post == NULL)					// se o apontador for
@@ -479,6 +447,41 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 }
 
 
+
+/**
+ * @brief			Função que corre num nodo e verifica a existencia de uma tag.
+ * @param			Apontador para a informação a filtar.
+ * @param			Lista de posts com essa tag.
+ * @param			Tag a verificar.
+*/
+
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado,r;
+	long idp = -2;
+	LList lista2;
+	MYPOST post;
+	if (data != NULL){
+		r = (MYLIST)data;
+		lista2 = getFirst_BOX(r	);
+		while(lista2){
+			post = (MYPOST)getElemente_LList(lista2);
+
+			if (existeTag(post,tag)){
+				getIdP(post,&idp);
+				//printf("%ld\n",idp );
+				resultado =  *(MYLIST*)result;
+				if(resultado){
+				resultado = insere_list(resultado,idp,NULL);
+				 *(MYLIST*)result = resultado;
+				// printf("%d",(resultado));
+				}
+			}
+			lista2 = getNext_LList(lista2);
+		}
+	}
+}
+
+
 /**
  * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
  * @param			Estrutura que guarda as outras estruturas.
@@ -490,7 +493,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
  	nbegin = DatetoMYDATE(begin);
  	nend   = DatetoMYDATE(end);
 	MYLIST result = init_MYLIST(NULL,NULL,NULL);
-	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),result, tag);
+	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result, tag);
 	free_MYdate(nbegin);
 	free_MYdate(nend);
 

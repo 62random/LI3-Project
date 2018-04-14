@@ -95,9 +95,9 @@ int main(){
 		clock_t t;
 		t = clock();
 		TAD_community com = init();
-		com = load(com,"/home/pedro/Desktop/dump/android");
+		com = load(com,"/home/alexrone/a/ubuntu");
 //		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
-
+/*
 		t = clock()-t;
 		double a1 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Init->%f\n",a1);
@@ -183,7 +183,7 @@ int main(){
 
 //							long teste4 = better_answer(com,2);
 //							printf("\n%ld\n",teste4 );
-
+*/
 /*							LONG_list l;
 							l = top_most_active(com,1000);
 							for(i=0;i < 1000; i++)
@@ -200,13 +200,13 @@ int main(){
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
 */
-							di = createDate(1,1,2000);
-							df = createDate(1,1,2020);
-						  	LONG_list resp = questions_with_tag(com,"services",di,df);
+							Date di = createDate(1,1,2000);
+							Date df = createDate(1,1,2020);
+						  	LONG_list resp = questions_with_tag(com,"randr",di,df);
 							long aux;
-							for(int i =0; i < 10;i++){
+							for(int i =0; i < 17;i++){
 								aux = get_list(resp,i);
-								printf("%ld \n", aux	);
+								printf(" r= %d %ld \n", i,aux	);
 							}
 	/*	Date di = createDate(1,1,2010);
 		Date df = createDate(31,6,2010);

@@ -30,7 +30,7 @@ int	existeTag(MYPOST post,char * tag){
 	for(i=0;post->tags[i] != NULL;i++){
 //	printf("%s == %s\n",post->tags[i],tag );
 		if(strcmp(post->tags[i],tag) == 0 )
-			{printf("YUPI , %ld\n",post->id);
+			{//printf("YUPI , %ld\n",post->id);
 			return 1;
 			}
 		}
