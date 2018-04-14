@@ -102,7 +102,7 @@ int main(){
 		printf("Init->%f\n",a1);
 
 		t = clock();
-		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+		com = load(com,"/home/pedro/Desktop/dump/ubuntu");
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
@@ -112,12 +112,14 @@ int main(){
 		t = clock()-t;
 		double a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Q2->%fms\n",a3);
+		free_list(l);
 
 		t = clock();
 		l = top_most_active(com,80);
 		t = clock()-t;
 		double a4 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Q2->%fms\n",a4);
+		free_list(l);
 
 		LONG_pair teste;
 		Date di = createDate(1,1,2010);
@@ -128,7 +130,22 @@ int main(){
 		double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Q3->%fms\n",a6);
 
-*/
+		t = clock();
+		l = contains_word(com, "android", 20);
+		t = clock()-t;
+		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Q8v1->%fms\n",a3);
+		free_list(l);
+
+		t = clock();
+		l = contains_word(com, "java", 100);
+		t = clock()-t;
+		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("Q8v2->%fms\n",a3);
+		free_list(l);
+
+
+
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);
 					//		Date df = createDate(31,6,2010);

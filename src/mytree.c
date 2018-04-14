@@ -568,8 +568,8 @@ void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nod
 */
 
 int test_TREE_PROP(TREE tree){
-	int nodos,alturas,procura,balanceada;
-	nodos = tree->nnodes == count_nodes(tree->arv);
+	int /*nodos,*/ alturas,procura,balanceada;
+	//nodos = tree->nnodes == count_nodes(tree->arv);
 	balanceada = isBalanced(tree->arv);
 	alturas = check_altura(tree->arv);
 	procura = isSearch(tree->arv,tree);
@@ -593,13 +593,17 @@ long NUM_nodes(TREE t){
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
  *@param			Apontador a passar à função a aplicar.
+ *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *),void * data1, void * data2, int * n){
+	if (*n == 0)
+		return;
 	if (aux){
-		trans_inorder(aux->esq,f_nodo,data1);
-		f_nodo(aux->data,data1);
-		trans_inorder(aux->dir,f_nodo,data1);
+		trans_inorder(aux->esq,f_nodo,data1, data2, n);
+		f_nodo(aux->data,data1, data2);
+		(*n)--;
+		trans_inorder(aux->dir,f_nodo,data1, data2, n);
 	}
 }
 
@@ -608,13 +612,17 @@ static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
  *@param			Apontador a passar à função a aplicar.
+ *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *),void * data1, void * data2, int * n){
+	if (*n == 0)
+		return;
 	if (aux){
-		trans_posorder(aux->esq,f_nodo,data1);
-		trans_posorder(aux->dir,f_nodo,data1);
-		f_nodo(aux->data,data1);
+		trans_posorder(aux->esq,f_nodo,data1, data2, n);
+		trans_posorder(aux->dir,f_nodo,data1, data2, n);
+		f_nodo(aux->data,data1, data2);
+		(*n)--;
 	}
 }
 
@@ -623,13 +631,17 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
  *@param			Apontador a passar à função a aplicar.
+ *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
+static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *),void * data1, void * data2, int * n){
+	if (*n == 0)
+		return;
 	if (aux){
-		f_nodo(aux->data,data1);
-		trans_preorder(aux->esq,f_nodo,data1);
-		trans_preorder(aux->dir,f_nodo,data1);
+		f_nodo(aux->data,data1, data2);
+		(*n)--;
+		trans_preorder(aux->esq,f_nodo,data1, data2, n);
+		trans_preorder(aux->dir,f_nodo,data1, data2, n);
 	}
 }
 
@@ -639,16 +651,17 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *),void * data1){
  *@param			Função a aplicar a cada nodo.
  *@param			Apontador a passar à função a aplicar.
  *@param			Tipo de travessia.
+ *@param			Número máximo de nodos a percorrer.
 */
 
 
-void trans_tree(TREE e,void (*f_nodo)(void *,void *),void * data1,int travessia){
+void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *),void * data1, void * data2, int travessia, int n){
 	if (!e)
 		return;
 	if (travessia == 1)
-		trans_posorder(e->arv,f_nodo,data1);
+		trans_posorder(e->arv,f_nodo,data1, data2, &n);
 	else if (travessia == 2)
-		trans_inorder(e->arv,f_nodo,data1);
+		trans_inorder(e->arv,f_nodo,data1, data2, &n);
 	else if (travessia == 3)
-		trans_preorder(e->arv,f_nodo,data1);
+		trans_preorder(e->arv,f_nodo,data1, data2, &n);
 }

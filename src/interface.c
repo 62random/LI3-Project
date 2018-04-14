@@ -419,14 +419,59 @@ static void filtraTags(void * data, void * result, void * tag){
 			if (existe){
 				getIdP(post,&idp);
 				printf("%ld\n",idp );
-				resultado =  (MYLIST)result;
-				resultado = insere_list(resultado,idp,NULL);
-				result = resultado;
+				resultado =  *(MYLIST*)result;
+				resultado = insere_list(resultado,&idp,NULL);
+				 *(MYLIST*)result = resultado;
 			}
 			lista2 = getNext_LList(lista2);
 		}
 	}
 }
+
+
+void contains_word_node(void * post, void * lista, void * word) {
+	if (post == NULL)					// se o apontador for
+		return;							//null, então retornar
+
+	MYPOST cpost = (MYPOST) post;
+
+	int i;								// se não for
+	getPostTypeIdP(cpost, &i);			// uma pergunta
+	if(i != 1)							// então
+		return;							// retornar
+
+	MYLIST clista = (MYLIST) lista;
+	char * cword = (char *) word, * title;
+	long id;
+
+	getTitleP(cpost, &title);
+	if(strstr(title, cword) != NULL) {	// se o titulo contem a palavra
+		getIdP(cpost, &id);
+		insere_list(clista, &id, NULL);
+	}
+
+
+}
+
+/**
+ * @brief			Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Palavra a ser procurada nos títulos.
+ * @param			Número máximo de resultados N.
+*/
+LONG_list contains_word(TAD_community com, char* word, int N){
+	MYLIST lista = init_MYLIST(NULL, &free, NULL);
+	trans_tree(com->posts_Date, &contains_word_node, lista, word, 1, N);
+
+	int n = get_NUM_ele(lista) - 1;
+	LONG_list res = create_list(n + 1);
+
+	trans_list(lista, &my_tolonglist, res, &n);
+
+	free_MYLIST(lista);
+	return res;
+}
+
 
 /**
  * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mylist.h"
+#include "list.h"
+
 
 struct llligada{
 	void * key;
@@ -260,23 +262,32 @@ long count_ELE_MYLIST(MYLIST r){
 	return i;
 }
 
-/**
- * @brief			Função faz reverse a uma lista.
- * @param			Lista.
-*/
 
-MYLIST reverse (MYLIST h){
-	LList aux1,aux2;
-	LList fim = NULL;
-	if (h){
-		aux1 = h->lista;
-		while(aux1){
-			aux2 = aux1;
-			aux2->next = fim;
-			fim = aux2;
-			aux1 = aux1->next;
-		}
-		h->lista = fim;
+/**
+ * @brief			Função passa as keys da nossa estrutura MYLIST para lista de longs dos professores.
+ * @param			MYLIST cujas keys serão passadas.
+ * @param			LONG_list onde serão guardadas as keys.
+ * @param			número
+*/
+void my_tolonglist(void * llist, void * longlist, void * n) {
+
+	LList cllist = (LList) llist;
+	LONG_list clonglist = (LONG_list) longlist;
+	int * cn = (int *) n;
+
+	set_list(clonglist, *cn, *((long *) cllist->key));
+	(*cn)--;
+}
+
+void trans_list(MYLIST lista, void (*f_box)(void *, void *, void *), void * data1, void * data2){
+	if(lista == NULL)
+		return;
+
+	LList aux = lista->lista;
+
+	while(aux){
+		f_box(aux, data1, data2);
+		aux = aux->next;
 	}
-	return h;
+
 }
