@@ -16,7 +16,7 @@ int main(){
 	TAD_community com = NULL;
 	clock_t t;
 	long long1,long2,long3;
-	int int1,int2,int3;
+	int int1,int2,int3,int4;
 	STR_pair stp;
 	LONG_list llis;
 	USER user;
@@ -148,7 +148,7 @@ int main(){
 			}
 			printf("N max\n");
 			gets(string);
-			int1 = atoi(string);
+			int4 = atoi(string);
 
 			printf("Data inicial do tipo dia-mes-ano\n");
 			scanf("%i-%i-%i",&int1,&int2,&int3);
@@ -157,7 +157,7 @@ int main(){
 			scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 			t = clock();
-			llis = most_voted_answers(com,int1,ini,fi);
+			llis = most_voted_answers(com,int4,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 			printf("Q6->%fms\n\n\n",a5);
@@ -170,7 +170,7 @@ int main(){
 			}
 			printf("N MAX\n");
 			gets(string);
-			int1 = atoi(string);
+			int4 = atoi(string);
 
 			printf("Data inicial do tipo dia-mes-ano\n");
 			scanf("%i-%i-%i",&int1,&int2,&int3);
@@ -179,7 +179,7 @@ int main(){
 			scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 			t = clock();
-			llis = most_answered_questions(com,int1,ini,fi);
+			llis = most_answered_questions(com,int4,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 			printf("Q7->%fms\n\n\n",a5);
@@ -195,7 +195,6 @@ int main(){
 			int1 = atoi(string);
 			printf("Palavra a verificar\n");
 			gets(string);
-			int1 = atoi(string);
 			t = clock();
 			llis = contains_word(com,string,int1);
 			t = clock()-t;
@@ -246,7 +245,7 @@ int main(){
 			}
 			printf("N MAX\n");
 			gets(string);
-			int1 = atoi(string);
+			int4 = atoi(string);
 			printf("Data inicial do tipo dia-mes-ano\n");
 			scanf("%i-%i-%i",&int1,&int2,&int3);
 			ini = createDate(int1,int2,int3);
@@ -255,7 +254,7 @@ int main(){
 			fi = createDate(int1,int2,int3);
 
 			t = clock();
-			llis = most_used_best_rep(com,int1,ini,fi);
+			llis = most_used_best_rep(com,int4,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 			printf("Q11->%fms\n\n\n",a5);
