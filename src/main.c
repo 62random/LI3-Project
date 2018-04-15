@@ -104,8 +104,8 @@ int main(){
 		printf("Init->%f\n",a1);
 
 		t = clock();
-		com = load(com,"/home/pedro/Desktop/dump/ubuntu");
-		//com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+		//com = load(com,"/home/pedro/Desktop/dump/ubuntu");
+		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
@@ -125,8 +125,8 @@ int main(){
 		free_list(l);
 
 		LONG_pair teste;
-		Date di = createDate(1,1,2010);
-		Date df = createDate(31,6,2019);
+		Date di = createDate(1,0,2012);
+		Date df = createDate(1,1,2012);
 		t = clock();
 		teste = total_posts(com,di,df);
 		t = clock()-t;

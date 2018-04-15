@@ -296,7 +296,7 @@ LONG_list top_most_active(TAD_community com, int N){
 	return l;
 }
 
-//3
+//1
 /**
  * @brief			Função retorna a informacao de um post.
  * @param			Estrutura que guarda as outras estruturas.
@@ -367,6 +367,7 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
 	}
 }
 
+//3
 /**
  * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
  * @param			Estrutura que guarda as outras estruturas.
