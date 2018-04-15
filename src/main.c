@@ -10,7 +10,7 @@ int inited 	= 0;
 int loaded 	= 0;
 
 
-int main(){
+int main2(){
 	char string[256];
 	char string2[256];
 	long* auxll;
@@ -557,3 +557,12 @@ int main(){
 //					t = clock()-t;
 	//				double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 		//							printf("Q8->%fms\n\n\n",a5);
+
+int main(){
+	TAD_community com = init();
+	com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+	LONG_list l = top_most_active(com,100);
+	com = clean(com);
+	free(com);
+
+}
