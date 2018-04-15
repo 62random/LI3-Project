@@ -55,3 +55,4 @@ long better_answer(TAD_community com, long id);
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end);
 
 TAD_community clean(TAD_community com);
+void total_postsAUX(TAD_community com);
