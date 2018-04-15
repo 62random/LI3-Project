@@ -388,8 +388,8 @@ int main(){
 		printf("Init->%f\n",a1);
 
 		t = clock();
-		com = load(com,"/home/pedro/Desktop/dump/ubuntu");
-		//com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+		//com = load(com,"/home/pedro/Desktop/dump/ubuntu");
+		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
@@ -409,44 +409,62 @@ int main(){
 		free_list(l);
 
 		LONG_pair teste;
-		Date di = createDate(1,1,2010);
-		Date df = createDate(31,6,2019);
+		Date di = createDate(1,0,2012);
+		Date df = createDate(1,1,2012);
 		t = clock();
 		teste = total_posts(com,di,df);
 		t = clock()-t;
 		double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Q3->%fms\n",a6);
+		free_date(di);
+		free_date(df);
 
 		t = clock();
-		l = contains_word(com, "ubuntu", 1000);
+		l = contains_word(com, "ubuntu", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 
-		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);						//
-		for(i = 0; i < get_listsize(l); i++){							//
-			printf("\t(%ld, ", get_list(l, i));							//
-			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);		//
-			printMyDate(date);											//  TESTES
-			printf(")");												//
-		}																//
-		printf("\n%d resultados\n", i);									//
+		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);
+		for(i = 0; i < get_listsize(l); i++){
+			printf("\t(%ld, ", get_list(l, i));
+			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);
+			printMyDate(date);
+			printf(")");
+			free_MYdate(date);
+		}
+		printf("\n%d resultados\n", i);
 		free_list(l);
 
 		t = clock();
-		l = contains_word(com, "cona", 100);
+		l = contains_word(com, "java", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("\n\nQ8v2->%fms\n(IDs, Dates):",a3);
-		for(i = 0; i < get_listsize(l); i++){							//
-			printf("\t(%ld, ", get_list(l, i));							//
-			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);		//
-			printMyDate(date);											//  TESTES
-			printf(")");												//
-		}																//
-		printf("\n%d resultados\n", i);									//
+		for(i = 0; i < get_listsize(l); i++){
+			printf("\t(%ld, ", get_list(l, i));
+			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);
+			printMyDate(date);
+			printf(")");
+			free_MYdate(date);
+		}
+		printf("\n%d resultados\n", i);
 		free_list(l);
 
 
+
+		Date dB = createDate(1,7,2017);
+		Date dE = createDate(1,11,2017);
+		t = clock();
+		l = most_used_best_rep(com, 100, dB,dE);
+		t = clock()-t;
+		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("\n\nQ11->%fms\n(Numero de ocorrencias):",a3);
+		for(i = 0; i < get_listsize(l); i++)
+			printf("\t%ld", get_list(l, i));
+		printf("\n");
+		free_date(dB);
+		free_date(dE);
+		free_list(l);
 
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);

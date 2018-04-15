@@ -296,7 +296,7 @@ LONG_list top_most_active(TAD_community com, int N){
 	return l;
 }
 
-//3
+//1
 /**
  * @brief			Função retorna a informacao de um post.
  * @param			Estrutura que guarda as outras estruturas.
@@ -367,6 +367,7 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
 	}
 }
 
+//3
 /**
  * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
  * @param			Estrutura que guarda as outras estruturas.
@@ -449,7 +450,7 @@ long better_answer(TAD_community com, long id){
 			if (scoreatual > scoremax){
 				scoremax = scoreatual;
 				getIdP(post,&id2);
-				printf("score = %d ; post = %ld\n",scoreatual,id2 );
+	//			printf("score = %d ; post = %ld\n",scoreatual,id2 );
 			}
 
 		}
@@ -487,6 +488,8 @@ void contains_word_node(void * listbox, void * lista, void * word, void * n){
 		(*cn)--;
 	}
 
+	free(title);
+
 }
 
 
@@ -501,9 +504,7 @@ void contains_word_list(void * lista, void * res, void * word, void * n){
 	if(lista == NULL)
 		return;
 
-	MYLIST clista = (MYLIST) lista;
-	MYLIST cres = (MYLIST) res;
-	trans_list(clista, &contains_word_node, cres, word, n);
+	trans_list(lista, &contains_word_node, res, word, n);
 }
 
 /**
@@ -513,8 +514,8 @@ void contains_word_list(void * lista, void * res, void * word, void * n){
  * @param			Número máximo de resultados N.
 */
 LONG_list contains_word(TAD_community com, char* word, int N){
-	MYLIST lista = init_MYLIST(NULL, &free, NULL);
-	trans_tree(com->posts_Date, &contains_word_list, lista, word, 4, N);
+	MYLIST lista = init_MYLIST(NULL, NULL, NULL);
+	trans_tree(com->posts_Date, &contains_word_list, lista, word, NULL, NULL, 4, N);
 
 	int n = get_NUM_ele(lista) - 1;
 
@@ -522,6 +523,7 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 
 	trans_list(lista, &my_tolonglist, res, &n, NULL);
 
+	free_MYLIST(lista);
 
 	return res;
 }
@@ -608,7 +610,6 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	long pid2 = -4;
 	int type = 0;
 	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),NULL,NULL);
-//	MYLIST result = init_MYLIST(NULL,NULL,NULL);
 
 	MYDATE data = NULL;
 
@@ -666,4 +667,122 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	free_MYLIST(result);
 	return final;
 
+}
+
+/**
+ * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da lista de posts em cada nodo da árvore organizada por datas, durante a travessia.
+ * @param			Nodo atual.
+ * @param			Lista onde são armazenados resultados.
+ * @param			Array dos N users com maior reputação.
+ * @param			Número N (tamanho do array de users).
+*/
+void most_used_best_rep_node(void * listbox, void * res, void * users, void * N){
+	if(listbox == NULL)
+		return;
+
+	MYPOST post = getElemente_LList((LList) listbox);
+	int i;								// se não for
+	getPostTypeIdP(post, &i);			// uma pergunta
+	if(i != 1)							// então
+		return;							// retornar
+
+	long id;
+	int n = *((int *) N) ;
+	getOwnerIdP(post, &id);
+	for(i = 0; i < n; i++) {			//se o autor
+		if(id == ((long *) users)[i] )	//não é um dos
+			break;						//com mais
+		if(i == n - 1)					//reputação
+			return;						//retornar
+	}
+	//printf("Pergunta encontrada!:\n" );
+	char ** tags;
+	getTagsP(post, &tags);
+	int * occ;
+	for(i = 0; tags[i]; i++){
+		//printf("%s\n", tags[i]);
+		if((occ = (int *) search_list_data((MYLIST) res, tags[i])) != NULL){
+			(*occ)++;
+		}
+		else {
+			insere_list((MYLIST) res, (void *) mystrdup(tags[i]), (void *) 1);
+		}
+	}
+
+	free_StringArray(tags);
+
+}
+
+/**
+ * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da árvore de posts organizado por datas, durante a travessia.
+ * @param			Lista de posts nesse nodo.
+ * @param			Lista onde são armazenados resultados.
+ * @param			Array dos N users com maior reputação.
+ * @param			Número N (tamanho do array de users).
+*/
+void most_used_best_rep_list(void * lista, void * res, void * users, void * n){
+	if(lista == NULL)
+		return;
+
+	trans_list(lista, &most_used_best_rep_node, res, users, n);
+}
+
+/**
+ * @brief			Função auxiliar que retorna a negação da função de biblioteca strcmp.
+ * @param			Primeira string.
+ * @param			Segunda string.
+*/
+int not_strcmp(void * str1, void * str2) {
+	char * a = (char *) str1;
+	char * b = (char *) str2;
+	return !strcmp(a, b);
+}
+
+/**
+ * @brief			Função auxiliar que compara dois longs.
+ * @param			Primeiro long.
+ * @param			Segundo long.
+*/
+int cmp_longs(const void * l1, const void * l2){
+	if(*(long *)l1 == *(long *)l2 )
+		return 0;
+	if(*(long *)l1 > *(long *)l2)
+		return -1;
+	else
+		return 1;
+}
+
+
+/**
+ * @brief			Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Número máximo de tags.
+ * @param			Início do período de tempo.
+ * @param			Final do período de tempo.
+*/
+LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
+	long * users = n_users_with_more_rep(com, N);
+	MYLIST lista = init_MYLIST(&not_strcmp, &free, NULL);
+	MYDATE mybegin = DatetoMYDATE(begin);
+	MYDATE myend = DatetoMYDATE(end);
+	trans_tree(com->posts_Date, &most_used_best_rep_list, lista, users, mybegin, myend, 2, N);
+
+	int size = get_NUM_ele(lista), i = 0;
+	long arr[size];
+	printf("size1: %d\n", size);
+	trans_list(lista, &my_data_toarray, arr, &i, NULL);
+	qsort(arr, size, sizeof(long), &cmp_longs);
+
+	free_MYdate(mybegin);
+	free_MYdate(myend);
+	free_MYLIST(lista);
+
+	if(size > N)
+		size = N;
+	printf("size2: %d\n", size);
+	LONG_list res = create_list(size);
+	for(i = 0; i < size; i++)
+		set_list(res, i, arr[i]);
+
+	return res;
 }
