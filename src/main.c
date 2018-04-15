@@ -6,7 +6,288 @@
 #include <interface.h>
 #include <time.h>
 
+int inited 	= 0;
+int loaded 	= 0;
+
+
 int main(){
+	char string[256];
+	char string2[256];
+	TAD_community com = NULL;
+	clock_t t;
+	long long1,long2,long3;
+	int int1,int2,int3;
+	STR_pair stp;
+	LONG_list llis;
+	USER user;
+	LONG_pair lp;
+	Date ini,fi;
+	while(1){
+		gets(string);
+
+		if(strcmp(string,"exit") == 0){
+			if (loaded != 0){
+				printf("Falta dar clean(free) a struct \n");
+				continue;
+			}
+			else
+				break;
+		}
+		if(strcmp(string,"init") == 0){
+			com = init();
+			inited = 1;
+			printf("Init done\n\n");
+			continue;
+		}
+		if(strcmp(string,"load") == 0|| strcmp(string,"q0") == 0){
+			if(inited != 1){
+				printf("Falta dar init\n");
+				continue;
+			}
+			printf("Escrever Path\nExemplo /home/alexrone/a/ubuntu\n");
+			gets(string);
+			printf("A dar load plz wait bitch\n\n");
+
+			com = load(com,string);
+			loaded = 1;
+			printf("LOAD done\n\n");
+
+			continue;
+		}
+		if(strcmp(string,"q1")== 0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("Escrever id do Post\n");
+			gets(string);
+			long1 = atol(string);
+			t = clock();
+			stp = info_from_post(com, long1);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q1->%fms\n\n\n",a5);
+			continue;
+
+		}
+		if(strcmp(string,"q2")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("N max\n");
+			gets(string);
+			int1 = atoi(string);
+			t = clock();
+			llis = top_most_active(com, int1);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q2->%fms\n\n\n",a5);
+			continue;
+
+		}
+		if(strcmp(string,"q3")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("Data inicial do tipo dia-mes-ano\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			ini = createDate(int1,int2,int3);
+			printf("Data final\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			fi = createDate(int1,int2,int3);
+			t = clock();
+			lp = total_posts(com,ini,fi);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q3->%fms\n\n\n",a5);
+			continue;
+
+		}
+		if(strcmp(string,"q4")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("Tag a verificar\n");
+			gets(string2);
+			printf("Data inicial do tipo dia-mes-ano\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			ini = createDate(int1,int2,int3);
+			printf("Data final\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			fi = createDate(int1,int2,int3);
+			t = clock();
+			llis = questions_with_tag(com,string2,ini,fi);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q4->%fms\n\n\n",a5);
+			continue;
+
+		}
+		if(strcmp(string,"q5")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("ID do user\n");
+			gets(string);
+			long1 = atol(string);
+			t = clock();
+			user = get_user_info(com,long1);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q5->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"q6")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("N max\n");
+			gets(string);
+			int1 = atoi(string);
+
+			printf("Data inicial do tipo dia-mes-ano\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			ini = createDate(int1,int2,int3);
+			printf("Data final\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			fi = createDate(int1,int2,int3);
+			t = clock();
+			llis = most_voted_answers(com,int1,ini,fi);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q6->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"q7")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("N MAX\n");
+			gets(string);
+			int1 = atoi(string);
+
+			printf("Data inicial do tipo dia-mes-ano\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			ini = createDate(int1,int2,int3);
+			printf("Data final\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			fi = createDate(int1,int2,int3);
+			t = clock();
+			llis = most_answered_questions(com,int1,ini,fi);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q7->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"q8")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("N MAX\n");
+			gets(string);
+			int1 = atoi(string);
+			printf("Palavra a verificar\n");
+			gets(string);
+			int1 = atoi(string);
+			t = clock();
+			llis = contains_word(com,string,int1);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q8->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"q9")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("Escrever id1\n");
+			gets(string);
+			long1 = atol(string);
+			printf("Escrever id2\n");
+			gets(string);
+			long2 = atol(string);
+			printf("N MAX\n");
+			gets(string);
+			int1 = atoi(string);
+			t = clock();
+			llis = both_participated(com, long1,long2,int1);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q9->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"q10")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("ID DO POST\n");
+			gets(string);
+			long1 = atol(string);
+			t = clock();
+			long2 = better_answer(com,long1);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q10->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"q11")==0){
+			if(loaded != 1){
+				printf("Falta dar load\n");
+				continue;
+			}
+			printf("N MAX\n");
+			gets(string);
+			int1 = atoi(string);
+			printf("Data inicial do tipo dia-mes-ano\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			ini = createDate(int1,int2,int3);
+			printf("Data final\n");
+			scanf("%i-%i-%i",&int1,&int2,&int3);
+			fi = createDate(int1,int2,int3);
+
+			t = clock();
+		//	llis = most_used_best_rep(com,int1,ini,fi);
+			t = clock()-t;
+			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Q11->%fms\n\n\n",a5);
+			continue;
+		}
+		if(strcmp(string,"clean")==0){
+			com = clean(com);
+			loaded = 0;
+			printf("clean(free) done\n\n");
+
+		}
+
+
+		printf("NOPE\n");
+	}
+	free(com);
+
+
+	/*int i;
+	long * ks;
+	MYDATE date;
+	t = clock();
+	TAD_community com = init();
+	com = load(com,"/home/alexrone/a/ubuntu");
+	LONG_list aux = both_participated(com, 82,186,10);
+	com = clean(com);
+	free(com);
+	return 1;*/
+}
+
+
+
 		/*
         TREE usertree = createMYUSERS_TREE("/Users/Ambrosiny/Desktop/Universidade/2ano/LI3/dump exemplo/android/Users.xml");
 		TREE postTreeId = NULL, postTreeData = NULL;
@@ -90,14 +371,7 @@ int main(){
 		freeTREE_AVL(postTreeId);
 		freeTREE_AVL(postTreeData);*/
 		///Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android
-		int i;
-		long * ks;
-		MYDATE date;
-		clock_t t;
-		t = clock();
-		TAD_community com = init();
-<<<<<<< HEAD
-		com = load(com,"/home/alexrone/a/ubuntu");
+
 //		com = load(com,"/Users/Ambrosiny/Desktop/Universidade/2ano/li3/dump exemplo/android");
 /*
 ||||||| merged common ancestors
@@ -213,9 +487,9 @@ int main(){
 								printf("%ld\n",get_list(l,i));
 							free_list(l);
 */
-							Date di = createDate(1,1,2000);
-							Date df = createDate(1,1,2020);
-						  	LONG_list resp = questions_with_tag(com,"randr",di,df);
+		//					Date di = createDate(1,1,2000);
+			//				Date df = createDate(1,1,2020);
+				//		  	LONG_list resp = questions_with_tag(com,"randr",di,df);
 	/*	Date di = createDate(1,1,2010);
 		Date df = createDate(31,6,2010);
 		LONG_list l;
@@ -239,12 +513,8 @@ int main(){
 						free_date(di);
 						free_date(df);
 						free_list(l);*/
-		t = clock();
-		com = clean(com);
-		t = clock()-t;
-		double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("Free->%fms\n",a5);
-		free(com);
-
-        return 1;
-}
+			//			printf("%ld\n",get_list(aux,0) );
+		//			t = clock();
+//					t = clock()-t;
+	//				double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+		//							printf("Q8->%fms\n\n\n",a5);

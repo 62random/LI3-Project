@@ -397,6 +397,8 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 */
 USER get_user_info(TAD_community com, long id){
 	MYUSER user = search_USER(com->users,id);
+	if(!user)
+		return NULL;
 	int aux = 0;
 	long * posts;
 	posts = getNposts(user,10,&aux);
@@ -583,4 +585,85 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
 	free_MYLIST(result);
 	return final;
+}
+
+/**
+ * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			ID1
+ * @param			ID2
+ * @param			Numero maximo de N
+*/
+LONG_list both_participated(TAD_community com, long id1, long id2, int N){
+	MYUSER user1 = search_USER(com->users,id1);
+	MYUSER user2 = search_USER(com->users,id2);
+	MYLIST lista1 = getMYLISTuser(user1);
+	MYLIST lista2 = getMYLISTuser(user2);
+	int flag=N;
+
+	MYPOST post1,post2;
+	LList aux = NULL;
+	LList aux2 = NULL;
+	long pid1 = -3;
+	long pid2 = -4;
+	int type = 0;
+	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),NULL,NULL);
+//	MYLIST result = init_MYLIST(NULL,NULL,NULL);
+
+	MYDATE data = NULL;
+
+
+	for (aux = getFirst_BOX(lista1); aux && flag; aux=getNext_LList(aux)){
+		post1 = (MYPOST)getElemente_LList(aux);
+		getPostTypeIdP(post1,&type);
+		if(type == 2)
+			getPIdP(post1,&pid1);
+		else if(type == 1)
+			getIdP(post1,&pid1);
+		else
+			break;
+
+		for (aux2 = getFirst_BOX(lista2); aux2; aux2=getNext_LList(aux2)){
+			post2 = (MYPOST)getElemente_LList(aux2);
+			getPostTypeIdP(post2,&type);
+
+			if(type == 2)
+				getPIdP(post2,&pid2);
+			else if(type == 1)
+				getIdP(post2,&pid2);
+			else
+				break;
+
+				if(pid1==pid2){
+					if (type == 2){
+						post2 = search_POSTID(com->posts_Id,pid2);
+						getDateP(post2,&data);
+						result = insere_list(result,data,pid2);
+
+					}
+					else{
+						getDateP(post2,&data);
+
+						result = insere_list(result,data,pid2);
+					}
+					flag--;
+					break;
+				}
+
+
+		}
+	}
+
+	if (get_NUM_ele(result) == 0)
+		return NULL;
+	LONG_list final= create_list(N-flag);
+	printf("%d\n",(N-flag) );
+	LList lista3 = getFirst_BOX(result);
+	int i=0;
+	for(i=0;i < N-flag;lista3=getNext_LList(lista3),i++)
+		set_list(final,i,(long)getElemente_LList(lista3));
+
+	free_MYLIST(result);
+	return final;
+
 }
