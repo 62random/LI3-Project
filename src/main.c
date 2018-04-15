@@ -255,7 +255,7 @@ int main(){
 			fi = createDate(int1,int2,int3);
 
 			t = clock();
-		//	llis = most_used_best_rep(com,int1,ini,fi);
+			llis = most_used_best_rep(com,int1,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 			printf("Q11->%fms\n\n\n",a5);
