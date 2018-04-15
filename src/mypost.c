@@ -392,8 +392,8 @@ void setFavsP(MYPOST post, int fav){
 
 /**
  * @date 			24 Mar 2018
- * @brief 			Função que inicializa a (nossa) representação de um user na memória.
- * @return 			Apontador para a struct do user.
+ * @brief 			Função que inicializa a (nossa) representação de um post na memória.
+ * @return 			Apontador para a struct do post.
  */
 MYPOST createpost() {
 	MYPOST post = malloc(sizeof(struct mypost));

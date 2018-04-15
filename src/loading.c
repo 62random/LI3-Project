@@ -218,8 +218,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 				if(!flag[5] && strcmp((char *) cur->name, "OwnerUserId") == 0) {
 					l = atol(value);
 					setOwnerIdP(post, l);
-					getDateP(post, &date);
-					setPostToUSER(treeusers, l, date, post);
+					setPostToUSER(treeusers, l, post);
 					flag[5] = 1;
 					free(value);
 					continue;

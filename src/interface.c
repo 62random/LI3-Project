@@ -40,7 +40,7 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 	HEAP h = *(HEAP *) dataaux;
 	MYUSER user = (MYUSER) data;
 
-	long n_post = get_NUM_ele(getMYLISTuser(user));
+	long n_post = getNUM_POST_MYUSER(user);
 	h = insereHEAP(h,n_post,getIdMYUSER(user));
 	*(HEAP*) dataaux = h;
 }
@@ -289,6 +289,7 @@ LONG_list top_most_active(TAD_community com, int N){
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
 		for(; i < N; i++){
 			com->num_posts = pop(com->num_posts,&key,&id);
+			printf("%ld\n",key);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
 		}

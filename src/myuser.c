@@ -5,7 +5,7 @@ struct myuser{
     int rep;
     char * username;
     char * bio;
-	MYLIST posts;
+	GArray * posts;
 };
 
 /**
@@ -53,7 +53,7 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
 */
 
-MYLIST getMYLISTuser(MYUSER use){
+GArray * getMYLISTuser(MYUSER use){
 	if (use) return use->posts;
 	return NULL;
 }
@@ -67,17 +67,19 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
 	MYPOST post = NULL;
-	LList aux = getFirst_BOX(use->posts);
 
-	for(i=0; i < n && aux != NULL; i++){
-		post = (MYPOST) getElemente_LList(aux);
+	for(i=0; i < n && i < use->posts->len; i++){
+		post = g_array_index(use->posts,MYPOST,i);
 		if (post != NULL){
 			getIdP(post,r+i);
 		}
-		aux = getNext_LList(aux);
 	}
 	*n_elem = i;
 	return r;
+}
+
+long getNUM_POST_MYUSER(MYUSER use){
+	return use ? use->posts->len : 0;
 }
 
 /**
@@ -86,14 +88,13 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 */
 
 void print_post_MYUSER(MYUSER use){
-	LList aux = getFirst_BOX(use->posts);
 	MYPOST post = NULL;
 	MYDATE data;
 	long ld=0;
 	int i = 0;
-	printf("Ne:%d\n",get_NUM_ele(use->posts));
-	while(aux){
-		post = (MYPOST) getElemente_LList(aux);
+	printf("Ne:%d\n",use->posts->len);
+	for(i = 0; i < use->posts->len;i++){
+		post = g_array_index(use->posts,MYPOST,i);
 		if (post != NULL){
 			getIdP(post,&ld);
 			getDateP(post,&data);
@@ -102,8 +103,7 @@ void print_post_MYUSER(MYUSER use){
 				free_MYdate(data);
 			}
 		}
-		i++;
-		aux = getNext_LList(aux);
+
 	}
 	printf("I=%d\n",i);
 }
@@ -158,7 +158,7 @@ MYUSER createMYUSER(){
     MYUSER conta = malloc(sizeof(struct myuser));
 	conta->bio = NULL;
 	conta->username = NULL;
-	conta->posts = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
+	conta->posts = 	g_array_new(FALSE,FALSE,sizeof(MYPOST));
     return conta;
 }
 
@@ -175,7 +175,7 @@ void freeMYUSER(void * aux){
         	free(conta->bio);
 		if (conta->username)
         	free(conta->username);
-		free_MYLIST(conta->posts);
+		g_array_free(conta->posts,FALSE);
         free(conta);
     }
 }
@@ -239,16 +239,15 @@ MYUSER search_USER(TREE tree,long id){
  * @brief				Função mete um post no correspondete user.
  * @param				Árvore de users.
  * @param				Identificador do user.
- * @param				Key do post a inserir.
  * @param				Informação do post.
 */
 
-int setPostToUSER(TREE tree,long id,MYDATE date,void * data){
+int setPostToUSER(TREE tree,long id,void * data){
 	MYUSER use;
 	use = search_USER(tree,id);
 	if (use == NULL)
 		return -1;
-	use->posts = insere_list(use->posts,date,data);
+	g_array_append_val(use->posts,data);
 
 	return 1;
 }

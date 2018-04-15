@@ -126,7 +126,7 @@ int main(){
 
 		LONG_pair teste;
 		Date di = createDate(1,0,2012);
-		Date df = createDate(1,1,2012);
+		Date df = createDate(1,1,2020);
 		t = clock();
 		teste = total_posts(com,di,df);
 		t = clock()-t;
@@ -141,14 +141,6 @@ int main(){
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 
 		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);
-		for(i = 0; i < get_listsize(l); i++){
-			printf("\t(%ld, ", get_list(l, i));
-			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);
-			printMyDate(date);
-			printf(")");
-			free_MYdate(date);
-		}
-		printf("\n%d resultados\n", i);
 		free_list(l);
 
 		t = clock();
@@ -156,14 +148,6 @@ int main(){
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("\n\nQ8v2->%fms\n(IDs, Dates):",a3);
-		for(i = 0; i < get_listsize(l); i++){
-			printf("\t(%ld, ", get_list(l, i));
-			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);
-			printMyDate(date);
-			printf(")");
-			free_MYdate(date);
-		}
-		printf("\n%d resultados\n", i);
 		free_list(l);
 
 
