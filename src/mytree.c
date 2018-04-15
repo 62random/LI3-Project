@@ -596,13 +596,18 @@ long NUM_nodes(TREE t){
  *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, int * n){
+static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
-		trans_inorder(aux->esq,f_nodo,data1, data2, n);
+		trans_inorder(aux->esq,f_nodo,data1, data2, begin, end, n);
 		if (*n <= 0)
 			return;
-		f_nodo(aux->data,data1, data2, n);
-		trans_inorder(aux->dir,f_nodo,data1, data2, n);
+		if (begin == NULL)
+			f_nodo(aux->data,data1, data2, n);
+		else {
+			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) <= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) >= 0)
+				f_nodo(aux->data,data1, data2, n);
+		}
+		trans_inorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 	}
 }
 
@@ -615,13 +620,18 @@ static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),v
  *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, int * n){
+static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
-		trans_revinorder(aux->dir,f_nodo,data1, data2, n);
+		trans_revinorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		if (*n <= 0)
 			return;
-		f_nodo(aux->data,data1, data2, n);
-		trans_revinorder(aux->esq,f_nodo,data1, data2, n);
+		if (begin == NULL)
+			f_nodo(aux->data,data1, data2, n);
+		else {
+			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) >= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) <= 0)
+				f_nodo(aux->data,data1, data2, n);
+		}
+		trans_revinorder(aux->esq,f_nodo,data1, data2, begin, end, n);
 	}
 }
 
@@ -634,13 +644,18 @@ static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *
  *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, int * n){
+static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
-		trans_posorder(aux->esq,f_nodo,data1, data2, n);
-		trans_posorder(aux->dir,f_nodo,data1, data2, n);
+		trans_posorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+		trans_posorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		if (*n <= 0)
 			return;
-		f_nodo(aux->data,data1, data2, n);
+		if (begin == NULL)
+			f_nodo(aux->data,data1, data2, n);
+		else {
+			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) >= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) <= 0)
+				f_nodo(aux->data,data1, data2, n);
+		}
 	}
 }
 
@@ -652,13 +667,18 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@param			Número máximo de nodos a percorrer.
 */
 
-static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, int * n){
+static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
 		if (*n <= 0)
 			return;
-		f_nodo(aux->data,data1, data2, n);
-		trans_preorder(aux->esq,f_nodo,data1, data2, n);
-		trans_preorder(aux->dir,f_nodo,data1, data2, n);
+		if (begin == NULL)
+			f_nodo(aux->data,data1, data2, n);
+		else {
+			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) >= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) <= 0)
+				f_nodo(aux->data,data1, data2, n);
+		}
+		trans_preorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+		trans_preorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 	}
 }
 
@@ -676,16 +696,16 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
 */
 
 
-void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, int travessia, int n){
+void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int travessia, int n){
 	if (!e)
 		return;
 	if (travessia == 1)
-		trans_posorder(e->arv,f_nodo,data1, data2, &n);
+		trans_posorder(e->arv,f_nodo,data1, data2, begin, end, &n);
 	else if (travessia == 2)
-		trans_inorder(e->arv,f_nodo,data1, data2, &n);
+		trans_inorder(e->arv,f_nodo,data1, data2, begin, end, &n);
 	else if (travessia == 3)
-		trans_preorder(e->arv,f_nodo,data1, data2, &n);
+		trans_preorder(e->arv,f_nodo,data1, data2, begin, end, &n);
 	else if (travessia == 4) {
-		trans_revinorder(e->arv, f_nodo, data1, data2, &n);
+		trans_revinorder(e->arv, f_nodo, data1, data2, begin, end, &n);
 	}
 }

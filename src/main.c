@@ -132,37 +132,55 @@ int main(){
 		t = clock()-t;
 		double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Q3->%fms\n",a6);
+		free_date(di);
+		free_date(df);
 
 		t = clock();
-		l = contains_word(com, "ubuntu", 1000);
+		l = contains_word(com, "ubuntu", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 
-		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);						//
-		for(i = 0; i < get_listsize(l); i++){							//
-			printf("\t(%ld, ", get_list(l, i));							//
-			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);		//
-			printMyDate(date);											//  TESTES
-			printf(")");												//
-		}																//
-		printf("\n%d resultados\n", i);									//
+		printf("\n\nQ8v1->%fms\n(IDs, Dates):",a3);
+		for(i = 0; i < get_listsize(l); i++){
+			printf("\t(%ld, ", get_list(l, i));
+			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);
+			printMyDate(date);
+			printf(")");
+			free_MYdate(date);
+		}
+		printf("\n%d resultados\n", i);
 		free_list(l);
 
 		t = clock();
-		l = contains_word(com, "cona", 100);
+		l = contains_word(com, "java", 100);
 		t = clock()-t;
 		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("\n\nQ8v2->%fms\n(IDs, Dates):",a3);
-		for(i = 0; i < get_listsize(l); i++){							//
-			printf("\t(%ld, ", get_list(l, i));							//
-			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);		//
-			printMyDate(date);											//  TESTES
-			printf(")");												//
-		}																//
-		printf("\n%d resultados\n", i);									//
+		for(i = 0; i < get_listsize(l); i++){
+			printf("\t(%ld, ", get_list(l, i));
+			getDateP(search_POSTID((TREE) bla(com),get_list(l,i)), &date);
+			printMyDate(date);
+			printf(")");
+			free_MYdate(date);
+		}
+		printf("\n%d resultados\n", i);
 		free_list(l);
 
 
+
+		Date dB = createDate(1,7,2017);
+		Date dE = createDate(1,11,2017);
+		t = clock();
+		l = most_used_best_rep(com, 100, dB,dE);
+		t = clock()-t;
+		a3 = ((double)t)/CLOCKS_PER_SEC*1000;
+		printf("\n\nQ11->%fms\n(Numero de ocorrencias):",a3);
+		for(i = 0; i < get_listsize(l); i++)
+			printf("\t%ld", get_list(l, i));
+		printf("\n");
+		free_date(dB);
+		free_date(dE);
+		free_list(l);
 
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);

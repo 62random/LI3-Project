@@ -90,6 +90,24 @@ int search_list(MYLIST pai,void * key){
 	return r;
 }
 
+
+/**
+ * @brief			Função que procura um elemento na lista e retorna apontador para os seus dados.
+ * @param			Apontador para a chave a procurar.
+*/
+
+void * search_list_data(MYLIST pai,void * key){
+	LList aux = pai->lista;
+	void * r = NULL;
+	while(aux && (r == NULL)){
+		if (pai->f_compare(aux->key,key))
+			r = &(aux->data);
+		aux = aux->next;
+	}
+
+	return r;
+}
+
 /**
  * @brief			Função que insere um novo elemento na lista com comparador.
  * @param			Apontador para a chave a inserir.
@@ -290,7 +308,7 @@ MYLIST reverse(MYLIST l){
  * @param			LONG_list onde serão guardadas as keys.
  * @param			número
 */
-void my_tolonglist(void * llist, void * longlist, void * n, void * a) {
+void my_tolonglist(void * llist, void * longlist, void * n, void * nulla) {
 
 	LList cllist = (LList) llist;
 	LONG_list clonglist = (LONG_list) longlist;
@@ -300,10 +318,37 @@ void my_tolonglist(void * llist, void * longlist, void * n, void * a) {
 	(*cn)--;
 }
 
+/**
+ * @brief			Função passa os dados (números inteiros neste caso) da nossa estrutura MYLIST para lista de longs dos professores.
+ * @param			MYLIST cujas keys serão passadas.
+ * @param			LONG_list onde serão guardadas as keys.
+ * @param			número
+*/
+void my_data_toarray(void * llist, void * longs, void * n, void * nulla) {
+
+	LList cllist = (LList) llist;
+	long * clongs = (long *) longs;
+	int * cn = (int *) n;
+
+	int occ = (int) cllist->data;
+	clongs[*cn] = (long ) occ;
+	(*cn)++;
+}
+
+
+/**
+ * @brief			Função percorre uma lista e aplica a cada nodo uma função.
+ * @param			Lista a ser percorrida.
+ * @param			Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
+ * @param			Segundo argumento da função a ser aplicada.
+ * @param			Terceiro argumento da função a ser aplicada.
+ * @param			Quarto argumento da função a ser aplicada.
+
+*/
 void trans_list(MYLIST lista, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3){
 	if(lista == NULL)
 		return;
-		
+
 	LList aux = lista->lista;
 
 	while(aux){
