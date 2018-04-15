@@ -29,5 +29,8 @@ void free_list(LONG_list l) {
 }
 
 int get_listsize(LONG_list l){
+	if(!l)
+		return 0;
+
 	return l->size;
 }

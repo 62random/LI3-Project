@@ -13,10 +13,11 @@ int loaded 	= 0;
 int main(){
 	char string[256];
 	char string2[256];
+	long* auxll;
 	TAD_community com = NULL;
 	clock_t t;
 	long long1,long2,long3;
-	int int1,int2,int3,int4;
+	int int1,int2,int3,int4,i;
 	STR_pair stp;
 	LONG_list llis;
 	USER user;
@@ -66,6 +67,7 @@ int main(){
 			stp = info_from_post(com, long1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("Titulo %s  ||||| User  %s\n\n",get_fst_str(stp),get_snd_str(stp));
 			printf("Q1->%fms\n\n\n",a5);
 			continue;
 
@@ -82,6 +84,8 @@ int main(){
 			llis = top_most_active(com, int1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q2->%fms\n\n\n",a5);
 			continue;
 
@@ -101,6 +105,7 @@ int main(){
 			lp = total_posts(com,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+				printf("Perguntas %ld ||||  Respotas  %ld\n\n",get_fst_long(lp),get_snd_long(lp));
 			printf("Q3->%fms\n\n\n",a5);
 			continue;
 
@@ -122,6 +127,8 @@ int main(){
 			llis = questions_with_tag(com,string2,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q4->%fms\n\n\n",a5);
 			continue;
 
@@ -138,6 +145,10 @@ int main(){
 			user = get_user_info(com,long1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("User = %s   ",get_bio(user));
+			auxll = get_10_latest_posts(user);
+			for(i=0;i<10;i++)
+				printf("%d -> %ld\n",i,auxll[i] );
 			printf("Q5->%fms\n\n\n",a5);
 			continue;
 		}
@@ -160,6 +171,8 @@ int main(){
 			llis = most_voted_answers(com,int4,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q6->%fms\n\n\n",a5);
 			continue;
 		}
@@ -182,6 +195,8 @@ int main(){
 			llis = most_answered_questions(com,int4,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q7->%fms\n\n\n",a5);
 			continue;
 		}
@@ -199,6 +214,8 @@ int main(){
 			llis = contains_word(com,string,int1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q8->%fms\n\n\n",a5);
 			continue;
 		}
@@ -220,6 +237,8 @@ int main(){
 			llis = both_participated(com, long1,long2,int1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q9->%fms\n\n\n",a5);
 			continue;
 		}
@@ -235,6 +254,7 @@ int main(){
 			long2 = better_answer(com,long1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			printf("R = %ld\n",long2 );
 			printf("Q10->%fms\n\n\n",a5);
 			continue;
 		}
@@ -257,6 +277,8 @@ int main(){
 			llis = most_used_best_rep(com,int4,ini,fi);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
+			for(i = 0; i < get_listsize(llis);i++)
+				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q11->%fms\n\n\n",a5);
 			continue;
 		}
