@@ -10,19 +10,22 @@ int inited 	= 0;
 int loaded 	= 0;
 
 
-int main2(){
+int main(){
 	char string[256];
 	char string2[256];
 	long* auxll;
 	TAD_community com = NULL;
 	clock_t t;
-	long long1,long2,long3;
+	long long1,long2;
 	int int1,int2,int3,int4,i;
-	STR_pair stp;
-	LONG_list llis;
-	USER user;
-	LONG_pair lp;
-	Date ini,fi;
+	STR_pair stp = NULL;
+	LONG_list llis = NULL;
+	USER user = NULL;
+	LONG_pair lp = NULL;
+	Date ini = NULL;
+	Date fi = NULL;
+	char* auxstring;
+	char * auxstring2;
 	while(1){
 		gets(string);
 
@@ -67,7 +70,12 @@ int main2(){
 			stp = info_from_post(com, long1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
-			printf("Titulo %s  ||||| User  %s\n\n",get_fst_str(stp),get_snd_str(stp));
+			auxstring =get_fst_str(stp);
+			auxstring2 = get_snd_str(stp);
+			printf("Titulo %s  ||||| User  %s\n\n",auxstring,auxstring2);
+			free(auxstring);
+			free(auxstring2);
+			free_str_pair(stp);
 			printf("Q1->%fms\n\n\n",a5);
 			continue;
 
@@ -87,6 +95,7 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q2->%fms\n\n\n",a5);
+			free_list(llis);
 			continue;
 
 		}
@@ -107,6 +116,11 @@ int main2(){
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 				printf("Perguntas %ld ||||  Respotas  %ld\n\n",get_fst_long(lp),get_snd_long(lp));
 			printf("Q3->%fms\n\n\n",a5);
+			free_long_pair(lp);
+			free_date(ini);
+
+			free_date(fi);
+
 			continue;
 
 		}
@@ -130,6 +144,11 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q4->%fms\n\n\n",a5);
+			free_list(llis);
+			free_date(ini);
+
+			free_date(fi);
+
 			continue;
 
 		}
@@ -145,11 +164,15 @@ int main2(){
 			user = get_user_info(com,long1);
 			t = clock()-t;
 			double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
-			printf("User = %s   ",get_bio(user));
+			auxstring = get_bio(user);
+			printf("User = %s   ",auxstring);
+		//	free(auxstring);
 			auxll = get_10_latest_posts(user);
 			for(i=0;i<10;i++)
 				printf("%d -> %ld\n",i,auxll[i] );
+			free(auxll);
 			printf("Q5->%fms\n\n\n",a5);
+			free_user(user);
 			continue;
 		}
 		if(strcmp(string,"q6")==0){
@@ -174,6 +197,10 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q6->%fms\n\n\n",a5);
+			free_date(ini);
+			free_list(llis);
+			free_date(fi);
+
 			continue;
 		}
 		if(strcmp(string,"q7")==0){
@@ -198,6 +225,9 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q7->%fms\n\n\n",a5);
+			free_date(ini);
+			free_date(fi);
+			free_list(llis);
 			continue;
 		}
 		if(strcmp(string,"q8")==0){
@@ -217,6 +247,7 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q8->%fms\n\n\n",a5);
+			free_list(llis);
 			continue;
 		}
 		if(strcmp(string,"q9")==0){
@@ -240,6 +271,7 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q9->%fms\n\n\n",a5);
+			free_list(llis);
 			continue;
 		}
 		if(strcmp(string,"q10")==0){
@@ -280,6 +312,10 @@ int main2(){
 			for(i = 0; i < get_listsize(llis);i++)
 				printf("%d -> %ld\n",i,get_list(llis,i) );
 			printf("Q11->%fms\n\n\n",a5);
+			free_date(ini);
+			free_list(llis);
+			free_date(fi);
+
 			continue;
 		}
 		if(strcmp(string,"clean")==0){
@@ -557,7 +593,7 @@ int main2(){
 //					t = clock()-t;
 	//				double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 		//							printf("Q8->%fms\n\n\n",a5);
-
+/*
 int main(){
 	TAD_community com = init();
 	clock_t t;
@@ -572,4 +608,4 @@ int main(){
 	printf("P:%ld->R:%ld\n",get_fst_long(a),get_snd_long(a));
 	com = clean(com);
 	free(com);
-}
+}*/

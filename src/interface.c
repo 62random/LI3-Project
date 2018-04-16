@@ -327,6 +327,8 @@ STR_pair info_from_post(TAD_community com, long id){
 	MYUSER us = search_USER(com->users,iduser);
 	user = getUsername(us);
 	result = create_str_pair(title,user);
+	free(user);
+	free(title);
 
 	return result;
 
@@ -408,7 +410,10 @@ USER get_user_info(TAD_community com, long id){
 		for(;aux < 10; aux++)
 			posts[aux] = -1;
 	}
-	USER info = create_user(getBiography(user),posts);
+	char* bio = getBiography(user);
+	USER info = create_user(bio,posts);
+	free(posts);
+	free(bio);
 	return info;
 }
 
@@ -551,12 +556,10 @@ static void filtraTags(void * data, void * result, void * tag){
 
 			if (existeTag(post,tag)){
 				getIdP(post,&idp);
-				//printf("%ld\n",idp );
 				resultado =  *(MYLIST*)result;
 				if(resultado){
-				resultado = insere_list(resultado,idp,NULL);
+				resultado = insere_list(resultado,(void*)idp,NULL);
 				 *(MYLIST*)result = resultado;
-				// printf("%d",(resultado));
 				}
 			}
 			lista2 = getNext_LList(lista2);
@@ -583,8 +586,9 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	LONG_list final= create_list(get_NUM_ele(result));
 	LList lista2 = getFirst_BOX(result);
 	int i=0;
-	for(i=0;lista2;lista2=getNext_LList(lista2),i++)
+	for(i=0;lista2;lista2=getNext_LList(lista2),i++){
 		set_list(final,i,(long)get_key_box(lista2));
+	}
 
 	free_MYLIST(result);
 	return final;
@@ -610,7 +614,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	long pid1 = -3;
 	long pid2 = -4;
 	int type = 0;
-	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),NULL,NULL);
+	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);//&(free_MYdate),&(free));
 
 	MYDATE data = NULL;
 
@@ -636,28 +640,26 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 			else
 				break;
 
-				if(pid1==pid2){
+				if(pid1==pid2)
 					if (type == 2){
 						post2 = search_POSTID(com->posts_Id,pid2);
-						getDateP(post2,&data);
-						result = insere_list(result,data,pid2);
 
-					}
-					else{
-						getDateP(post2,&data);
+					getDateP(post2,&data);
+					result = insere_list(result,data,(void*)pid2);
 
-						result = insere_list(result,data,pid2);
 					}
 					flag--;
 					break;
-				}
+
 
 
 		}
 	}
 
-	if (get_NUM_ele(result) == 0)
+	if (get_NUM_ele(result) == 0){
+		free_MYLIST(result);
 		return NULL;
+	}
 	LONG_list final= create_list(N-flag);
 	printf("%d\n",(N-flag) );
 	LList lista3 = getFirst_BOX(result);
