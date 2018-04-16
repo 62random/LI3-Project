@@ -8,6 +8,15 @@
 
 int inited 	= 0;
 int loaded 	= 0;
+char* ambA = "/Users/Ambrosiny/Desktop/dump exemplo/android";
+char* ambU = "/Users/Ambrosiny/Desktop/dump exemplo/ubuntu";
+char* randA = "/home/pedro/Desktop/dump/android";
+char* randU = "/home/pedro/Desktop/dump/ubuntu";
+char* megaA = "/home/alexrone/a/ubuntu";
+char* megaU = "/home/pedro/Desktop/dump/android";
+
+
+
 
 
 int main(){
@@ -48,7 +57,7 @@ int main(){
 				printf("Falta dar init\n");
 				continue;
 			}
-			printf("Escrever Path\nExemplo /home/alexrone/a/ubuntu\n");
+			printf("Escrever Path\nExemplos \n%s \n%s \n%s \n",ambA,randA,megaA);
 			gets(string);
 			printf("A dar load plz wait bitch\n\n");
 
