@@ -105,11 +105,11 @@ int main(){
 
 		t = clock();
 		//com = load(com,"/home/pedro/Desktop/dump/ubuntu");
-		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
-
+		/*
 		t = clock();
 		LONG_list l = top_most_active(com,100);
 		t = clock()-t;
@@ -125,16 +125,17 @@ int main(){
 		free_list(l);
 
 		LONG_pair teste;
-		Date di = createDate(1,0,2012);
+		Date di = createDate(1,0,2009);
 		Date df = createDate(1,1,2020);
 		t = clock();
 		teste = total_posts(com,di,df);
 		t = clock()-t;
+		printf("P:%ld -> R:%ld\n",get_fst_long(teste),get_snd_long(teste));
 		double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Q3->%fms\n",a6);
 		free_date(di);
 		free_date(df);
-
+		/*
 		t = clock();
 		l = contains_word(com, "ubuntu", 100);
 		t = clock()-t;
@@ -164,8 +165,7 @@ int main(){
 		printf("\n");
 		free_date(dB);
 		free_date(dE);
-		free_list(l);
-
+		free_list(l);*/
 					//		LONG_pair teste;
 					//		Date di = createDate(1,1,2010);
 					//		Date df = createDate(31,6,2010);

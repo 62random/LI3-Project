@@ -5,7 +5,7 @@ struct myuser{
     int rep;
     char * username;
     char * bio;
-	GArray * posts;
+	GPtrArray * posts;
 };
 
 /**
@@ -53,7 +53,7 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
 */
 
-GArray * getMYLISTuser(MYUSER use){
+GPtrArray * getMYLISTuser(MYUSER use){
 	if (use) return use->posts;
 	return NULL;
 }
@@ -69,7 +69,7 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	MYPOST post = NULL;
 
 	for(i=0; i < n && i < use->posts->len; i++){
-		post = g_array_index(use->posts,MYPOST,i);
+		post = (MYPOST) g_ptr_array_index(use->posts,i);
 		if (post != NULL){
 			getIdP(post,r+i);
 		}
@@ -79,7 +79,9 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 }
 
 long getNUM_POST_MYUSER(MYUSER use){
-	return use ? use->posts->len : 0;
+	if (use)
+		return use->posts->len;
+	return 0;
 }
 
 /**
@@ -94,7 +96,7 @@ void print_post_MYUSER(MYUSER use){
 	int i = 0;
 	printf("Ne:%d\n",use->posts->len);
 	for(i = 0; i < use->posts->len;i++){
-		post = g_array_index(use->posts,MYPOST,i);
+		post = (MYPOST) g_ptr_array_index(use->posts,i);
 		if (post != NULL){
 			getIdP(post,&ld);
 			getDateP(post,&data);
@@ -158,7 +160,7 @@ MYUSER createMYUSER(){
     MYUSER conta = malloc(sizeof(struct myuser));
 	conta->bio = NULL;
 	conta->username = NULL;
-	conta->posts = 	g_array_new(FALSE,FALSE,sizeof(MYPOST));
+	conta->posts = g_ptr_array_new();
     return conta;
 }
 
@@ -175,7 +177,7 @@ void freeMYUSER(void * aux){
         	free(conta->bio);
 		if (conta->username)
         	free(conta->username);
-		g_array_free(conta->posts,FALSE);
+		g_ptr_array_free(conta->posts,TRUE);
         free(conta);
     }
 }
@@ -247,7 +249,7 @@ int setPostToUSER(TREE tree,long id,void * data){
 	use = search_USER(tree,id);
 	if (use == NULL)
 		return -1;
-	g_array_append_val(use->posts,data);
+	g_ptr_array_add(use->posts,data);
 
 	return 1;
 }

@@ -16,7 +16,7 @@ struct mypost {
 	int 		anscount;
 	int			commcount;
 	int			favcount;
-	GArray *	filhos;
+	GPtrArray *	filhos;
 };
 /**
  * @brief 			Função que verifica se existe uma data tag num post.
@@ -67,7 +67,7 @@ void getScoreP(MYPOST post, int * score){
  */
 
 //quebra o encap
-void getFilhosP(MYPOST post, GArray ** filhos){
+void getFilhosP(MYPOST post, GPtrArray ** filhos){
 	if(post)
 		(*filhos) = post->filhos;
 }
@@ -85,7 +85,7 @@ int setPostToPost(TREE tree,long id,void * data){
 		post = search_POSTID(tree,id);
 		if (post == NULL)
 			return -1;
-		g_array_append_val(post->filhos,data);
+		g_ptr_array_add(post->filhos,data);
 		return 1;
 }
 
@@ -99,7 +99,7 @@ int setPostToPost(TREE tree,long id,void * data){
 void setFilhosNoPost(MYPOST post,void * data){
 		if (post == NULL)
 			return;
-		g_array_append_val(post->filhos,data);
+		g_ptr_array_add(post->filhos,data);
 }
 
 
@@ -405,7 +405,7 @@ MYPOST createpost() {
 	post->parent_id = -2;
 	post->favcount	= 0;
 	post->anscount	= 0;
-	post->filhos = g_array_new(FALSE,FALSE,sizeof(MYPOST));
+	post->filhos = g_ptr_array_new();
 	return post;
 }
 
@@ -429,7 +429,7 @@ void freepost(MYPOST post) {
 
 	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
-	g_array_free(post->filhos,FALSE);
+	g_ptr_array_free(post->filhos,TRUE);
 
 	free(post);
 }
@@ -513,21 +513,6 @@ MYPOST search_POSTID(TREE tree,long id){
 	return NULL;
 }
 
-
-/**
- * @brief				Função que procura um post pela data de criação na estrutura.
- * @param				Id do post a procurar.
-*/
-
-MYPOST search_POSTDATA(TREE tree,MYDATE date){
-	int valid;
-
-	MYPOST post = search_AVL(tree, date, &valid);
-	if (valid)
-		return post;
-	return NULL;
-}
-
 /**
  * @brief			Função que imprime os ids das respostas a um post.
  * @param			Apontador para o post.
@@ -540,7 +525,7 @@ void print_posts_MYPOST(MYPOST post){
 	int i = 0;
 	printf("Ne:%d\n",post->filhos->len);
 	for(i=0; i < post->filhos->len; i++){
-		post2 = g_array_index(post->filhos,MYPOST,i);
+		post2 = (MYPOST) g_ptr_array_index(post->filhos,i);
 		if (post2 != NULL){
 			getIdP(post2,&ld);
 			getDateP(post2,&data);

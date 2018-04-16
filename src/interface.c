@@ -204,15 +204,17 @@ TAD_community load(TAD_community com, char * dump_path){
 	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
 
 	com->users = users;
+
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
+	/*
 	com->num_posts = initHEAP(NUM_nodes(users));
 	com->pre_posts = NULL;
 	com->rep_users = initHEAP(NUM_nodes(users));
 	com->pre_rep = NULL;
 	//ordenar o array dos users!!!!
 	all_nodes_TREE(users,&num_rep_na_HEAP,&com->rep_users);
-	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
+	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);*/
 
 	return com;
 }
@@ -224,12 +226,14 @@ TAD_community load(TAD_community com, char * dump_path){
 
 TAD_community clean(TAD_community com){
 	freeTreeUSER(com->users);
+
 	freeTREE_AVL(com->posts_Id);
 	freeTREE_AVL(com->posts_Date);
+	/*
 	freeSTACK(com->pre_posts);
 	freeMYHEAP(com->num_posts);
 	freeSTACK(com->pre_rep);
-	freeMYHEAP(com->rep_users);
+	freeMYHEAP(com->rep_users);*/
 
 	return com;
 }

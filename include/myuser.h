@@ -16,7 +16,7 @@ long 		getIdMYUSER			(MYUSER use);
 int 		getREPMYUSER		(MYUSER use);
 char * 		getUsername			(MYUSER use);
 char * 		getBiography		(MYUSER use);
-GArray *	getMYLISTuser		(MYUSER use); //rever encapl
+GPtrArray *	getMYLISTuser		(MYUSER use); //rever encapl
 long * 		getNposts			(MYUSER use,int n,int * n_elem);
 void 		print_post_MYUSER	(MYUSER use);
 MYUSER 		createMYUSER		();
