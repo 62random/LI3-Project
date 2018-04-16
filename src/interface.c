@@ -342,28 +342,29 @@ STR_pair info_from_post(TAD_community com, long id){
 
 static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
 	MYLIST r;
-	long aux;
 	int type;
 	LList lista2;
 	MYPOST post;
+	long type1;
+	long type2;
 	if (data != NULL){
 		r = (MYLIST) data;
 		lista2 = getFirst_BOX(r);
+		type1 = *(long*)perguntas;
+		type2 = *(long*)respostas;
 		while(lista2){
 			post = (MYPOST) getElemente_LList(lista2);
 			getPostTypeIdP(post,&type);
 			if (type == 1){ // pergunta
-				aux = *(long*)perguntas;
-				aux++;
-				*(long*)perguntas = aux;
+				type1++;
 			}
 			if (type == 2){ // respotas
-				aux = *(long*)respostas;
-				aux++;
-				*(long*)respostas = aux;
+				type2++;
 			}
 			lista2 = getNext_LList(lista2);
 		}
+		*(long*)perguntas = type1;
+		*(long*)respostas = type2;
 	}
 }
 
