@@ -68,15 +68,17 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 
 static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 	HEAP h = *(HEAP *) dataaux;
-	MYLIST l = (MYLIST) data;
-	LList aux = getFirst_BOX(l);
+	//MYLIST l = (MYLIST) data;
+	GArray * arr = (GArray *) data;
+	//LList aux = getFirst_BOX(l);
 	MYPOST post = NULL;
 	int type = -1;
 	int score = -1;
 	long id = -1;
+	int i;
 
-	while(aux){
-		post = getElemente_LList(aux);
+	for(i=0; i < arr->len; i++){
+		post = g_array_index(arr,MYPOST,i);
 		if (post){
 			getPostTypeIdP(post,&type);
 			if (type == 2){
@@ -85,7 +87,6 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 				h = insereHEAP(h,score,id);
 			}
 		}
-		aux = getNext_LList(aux);
 	}
 	*(HEAP*) dataaux = h;
 }
@@ -98,15 +99,16 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 
 static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
 	HEAP h = *(HEAP *) dataaux;
-	MYLIST l = (MYLIST) data;
-	LList aux = getFirst_BOX(l);
+	GArray * arr = (GArray *) data;
+	//MYLIST l = (MYLIST) data;
+	//LList aux = getFirst_BOX(l);
 	MYPOST post = NULL;
 	int type = -1;
 	int n_resp = -1;
 	long id = -1;
-
-	while(aux){
-		post = getElemente_LList(aux);
+	int i;
+	for(i=0; i < arr->len; i++){
+		post = g_array_index(arr,MYPOST,i);
 		if (post){
 			getPostTypeIdP(post,&type);
 			if (type == 1){
@@ -115,7 +117,6 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
 				h = insereHEAP(h,n_resp,id);
 			}
 		}
-		aux = getNext_LList(aux);
 	}
 	*(HEAP*) dataaux = h;
 }
@@ -209,6 +210,7 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->pre_posts = NULL;
 	com->rep_users = initHEAP(NUM_nodes(users));
 	com->pre_rep = NULL;
+	//ordenar o array dos users!!!!
 	all_nodes_TREE(users,&num_rep_na_HEAP,&com->rep_users);
 	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
 
@@ -342,17 +344,13 @@ STR_pair info_from_post(TAD_community com, long id){
 */
 
 static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
-	MYLIST r;
 	long aux;
-	int type;
-	LList lista2;
+	int type, i;
+	GArray * arr = (GArray *) data;
 	MYPOST post;
 	if (data != NULL){
-		r = (MYLIST) data;
-		lista2 = getFirst_BOX(r);
-		while(lista2){
-			post = (MYPOST) getElemente_LList(lista2);
-			getPostTypeIdP(post,&type);
+		for(i=0; i < arr->len; i++){
+			post = g_array_index(arr,MYPOST,i);
 			if (type == 1){ // pergunta
 				aux = *(long*)perguntas;
 				aux++;
@@ -363,7 +361,6 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
 				aux++;
 				*(long*)respostas = aux;
 			}
-			lista2 = getNext_LList(lista2);
 		}
 	}
 }
@@ -406,7 +403,7 @@ USER get_user_info(TAD_community com, long id){
 		for(;aux < 10; aux++)
 			posts[aux] = -1;
 	}
-	USER info = create_user(getBiography(user),posts);
+	USER info = create_user(getBiography(user),posts);// leak mem
 	return info;
 }
 
@@ -416,14 +413,14 @@ USER get_user_info(TAD_community com, long id){
  * @param			Id do post
 */
 long better_answer(TAD_community com, long id){
-		MYLIST respostas;
+		GArray * arr;
 		MYUSER men;
 		long user;
 		int scr,rep,comt;
 		int scoreatual,scoremax;
 		scr=rep=comt=scoremax=scoreatual=0;
 		long	 id2 = -2;
-		int type;
+		int type,i;
 		LList aux;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
@@ -437,9 +434,9 @@ long better_answer(TAD_community com, long id){
 			return -4;
 		}
 
-		getFilhosP(post,&respostas);
-		for (aux = getFirst_BOX(respostas); aux; aux=getNext_LList(aux)){
-			post = (MYPOST)getElemente_LList(aux);
+		getFilhosP(post,&arr);
+		for(i=0; i < arr->len; i++){
+			post = g_array_index(arr,MYPOST,i);
 			getScoreP(post,&scr);
 			getCommentsP(post,&scr);
 			getOwnerIdP(post,&user);
@@ -464,16 +461,14 @@ long better_answer(TAD_community com, long id){
 */
 
 static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado,r;
-	int existe = 0;
+	MYLIST resultado;
+	GArray * arr = (GArray *) data;
+	int existe = 0,i;
 	long idp = -2;
-	LList lista2;
 	MYPOST post;
 	if (data != NULL){
-		r = (MYLIST)data;
-		lista2 = getFirst_BOX(r	);
-		while(lista2){
-			post = (MYPOST)getElemente_LList(lista2);
+		for(i=0; i < arr->len; i++){
+			post = g_array_index(arr,MYPOST,i);
 			existe = existeTag(post,tag);
 
 			if (existe){
@@ -483,7 +478,7 @@ static void filtraTags(void * data, void * result, void * tag){
 				resultado = insere_list(resultado,&idp,NULL);
 				 *(MYLIST*)result = resultado;
 			}
-			lista2 = getNext_LList(lista2);
+
 		}
 	}
 }
@@ -497,7 +492,8 @@ static void filtraTags(void * data, void * result, void * tag){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-void contains_word_node(void * listbox, void * lista, void * word, void * n){
+/*
+static void contains_word_node(void * listbox, void * lista, void * word, void * n){
 	if(listbox == NULL || *((int *) n) <= 0)
 		return;
 
@@ -521,7 +517,7 @@ void contains_word_node(void * listbox, void * lista, void * word, void * n){
 
 	free(title);
 
-}
+}*/
 
 
 /**
@@ -531,12 +527,13 @@ void contains_word_node(void * listbox, void * lista, void * word, void * n){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-void contains_word_list(void * lista, void * res, void * word, void * n){
+/*
+static void contains_word_list(void * lista, void * res, void * word, void * n){
 	if(lista == NULL)
 		return;
 
 	trans_list(lista, &contains_word_node, res, word, n);
-}
+}*/
 
 /**
  * @brief			Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
@@ -544,6 +541,7 @@ void contains_word_list(void * lista, void * res, void * word, void * n){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
+/*
 LONG_list contains_word(TAD_community com, char* word, int N){
 	MYLIST lista = init_MYLIST(NULL, NULL, NULL);
 	trans_tree(com->posts_Date, &contains_word_list, lista, word, NULL, NULL, 4, N);
@@ -557,7 +555,7 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	free_MYLIST(lista);
 
 	return res;
-}
+}*/
 
 
 /**

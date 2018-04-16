@@ -4,6 +4,7 @@
 #include "mydate.h"
 #include "mytree.h"
 #include "mylist.h"
+#include <glib.h>
 
 
 
@@ -38,14 +39,13 @@ void 	getPIdP					(MYPOST post, long * p_id);
 void 	setPIdP					(MYPOST post, long  id);
 void 	setScoreP				(MYPOST post, int  score);
 void 	getScoreP				(MYPOST post, int * score);
-void 	setFilhosP				(MYPOST post, MYLIST * filhos);
-void 	getFilhosP				(MYPOST post, MYLIST * filhos);
+void 	getFilhosP				(MYPOST post, GArray ** filhos);
 MYPOST 	createpost				();
 void 	freepost				(MYPOST post);
 int 	compare_mypostsAVLDate	(void * data1, void * data2,void * data);
 int 	compare_mypostsLISTDate	(void * data1, void * data2);
 int 	compare_mypostsAVLID	(void * post1, void * post2,void * data);
-void 	setFilhosNoPost			(MYPOST post,MYDATE date,void * data);
+void 	setFilhosNoPost			(MYPOST post,void * data);
 MYPOST 	search_POSTID			(TREE tree, long id);
 MYPOST 	search_POSTDATA			(TREE tree, MYDATE date);
 void 	free_StringArray		(char ** arr);

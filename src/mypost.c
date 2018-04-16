@@ -16,7 +16,7 @@ struct mypost {
 	int 		anscount;
 	int			commcount;
 	int			favcount;
-	MYLIST 		filhos;
+	GArray *	filhos;
 };
 /**
  * @brief 			Função que verifica se existe uma data tag num post.
@@ -67,7 +67,7 @@ void getScoreP(MYPOST post, int * score){
  */
 
 //quebra o encap
-void getFilhosP(MYPOST post, MYLIST * filhos){
+void getFilhosP(MYPOST post, GArray ** filhos){
 	if(post)
 		(*filhos) = post->filhos;
 }
@@ -80,12 +80,12 @@ void getFilhosP(MYPOST post, MYLIST * filhos){
  * @param				Informação do post.
 */
 
-int setPostToPost(TREE tree,long id,MYDATE date,void * data){
+int setPostToPost(TREE tree,long id,void * data){
 		MYPOST post;
 		post = search_POSTID(tree,id);
 		if (post == NULL)
 			return -1;
-		post->filhos = insere_list(post->filhos,date,data);
+		g_array_append_val(post->filhos,data);
 		return 1;
 }
 
@@ -96,10 +96,10 @@ int setPostToPost(TREE tree,long id,MYDATE date,void * data){
  * @param				Informação do post.
 */
 
-void setFilhosNoPost(MYPOST post,MYDATE date,void * data){
+void setFilhosNoPost(MYPOST post,void * data){
 		if (post == NULL)
 			return;
-		post->filhos = insere_list(post->filhos,date,data);
+		g_array_append_val(post->filhos,data);
 }
 
 
@@ -405,7 +405,7 @@ MYPOST createpost() {
 	post->parent_id = -2;
 	post->favcount	= 0;
 	post->anscount	= 0;
-	post->filhos = init_MYLIST(NULL,&free_MYdate,NULL);
+	post->filhos = g_array_new(FALSE,FALSE,sizeof(MYPOST));
 	return post;
 }
 
@@ -429,7 +429,7 @@ void freepost(MYPOST post) {
 
 	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
-	free_MYLIST(post->filhos);
+	g_array_free(post->filhos,FALSE);
 
 	free(post);
 }
@@ -534,15 +534,14 @@ MYPOST search_POSTDATA(TREE tree,MYDATE date){
 */
 
 void print_posts_MYPOST(MYPOST post){
-	LList aux = getFirst_BOX(post->filhos);
 	MYPOST post2 = NULL;
 	MYDATE data = NULL;
 	long ld=0;
 	int i = 0;
-	printf("Ne:%d\n",get_NUM_ele(post->filhos));
-	while(aux){
-		post2 = (MYPOST) getElemente_LList(aux);
-		if (post != NULL){
+	printf("Ne:%d\n",post->filhos->len);
+	for(i=0; i < post->filhos->len; i++){
+		post2 = g_array_index(post->filhos,MYPOST,i);
+		if (post2 != NULL){
 			getIdP(post2,&ld);
 			getDateP(post2,&data);
 			if (data != NULL){
@@ -550,8 +549,6 @@ void print_posts_MYPOST(MYPOST post){
 				free_MYdate(data);
 			}
 		}
-		i++;
-		aux = getNext_LList(aux);
 	}
 	printf("I=%d\n",i);
 }
