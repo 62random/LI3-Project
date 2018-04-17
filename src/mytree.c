@@ -592,8 +592,11 @@ long NUM_nodes(TREE t){
  *@brief			Função que faz uma travessia inorder na árvore.
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
@@ -616,10 +619,12 @@ static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),v
  *@brief			Função que faz uma travessia inorder na árvore.
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
-
 static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
 		trans_revinorder(aux->dir,f_nodo,data1, data2, begin, end, n);
@@ -640,8 +645,11 @@ static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *
  *@brief			Função que faz uma travessia postorder na árvore.
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
@@ -664,7 +672,9 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
  *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
@@ -690,11 +700,12 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@brief			Função que faz uma travessia na árvore.
  *@param			Apontador para a estrutura arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Tipo de travessia.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar a cada nodo.
+ *@param			Apontador a passar como argumento à função a aplicar a cada nodo.
+ *@param			Data início do intervalo a que cada nodo tem de pertencer para a função ser aplicada. (nullable)
+ *@param			Data início do intervalo a que cada nodo tem de pertencer para a função ser aplicada. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
-
 
 void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int travessia, int n){
 	if (!e)

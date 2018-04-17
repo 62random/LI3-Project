@@ -465,6 +465,10 @@ long better_answer(TAD_community com, long id){
 }
 
 
+//+++++++++++++++++++++++++++++++++++++++++++++++++QUERY 8+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 /**
  * @brief			Função a aplicar aos posts a ser visitados na travessia, auxiliar á query 8.
  * @param			Post a ser visitado.
@@ -472,7 +476,7 @@ long better_answer(TAD_community com, long id){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-void contains_word_node(void * listbox, void * lista, void * word, void * n){
+static void contains_word_node(void * listbox, void * lista, void * word, void * n){
 	if(listbox == NULL || *((int *) n) <= 0)
 		return;
 
@@ -506,11 +510,28 @@ void contains_word_node(void * listbox, void * lista, void * word, void * n){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-void contains_word_list(void * lista, void * res, void * word, void * n){
+static void contains_word_list(void * lista, void * res, void * word, void * n){
 	if(lista == NULL)
 		return;
 
 	trans_list(lista, &contains_word_node, res, word, n);
+}
+
+
+/**
+ * @brief			Função passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
+ * @param			LList cuja key será passadas.
+ * @param			LONG_list onde serão guardadas as keys.
+ * @param			Índice onde será inserida a key.
+*/
+static void my_tolonglist(void * llist, void * longlist, void * n, void * nulla) {
+
+	LList cllist = (LList) llist;
+	LONG_list clonglist = (LONG_list) longlist;
+	int * cn = (int *) n;
+
+	set_list(clonglist, *cn, (long ) get_key_box(cllist));
+	(*cn)--;
 }
 
 /**
@@ -672,6 +693,12 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 }
 
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 /**
  * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da lista de posts em cada nodo da árvore organizada por datas, durante a travessia.
  * @param			Nodo atual.
@@ -679,38 +706,37 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
  * @param			Array dos N users com maior reputação.
  * @param			Número N (tamanho do array de users).
 */
-void most_used_best_rep_node(void * listbox, void * res, void * users, void * N){
+static void most_used_best_rep_node(void * listbox, void * res, void * users, void * N){
 	if(listbox == NULL)
 		return;
 
 	MYPOST post = getElemente_LList((LList) listbox);
-	int i;								// se não for
-	getPostTypeIdP(post, &i);			// uma pergunta
-	if(i != 1)							// então
-		return;							// retornar
+	int i;												// se não for
+	getPostTypeIdP(post, &i);							// uma pergunta
+	if(i != 1)											// então
+		return;											// retornar
 
 	long id;
 	int n = *((int *) N) ;
 	getOwnerIdP(post, &id);
-	for(i = 0; i < n; i++) {			//se o autor
-		if(id == ((long *) users)[i] )	//não é um dos
-			break;						//com mais
-		if(i == n - 1)					//reputação
-			return;						//retornar
+	for(i = 0; i < n; i++) {							//se o autor
+		if(id == ((long *) users)[i] )					//não é um dos
+			break;										//com mais
+		if(i == n - 1)									//reputação
+			return;										//retornar
 	}
-	//printf("Pergunta encontrada!:\n" );
+
+
 	char ** tags;
 	getTagsP(post, &tags);
 	int * occ;
-	for(i = 0; tags[i]; i++){
-		//printf("%s\n", tags[i]);
-		if((occ = (int *) search_list_data((MYLIST) res, tags[i])) != NULL){
-			(*occ)++;
-		}
-		else {
-			insere_list((MYLIST) res, (void *) mystrdup(tags[i]), (void *) 1);
-		}
-	}
+
+	for(i = 0; tags[i]; i++)
+		if((occ = (int *) search_list_data((MYLIST) res, tags[i])) != NULL)		//se a tag já foi encontrada
+			(*occ)++;															//incrementar número de ocorrências
+		else																	//caso contrário,
+			insere_list((MYLIST) res, (void *) mystrdup(tags[i]), (void *) 1);	//inserir tag na lista das encontradas
+
 
 	free_StringArray(tags);
 
@@ -723,7 +749,7 @@ void most_used_best_rep_node(void * listbox, void * res, void * users, void * N)
  * @param			Array dos N users com maior reputação.
  * @param			Número N (tamanho do array de users).
 */
-void most_used_best_rep_list(void * lista, void * res, void * users, void * n){
+static void most_used_best_rep_list(void * lista, void * res, void * users, void * n){
 	if(lista == NULL)
 		return;
 
@@ -755,6 +781,22 @@ int cmp_longs(const void * l1, const void * l2){
 		return 1;
 }
 
+/**
+ * @brief			Função passa os dados (do tipo int neste caso) da nossa estrutura MYLIST para um array de longs.
+ * @param			LList cujos dados serão passados.
+ * @param			Array de longs para onde será passados os dados.
+ * @param			Índice onde será colocados os dados.
+*/
+static void my_data_int_toarray(void * llist, void * longs, void * n, void * nulla) {
+
+	LList cllist = (LList) llist;
+	long * clongs = (long *) longs;
+	int * cn = (int *) n;
+
+	int occ = (int) getElemente_LList(cllist);
+	clongs[*cn] = (long ) occ;
+	(*cn)++;
+}
 
 /**
  * @brief			Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
@@ -764,28 +806,36 @@ int cmp_longs(const void * l1, const void * l2){
  * @param			Final do período de tempo.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
-	long * users = n_users_with_more_rep(com, N);
-	MYLIST lista = init_MYLIST(&not_strcmp, &free, NULL);
-	MYDATE mybegin = DatetoMYDATE(begin);
-	MYDATE myend = DatetoMYDATE(end);
-	trans_tree(com->posts_Date, &most_used_best_rep_list, lista, users, mybegin, myend, 2, N);
+	MYLIST lista = init_MYLIST(&not_strcmp, &free, NULL);						//criar lista para tags encontradas
+	MYDATE mybegin = DatetoMYDATE(begin);										//transformar Date no nosso tipo
+	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
-	int size = get_NUM_ele(lista), i = 0;
-	long arr[size];
-	printf("size1: %d\n", size);
-	trans_list(lista, &my_data_toarray, arr, &i, NULL);
-	qsort(arr, size, sizeof(long), &cmp_longs);
+	long * users = n_users_with_more_rep(com, N);								//preencher array com N
+																				//users com  maior reputação
+
+	trans_tree(com->posts_Date, &most_used_best_rep_list, lista, users, mybegin, myend, 2, N); 	//travessia inorder
+																								//na árvore de posts
+																								//ordenados por data
+																								//aplicando a função
+																								//most_used_best_rep_list
 
 	free_MYdate(mybegin);
 	free_MYdate(myend);
+
+	int size = get_NUM_ele(lista), i = 0;										//transformar a lista de tags encontradas
+	long arr[size];																//num array com as respetivas ocorrencias
+	trans_list(lista, &my_data_int_toarray, arr, &i, NULL);						//percorrendo a lista e aplicando a
+	 																				//função my_data_int_toarray
+	qsort(arr, size, sizeof(long), &cmp_longs);									//ordenar o array inversamente
+
 	free_MYLIST(lista);
 
-	if(size > N)
-		size = N;
-	printf("size2: %d\n", size);
-	LONG_list res = create_list(size);
-	for(i = 0; i < size; i++)
-		set_list(res, i, arr[i]);
+	if(size > N)																//determinar o número
+		size = N;																//de elementos a retornar
+
+	LONG_list res = create_list(size);											//passar os elementos do array
+	for(i = 0; i < size; i++)													//para a LONG_list
+		set_list(res, i, arr[i]);												//a retornar
 
 	return res;
 }

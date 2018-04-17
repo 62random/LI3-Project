@@ -16,7 +16,7 @@ char* megaA = "/home/alexrone/a/ubuntu";
 char* megaU = "/home/pedro/Desktop/dump/android";
 
 
-
+char *gets(char *str);
 
 
 int main(){
@@ -26,7 +26,7 @@ int main(){
 	TAD_community com = NULL;
 	clock_t t;
 	long long1,long2;
-	int int1,int2,int3,int4,i;
+	int int1,int2,int3,int4,i, z;
 	STR_pair stp = NULL;
 	LONG_list llis = NULL;
 	USER user = NULL;
@@ -114,10 +114,10 @@ int main(){
 				continue;
 			}
 			printf("Data inicial do tipo dia-mes-ano\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			ini = createDate(int1,int2,int3);
 			printf("Data final\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 			t = clock();
 			lp = total_posts(com,ini,fi);
@@ -141,10 +141,10 @@ int main(){
 			printf("Tag a verificar\n");
 			gets(string2);
 			printf("Data inicial do tipo dia-mes-ano\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			ini = createDate(int1,int2,int3);
 			printf("Data final\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 			t = clock();
 			llis = questions_with_tag(com,string2,ini,fi);
@@ -194,10 +194,10 @@ int main(){
 			int4 = atoi(string);
 
 			printf("Data inicial do tipo dia-mes-ano\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			ini = createDate(int1,int2,int3);
 			printf("Data final\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 			t = clock();
 			llis = most_voted_answers(com,int4,ini,fi);
@@ -222,10 +222,10 @@ int main(){
 			int4 = atoi(string);
 
 			printf("Data inicial do tipo dia-mes-ano\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			ini = createDate(int1,int2,int3);
 			printf("Data final\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 			t = clock();
 			llis = most_answered_questions(com,int4,ini,fi);
@@ -308,10 +308,10 @@ int main(){
 			gets(string);
 			int4 = atoi(string);
 			printf("Data inicial do tipo dia-mes-ano\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			ini = createDate(int1,int2,int3);
 			printf("Data final\n");
-			scanf("%i-%i-%i",&int1,&int2,&int3);
+			z = scanf("%i-%i-%i",&int1,&int2,&int3);
 			fi = createDate(int1,int2,int3);
 
 			t = clock();
@@ -339,6 +339,7 @@ int main(){
 	}
 	free(com);
 
+	z++;
 
 	/*int i;
 	long * ks;
