@@ -186,7 +186,6 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	return l;
 }
 
-
 /**
  * @brief			Função dá load aos ficheiros xml.
  * @param			Estrutura que guarda as outras estruturas.
@@ -207,6 +206,7 @@ TAD_community load(TAD_community com, char * dump_path){
 
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
+
 	/*
 	com->num_posts = initHEAP(NUM_nodes(users));
 	com->pre_posts = NULL;

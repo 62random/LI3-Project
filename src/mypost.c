@@ -85,7 +85,7 @@ int setPostToPost(TREE tree,long id,void * data){
 		post = search_POSTID(tree,id);
 		if (post == NULL)
 			return -1;
-		g_ptr_array_add(post->filhos,data);
+		g_ptr_array_add(post->filhos,(gpointer) data);
 		return 1;
 }
 
@@ -99,7 +99,7 @@ int setPostToPost(TREE tree,long id,void * data){
 void setFilhosNoPost(MYPOST post,void * data){
 		if (post == NULL)
 			return;
-		g_ptr_array_add(post->filhos,data);
+		g_ptr_array_add(post->filhos,(gpointer) data);
 }
 
 
@@ -418,6 +418,7 @@ MYPOST createpost() {
  * @param 			Apontador para a struct do post.
  */
 void freepost(MYPOST post) {
+	void * a;
 	if(post == NULL)
 		return;
 
@@ -429,7 +430,8 @@ void freepost(MYPOST post) {
 
 	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
-	g_ptr_array_free(post->filhos,TRUE);
+	a = g_ptr_array_free(post->filhos,FALSE);
+	g_free(a);
 
 	free(post);
 }

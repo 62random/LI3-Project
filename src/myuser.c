@@ -171,12 +171,14 @@ MYUSER createMYUSER(){
 
 void freeMYUSER(void * aux){
 	MYUSER conta;
+	int i,n;
     if (aux != NULL){
 		conta = (MYUSER) aux;
 		if (conta->bio)
         	free(conta->bio);
 		if (conta->username)
         	free(conta->username);
+		n = conta->posts->len;
 		g_ptr_array_free(conta->posts,TRUE);
         free(conta);
     }
@@ -249,7 +251,7 @@ int setPostToUSER(TREE tree,long id,void * data){
 	use = search_USER(tree,id);
 	if (use == NULL)
 		return -1;
-	g_ptr_array_add(use->posts,data);
+	g_ptr_array_add(use->posts,(gpointer) data);
 
 	return 1;
 }

@@ -43,12 +43,14 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 static void * concat_post(void * data1, void * data2){
 
+	void * k;
 	GPtrArray * a1 = (GPtrArray *) data1;
 	GPtrArray * a2 = (GPtrArray *) data2;
 	MYPOST a = (MYPOST) g_ptr_array_index(a2,0);
-	g_ptr_array_add(a1,a);
+	g_ptr_array_add(a1,(gpointer) a);
 
-	g_ptr_array_free(a2,FALSE);
+	k = g_ptr_array_free(a2,FALSE);
+	g_free(k);
 
 	return a1;
 }
@@ -86,7 +88,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 			getDateP(post, &keydate);
 
 			list = g_ptr_array_new();
-			g_ptr_array_add(list,post);
+			g_ptr_array_add(list,(gpointer) post);
 
 			insere_tree(treeid, keyid, post);								//Insere este nodo na árvore ordenada por id's.
 			insere_tree(treedate, keydate, list);							//Insere este nodo na árvore ordenada cronológicamente.
