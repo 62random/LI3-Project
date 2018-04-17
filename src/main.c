@@ -176,10 +176,12 @@ int main(){
 			auxstring = get_bio(user);
 			printf("User = %s   ",auxstring);
 		//	free(auxstring);
-			auxll = get_10_latest_posts(user);
+			if(user){
+				auxll = get_10_latest_posts(user);
 			for(i=0;i<10;i++)
 				printf("%d -> %ld\n",i,auxll[i] );
 			free(auxll);
+			}
 			printf("Q5->%fms\n\n\n",a5);
 			free_user(user);
 			continue;
