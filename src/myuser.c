@@ -5,7 +5,7 @@ struct myuser{
     int rep;
     char * username;
     char * bio;
-	GPtrArray * posts;
+	STACKPOST posts;
 };
 
 /**
@@ -53,7 +53,7 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
 */
 
-GPtrArray * getMYLISTuser(MYUSER use){
+STACKPOST getMYLISTuser(MYUSER use){
 	if (use) return use->posts;
 	return NULL;
 }
@@ -67,9 +67,10 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
 	MYPOST post = NULL;
+	long k = get_NUM_eleSTACKPOST(use->posts);
 
-	for(i=0; i < n && i < use->posts->len; i++){
-		post = (MYPOST) g_ptr_array_index(use->posts,i);
+	for(i=0; i < n && i < k; i++){
+		post = get_ele_index_STACKPOST(use->posts,i);
 		if (post != NULL){
 			getIdP(post,r+i);
 		}
@@ -80,7 +81,7 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 
 long getNUM_POST_MYUSER(MYUSER use){
 	if (use)
-		return use->posts->len;
+		return get_NUM_eleSTACKPOST(use->posts);
 	return 0;
 }
 
@@ -94,9 +95,10 @@ void print_post_MYUSER(MYUSER use){
 	MYDATE data;
 	long ld=0;
 	int i = 0;
-	printf("Ne:%d\n",use->posts->len);
-	for(i = 0; i < use->posts->len;i++){
-		post = (MYPOST) g_ptr_array_index(use->posts,i);
+	long k = get_NUM_eleSTACKPOST(use->posts);
+	printf("Ne:%ld\n",k);
+	for(i = 0; i < k;i++){
+		post = get_ele_index_STACKPOST(use->posts,i);
 		if (post != NULL){
 			getIdP(post,&ld);
 			getDateP(post,&data);
@@ -160,7 +162,7 @@ MYUSER createMYUSER(){
     MYUSER conta = malloc(sizeof(struct myuser));
 	conta->bio = NULL;
 	conta->username = NULL;
-	conta->posts = g_ptr_array_new();
+	conta->posts = initSTACKPOST(1);
     return conta;
 }
 
@@ -171,15 +173,13 @@ MYUSER createMYUSER(){
 
 void freeMYUSER(void * aux){
 	MYUSER conta;
-	int i,n;
     if (aux != NULL){
 		conta = (MYUSER) aux;
 		if (conta->bio)
         	free(conta->bio);
 		if (conta->username)
         	free(conta->username);
-		n = conta->posts->len;
-		g_ptr_array_free(conta->posts,TRUE);
+		freeSTACKPOST_SEM_CLONE(conta->posts);
         free(conta);
     }
 }
@@ -246,12 +246,13 @@ MYUSER search_USER(TREE tree,long id){
  * @param				Informação do post.
 */
 
-int setPostToUSER(TREE tree,long id,void * data){
+int setPostToUSER(TREE tree,long id,MYPOST data){
 	MYUSER use;
 	use = search_USER(tree,id);
 	if (use == NULL)
 		return -1;
-	g_ptr_array_add(use->posts,(gpointer) data);
+	insereSTACKPOST(use->posts,data);
+
 
 	return 1;
 }

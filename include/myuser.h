@@ -16,7 +16,7 @@ long 		getIdMYUSER			(MYUSER use);
 int 		getREPMYUSER		(MYUSER use);
 char * 		getUsername			(MYUSER use);
 char * 		getBiography		(MYUSER use);
-GPtrArray *	getMYLISTuser		(MYUSER use); //rever encapl
+STACKPOST	getMYLISTuser		(MYUSER use); //rever encapl
 long * 		getNposts			(MYUSER use,int n,int * n_elem);
 void 		print_post_MYUSER	(MYUSER use);
 MYUSER 		createMYUSER		();
@@ -25,7 +25,7 @@ int 		compare_user		(void * key1,void * key2);
 void 		freeKey				(void * a);
 void 		freeTreeUSER		(TREE tree);
 MYUSER 		search_USER			(TREE tree,long id);
-int 		setPostToUSER		(TREE tree,long id,void * data);
+int 		setPostToUSER		(TREE tree,long id,MYPOST data);
 long		getNUM_POST_MYUSER	(MYUSER use);
 TREE 		createMYUSERS_TREE	(char * path);
 #endif

@@ -43,14 +43,12 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 static void * concat_post(void * data1, void * data2){
 
-	void * k;
-	GPtrArray * a1 = (GPtrArray *) data1;
-	GPtrArray * a2 = (GPtrArray *) data2;
-	MYPOST a = (MYPOST) g_ptr_array_index(a2,0);
-	g_ptr_array_add(a1,(gpointer) a);
+	STACKPOST a1 = (STACKPOST) data1;
+	STACKPOST a2 = (STACKPOST) data2;
+	MYPOST a = get_ele_index_STACKPOST(a2,0);
+	insereSTACKPOST(a1,a);
 
-	k = g_ptr_array_free(a2,FALSE);
-	g_free(k);
+	freeSTACKPOST_SEM_CLONE(a2);
 
 	return a1;
 }
@@ -71,7 +69,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 		fprintf(stderr, "Could not create user tree from %s\n", path);
 		return -1;
 	}
-	GPtrArray * list;
+	STACKPOST list;
 	MYPOST	post;
 	long * 	keyid;
 	MYDATE 	keydate = NULL;
@@ -87,8 +85,8 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 			getIdP(post, keyid);
 			getDateP(post, &keydate);
 
-			list = g_ptr_array_new();
-			g_ptr_array_add(list,(gpointer) post);
+			list = initSTACKPOST(1);
+			insereSTACKPOST(list,post);
 
 			insere_tree(treeid, keyid, post);								//Insere este nodo na árvore ordenada por id's.
 			insere_tree(treedate, keydate, list);							//Insere este nodo na árvore ordenada cronológicamente.

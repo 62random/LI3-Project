@@ -2,7 +2,6 @@
 #include <mypost.h>
 #include <date.h>
 
-
 struct mypost {
 	long 		id;
 	int			typeid;
@@ -16,8 +15,89 @@ struct mypost {
 	int 		anscount;
 	int			commcount;
 	int			favcount;
-	GPtrArray *	filhos;
+	STACKPOST	filhos;
 };
+
+struct stackpost {
+	long counter1;
+	long counter2;
+	long n_elem;
+	long size;
+	MYPOST * array;
+};
+
+/**
+ * @brief			Função que inicializa um stackpost.
+ * @param			Tamanho original da stackpost.
+*/
+
+STACKPOST initSTACKPOST(long size){
+	STACKPOST a = malloc(sizeof(struct stackpost));
+	a->counter1 = 0;
+	a->counter2 = 0;
+	a->n_elem = 0;
+	a->size = size;
+	a->array = malloc(size*sizeof(MYPOST));
+
+	return a;
+}
+
+/**
+ * @brief			Função que insere um elemento numa stackpost.
+ * @param			STACKPOST.
+ * @param			Post a inserir.
+*/
+
+void insereSTACKPOST(STACKPOST st, MYPOST post){
+	long i;
+	MYPOST * aux;
+	if (st->n_elem >= st->size){
+		st->size *= 2;
+		aux = malloc(st->size*sizeof(MYPOST));
+		for(i=0; i < st->n_elem; i++)
+			aux[i] = st->array[i];
+		free(st->array);
+		st->array = aux;
+	}
+	st->array[st->n_elem++] = post;
+
+}
+
+/**
+ * @brief			Função que calcula o número de elementos de uma stackpost.
+ * @param			STACKPOST.
+*/
+
+long get_NUM_eleSTACKPOST(STACKPOST st){
+	return st ? st->n_elem : 0;
+}
+
+/**
+ * @brief			Função que devolve o elemento na posição dada.
+ * @param			STACKPOST.
+ * @param			Indice a consultar.
+*/
+
+MYPOST get_ele_index_STACKPOST(STACKPOST st, long i){
+	if (i >= st->n_elem)
+		return NULL;
+	return st->array[i];
+}
+
+/**
+ * @brief			Função que dá free a uma stackpost.
+ * @param			STACKPOST.
+*/
+
+void freeSTACKPOST_SEM_CLONE(STACKPOST st){
+	if (st){
+		free(st->array);
+		free(st);
+	}
+}
+
+
+
 /**
  * @brief 			Função que verifica se existe uma data tag num post.
  * @param 			Apontador para a struct do post.
@@ -67,7 +147,7 @@ void getScoreP(MYPOST post, int * score){
  */
 
 //quebra o encap
-void getFilhosP(MYPOST post, GPtrArray ** filhos){
+void getFilhosP(MYPOST post, STACKPOST * filhos){
 	if(post)
 		(*filhos) = post->filhos;
 }
@@ -80,12 +160,12 @@ void getFilhosP(MYPOST post, GPtrArray ** filhos){
  * @param				Informação do post.
 */
 
-int setPostToPost(TREE tree,long id,void * data){
+int setPostToPost(TREE tree,long id,MYPOST data){
 		MYPOST post;
 		post = search_POSTID(tree,id);
 		if (post == NULL)
 			return -1;
-		g_ptr_array_add(post->filhos,(gpointer) data);
+		insereSTACKPOST(post->filhos,data);
 		return 1;
 }
 
@@ -96,10 +176,10 @@ int setPostToPost(TREE tree,long id,void * data){
  * @param				Informação do post.
 */
 
-void setFilhosNoPost(MYPOST post,void * data){
+void setFilhosNoPost(MYPOST post,MYPOST data){
 		if (post == NULL)
 			return;
-		g_ptr_array_add(post->filhos,(gpointer) data);
+		insereSTACKPOST(post->filhos,data);
 }
 
 
@@ -405,7 +485,7 @@ MYPOST createpost() {
 	post->parent_id = -2;
 	post->favcount	= 0;
 	post->anscount	= 0;
-	post->filhos = g_ptr_array_new();
+	post->filhos = initSTACKPOST(1);
 	return post;
 }
 
@@ -418,7 +498,7 @@ MYPOST createpost() {
  * @param 			Apontador para a struct do post.
  */
 void freepost(MYPOST post) {
-	void * a;
+
 	if(post == NULL)
 		return;
 
@@ -430,8 +510,7 @@ void freepost(MYPOST post) {
 
 	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
-	a = g_ptr_array_free(post->filhos,FALSE);
-	g_free(a);
+	freeSTACKPOST_SEM_CLONE(post->filhos);
 
 	free(post);
 }
@@ -525,9 +604,9 @@ void print_posts_MYPOST(MYPOST post){
 	MYDATE data = NULL;
 	long ld=0;
 	int i = 0;
-	printf("Ne:%d\n",post->filhos->len);
-	for(i=0; i < post->filhos->len; i++){
-		post2 = (MYPOST) g_ptr_array_index(post->filhos,i);
+	printf("Ne:%ld\n",post->filhos->n_elem);
+	for(i=0; i < post->filhos->n_elem; i++){
+		post2 = get_ele_index_STACKPOST(post->filhos,i);
 		if (post2 != NULL){
 			getIdP(post2,&ld);
 			getDateP(post2,&data);
