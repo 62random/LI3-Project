@@ -19,7 +19,7 @@ char* megaU = "/home/pedro/Desktop/dump/android";
 char *gets(char *str);
 
 
-int main(){
+int main1(){
 	char string[256];
 	char string2[256];
 	long* auxll;
@@ -605,7 +605,7 @@ int main(){
 //					t = clock()-t;
 	//				double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 		//							printf("Q8->%fms\n\n\n",a5);
-/*
+
 int main(){
 	TAD_community com = init();
 	clock_t t;
@@ -620,4 +620,4 @@ int main(){
 	printf("P:%ld->R:%ld\n",get_fst_long(a),get_snd_long(a));
 	com = clean(com);
 	free(com);
-}*/
+}
