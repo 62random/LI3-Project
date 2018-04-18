@@ -237,6 +237,15 @@ int main(){
 						free_date(di);
 						free_date(df);
 						free_list(l);*/
+						Date di = createDate(1,0,2009);
+						Date df = createDate(1,1,2020);
+						t = clock();
+						LONG_pair pat = total_posts(com,di,df);
+						t = clock()-t;
+						double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
+						printf("P=%ld -> R=%ld\n",get_fst_long(pat),get_snd_long(pat));
+						printf("Q3->%fms\n",a6);
+
 		t = clock();
 		com = clean(com);
 		t = clock()-t;

@@ -43,6 +43,48 @@ STACKPOST initSTACKPOST(long size){
 }
 
 /**
+ * @brief			Função que adiciona um valor ao counter2.
+ * @param			STACKPOST.
+ * @param 			Conter 2.
+*/
+
+void incCounter2_STACKPOST(STACKPOST st,long i){
+	if (st){
+		st->counter2 += i;
+	}
+}
+
+/**
+ * @brief			Função que adiciona um valor ao counter1.
+ * @param			STACKPOST.
+ * @param 			Conter 1.
+*/
+
+void incCounter1_STACKPOST(STACKPOST st,long i){
+	if (st){
+		st->counter1 += i;
+	}
+}
+
+/**
+ * @brief			Função que devolve o counter 1.
+ * @param			STACKPOST.
+*/
+
+long getCounter1_STACKPOST(STACKPOST st){
+	return st ? st->counter1 : 0;
+}
+
+/**
+ * @brief			Função que devolve o counter 2.
+ * @param			STACKPOST.
+*/
+
+long getCounter2_STACKPOST(STACKPOST st){
+	return st ? st->counter2 : 0;
+}
+
+/**
  * @brief			Função que insere um elemento numa stackpost.
  * @param			STACKPOST.
  * @param			Post a inserir.
@@ -50,6 +92,7 @@ STACKPOST initSTACKPOST(long size){
 
 void insereSTACKPOST(STACKPOST st, MYPOST post){
 	long i;
+	int type;
 	MYPOST * aux;
 	if (st->n_elem >= st->size){
 		st->size *= 2;
@@ -60,6 +103,13 @@ void insereSTACKPOST(STACKPOST st, MYPOST post){
 		st->array = aux;
 	}
 	st->array[st->n_elem++] = post;
+	getPostTypeIdP(post,&type);
+	if (type == 1){
+		st->counter1 += 1;
+	}
+	else if (type == 2){
+		st->counter2 += 1;
+	}
 
 }
 

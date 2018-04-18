@@ -68,17 +68,16 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 
 static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 	HEAP h = *(HEAP *) dataaux;
-	//MYLIST l = (MYLIST) data;
-	GArray * arr = (GArray *) data;
-	//LList aux = getFirst_BOX(l);
+	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
 	int type = -1;
 	int score = -1;
 	long id = -1;
 	int i;
+	long tam = get_NUM_eleSTACKPOST(arr);
 
-	for(i=0; i < arr->len; i++){
-		post = g_array_index(arr,MYPOST,i);
+	for(i=0; i < tam; i++){
+		post = get_ele_index_STACKPOST(arr,i);
 		if (post){
 			getPostTypeIdP(post,&type);
 			if (type == 2){
@@ -186,6 +185,13 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	return l;
 }
 
+static void contaNodsa(void * data1, void * data2){
+	if (data1){
+		STACKPOST a = (STACKPOST) data1;
+		*(long *) data2 += get_NUM_eleSTACKPOST(a);
+	}
+}
+
 /**
  * @brief			Função dá load aos ficheiros xml.
  * @param			Estrutura que guarda as outras estruturas.
@@ -208,13 +214,29 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->posts_Id = posts_ID;
 
 	/*
-	com->num_posts = initHEAP(NUM_nodes(users));
-	com->pre_posts = NULL;
+	long key = 0;
+	all_nodes_TREE(postsDate,&contaNodsa,&key);
+	printf("D:%ld\n",key);
+	printf("I:%ld\n",NUM_nodes(posts_ID));
+	MYUSER use = NULL;
+	printf("KEY\n");
+	while(scanf("%ld",&key) && key != 0){
+		use = search_USER(users,key);
+		if (use){
+			print_post_MYUSER(use);
+		}
+	}*/
+
+
+
+
 	com->rep_users = initHEAP(NUM_nodes(users));
 	com->pre_rep = NULL;
-	//ordenar o array dos users!!!!
 	all_nodes_TREE(users,&num_rep_na_HEAP,&com->rep_users);
-	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);*/
+	//ordenar o array dos users!!!!
+	com->num_posts = initHEAP(NUM_nodes(users));
+	com->pre_posts = NULL;
+	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
 
 	return com;
 }
@@ -229,11 +251,10 @@ TAD_community clean(TAD_community com){
 
 	freeTREE_AVL(com->posts_Id);
 	freeTREE_AVL(com->posts_Date);
-	/*
 	freeSTACK(com->pre_posts);
 	freeMYHEAP(com->num_posts);
 	freeSTACK(com->pre_rep);
-	freeMYHEAP(com->rep_users);*/
+	freeMYHEAP(com->rep_users);
 
 	return com;
 }
@@ -350,22 +371,11 @@ STR_pair info_from_post(TAD_community com, long id){
 static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
 	long aux;
 	int type, i;
-	GArray * arr = (GArray *) data;
+	STACKPOST arr = (STACKPOST) data;
 	MYPOST post;
-	if (data != NULL){
-		for(i=0; i < arr->len; i++){
-			post = g_array_index(arr,MYPOST,i);
-			if (type == 1){ // pergunta
-				aux = *(long*)perguntas;
-				aux++;
-				*(long*)perguntas = aux;
-			}
-			if (type == 2){ // respotas
-				aux = *(long*)respostas;
-				aux++;
-				*(long*)respostas = aux;
-			}
-		}
+	if (data != NULL){ //p->1 r->2
+		*(long *)perguntas += getCounter1_STACKPOST(arr);
+		*(long *)respostas += getCounter2_STACKPOST(arr);
 	}
 }
 

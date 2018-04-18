@@ -47,6 +47,8 @@ static void * concat_post(void * data1, void * data2){
 	STACKPOST a2 = (STACKPOST) data2;
 	MYPOST a = get_ele_index_STACKPOST(a2,0);
 	insereSTACKPOST(a1,a);
+	incCounter1_STACKPOST(a1,getCounter1_STACKPOST(a2));
+	incCounter2_STACKPOST(a1,getCounter2_STACKPOST(a2));
 
 	freeSTACKPOST_SEM_CLONE(a2);
 
@@ -74,7 +76,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 	long * 	keyid;
 	MYDATE 	keydate = NULL;
 	TREE 	treeid 		= createTREE(&compare_user, &freeKey, &freepost,NULL);
-	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, NULL,&concat_post); //é preciso dar free á data xD pensar como fazer isso.
+	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, &freeSTACKPOST_SEM_CLONE,&concat_post); //é preciso dar free á data xD pensar como fazer isso.
 
 	for(cur = cur->children; cur; cur = cur->next) {						// Percorre os posts todos.
 		if(strcmp("row", (char *) cur->name) == 0) {
