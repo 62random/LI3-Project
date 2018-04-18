@@ -47,8 +47,6 @@ static void * concat_post(void * data1, void * data2){
 	STACKPOST a2 = (STACKPOST) data2;
 	MYPOST a = get_ele_index_STACKPOST(a2,0);
 	insereSTACKPOST(a1,a);
-	incCounter1_STACKPOST(a1,getCounter1_STACKPOST(a2));
-	incCounter2_STACKPOST(a1,getCounter2_STACKPOST(a2));
 
 	freeSTACKPOST_SEM_CLONE(a2);
 

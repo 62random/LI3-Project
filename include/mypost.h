@@ -4,6 +4,7 @@
 #include "mydate.h"
 #include "mytree.h"
 #include "mylist.h"
+#include <stdlib.h>
 #include <glib.h>
 
 
@@ -14,6 +15,7 @@ typedef struct mypost * MYPOST;
 typedef struct stackpost * STACKPOST;
 
 //Stackpost
+void 		order_STACKPOST			(STACKPOST st, void * func);
 STACKPOST	initSTACKPOST			(long size);
 void		insereSTACKPOST			(STACKPOST st, MYPOST post);
 void 		incCounter2_STACKPOST	(STACKPOST st,long i);
@@ -63,4 +65,5 @@ MYPOST 		search_POSTID			(TREE tree, long id);
 void 		free_StringArray		(char ** arr);
 void 		print_posts_MYPOST		(MYPOST post);
 int			existeTag				(MYPOST post,char * tag);
+STACKPOST 	search_POSTDATA			(TREE tree,MYDATE data);
 #endif

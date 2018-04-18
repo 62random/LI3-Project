@@ -27,6 +27,50 @@ struct stackpost {
 };
 
 /**
+ * @brief			Função que ordena uma stackpost.
+ * @param			STACKPOST.
+ * @param			Função de comparação.
+*/
+
+void order_STACKPOST(STACKPOST st, void * func){
+	/*
+	MYPOST aux;
+	MYDATE a = NULL;
+	long i;
+	for(i= 0; i < st->n_elem; i++){
+		aux = st->array[i];
+		if (aux == NULL)
+			printf("pleb\n");
+		if (aux){
+			getDateP(aux,&a);
+			if (a != NULL)
+				printf("D:%d->M:%d->A:%d\n",get_MYday(a),get_MYmonth(a),get_MYyear(a));
+			if (a == NULL){
+				printf("MERDA\n");
+			}
+		}
+	}*/
+
+	if (st->n_elem >= 2)
+		qsort(st->array,st->n_elem,sizeof(MYPOST),func);
+}
+
+/**
+ * @brief			Função que troca dois elementos do array.
+ * @param			Array.
+ * @param			Indice 1.
+ * @param			Indice 2.
+*/
+
+
+static void swapMYPOST(MYPOST * array, long i, long d){
+	MYPOST aux = array[i];
+
+	array[i] = array[d];
+	array[d] = aux;
+}
+
+/**
  * @brief			Função que inicializa um stackpost.
  * @param			Tamanho original da stackpost.
 */
@@ -72,7 +116,7 @@ void incCounter1_STACKPOST(STACKPOST st,long i){
 */
 
 long getCounter1_STACKPOST(STACKPOST st){
-	return st ? st->counter1 : 0;
+	return (st) ? st->counter1 : 0;
 }
 
 /**
@@ -81,7 +125,7 @@ long getCounter1_STACKPOST(STACKPOST st){
 */
 
 long getCounter2_STACKPOST(STACKPOST st){
-	return st ? st->counter2 : 0;
+	return (st) ? st->counter2 : 0;
 }
 
 /**
@@ -639,6 +683,16 @@ MYPOST search_POSTID(TREE tree,long id){
 	int valid;
 
 	MYPOST post = search_AVL(tree, &id, &valid);
+	if (valid)
+		return post;
+	return NULL;
+}
+
+// ta aqui só para teste.
+STACKPOST search_POSTDATA(TREE tree,MYDATE data){
+	int valid;
+
+	STACKPOST post = search_AVL(tree, data, &valid);
 	if (valid)
 		return post;
 	return NULL;

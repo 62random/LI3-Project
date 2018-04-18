@@ -185,10 +185,10 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	return l;
 }
 
-static void contaNodsa(void * data1, void * data2){
-	if (data1){
-		STACKPOST a = (STACKPOST) data1;
-		*(long *) data2 += get_NUM_eleSTACKPOST(a);
+static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
+	MYUSER use = (MYUSER) data1;
+	if (use){
+		order_STACKPOST(getMYLISTuser(use),&ordenaMYUSER);
 	}
 }
 
@@ -212,10 +212,9 @@ TAD_community load(TAD_community com, char * dump_path){
 
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
+	//all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
 
-	/*
 	long key = 0;
-	all_nodes_TREE(postsDate,&contaNodsa,&key);
 	printf("D:%ld\n",key);
 	printf("I:%ld\n",NUM_nodes(posts_ID));
 	MYUSER use = NULL;
@@ -225,8 +224,29 @@ TAD_community load(TAD_community com, char * dump_path){
 		if (use){
 			print_post_MYUSER(use);
 		}
-	}*/
+	}
+	/*
+	int dia,mes,ano;
+	long i,id;
+	MYDATE lal;
+	STACKPOST a;
+	MYPOST post;
 
+	printf("KET\n");
+	while(scanf("%d-%d-%d\n",&dia,&mes,&ano)){
+		lal = createMYDate(12,9,2010);
+		a = search_POSTDATA(postsDate,lal);
+		if (a){
+			for(i=0; i < get_NUM_eleSTACKPOST(a); i++){
+				post = get_ele_index_STACKPOST(a,i);
+				if(post){
+					getIdP(post,&id);
+					printf("ID:%ld\n",id);
+				}
+			}
+			printf("I=%ld\n",i);
+		}
+	}*/
 
 
 
@@ -378,6 +398,27 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
 		*(long *)respostas += getCounter2_STACKPOST(arr);
 	}
 }
+/*
+static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
+	long aux1 = 0, aux2 = 0;
+	int type, i;
+	STACKPOST arr = (STACKPOST) data;
+	MYPOST post;
+	if (data != NULL){ //p->1 r->2
+		for(i=0; i < get_NUM_eleSTACKPOST(arr);i++){
+			post = get_ele_index_STACKPOST(arr,i);
+			getPostTypeIdP(post,&type);
+			if (type == 1){
+				aux1++;
+			}
+			else if (type == 2){
+				aux2++;
+			}
+		}
+		*(long *)perguntas += aux1;
+		*(long *)respostas += aux2;
+	}
+}*/
 
 //3
 /**
