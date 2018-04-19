@@ -98,16 +98,15 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 
 static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
 	HEAP h = *(HEAP *) dataaux;
-	GArray * arr = (GArray *) data;
-	//MYLIST l = (MYLIST) data;
-	//LList aux = getFirst_BOX(l);
+	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
 	int type = -1;
 	int n_resp = -1;
 	long id = -1;
 	int i;
-	for(i=0; i < arr->len; i++){
-		post = g_array_index(arr,MYPOST,i);
+	long tam = get_NUM_eleSTACKPOST(arr);
+	for(i=0; i < tam; i++){
+		post = get_ele_index_STACKPOST(arr,i);
 		if (post){
 			getPostTypeIdP(post,&type);
 			if (type == 1){
@@ -212,7 +211,7 @@ TAD_community load(TAD_community com, char * dump_path){
 
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
-	//all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
+	all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
 
 	long key = 0;
 	printf("D:%ld\n",key);

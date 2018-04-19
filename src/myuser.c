@@ -249,12 +249,11 @@ int ordenaMYUSER(void * data1, void * data2){
 	MYPOST a1 = (MYPOST) data1;
 	MYPOST a2 = (MYPOST) data2;
 
-	if (a1 == NULL || a2 == NULL)
-		printf("dasdasdasd\n");
 
-	MYDATE d1,d2;
+	MYDATE d1 = NULL,d2 = NULL;
 	getDateP(a1,&d1);
 	getDateP(a2,&d2);
+
 
 	int x = compare_MYDATE_AVL(d1,d2);
 	if (x == 1){

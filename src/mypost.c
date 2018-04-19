@@ -50,9 +50,7 @@ void order_STACKPOST(STACKPOST st, void * func){
 			}
 		}
 	}*/
-
-	if (st->n_elem >= 2)
-		qsort(st->array,st->n_elem,sizeof(MYPOST),func);
+	qsort(st->array,st->n_elem,sizeof(MYPOST),func);
 }
 
 /**
