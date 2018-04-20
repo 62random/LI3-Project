@@ -239,28 +239,3 @@ long get_NUM_eleHEAP(HEAP a){
 	long x;
 	return (x = a ? a->n_elem : 0);
 }
-
-int teste_heap(HEAP h){
-	int fd,fe;
-	int i = 0;
-
-	while(i != h->n_elem){
-		fe = 2*i + 1;
-		fd = 2*i + 2;
-		if (fd < h->n_elem){
-			if (h->array[i].key < h->array[fd].key){
-				printf("%d\n",i);
-				return -1;
-			}
-		}
-		if (fe < h->n_elem){
-			if (h->array[i].key < h->array[fe].key){
-				printf("%d\n",i);
-				return -1;
-			}
-		}
-		i++;
-	}
-
-	return 0;
-}

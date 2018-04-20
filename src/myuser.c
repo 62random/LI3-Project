@@ -5,6 +5,7 @@ struct myuser{
     int rep;
     char * username;
     char * bio;
+	int type;
 	STACKPOST posts;
 };
 
@@ -158,10 +159,11 @@ static void setUsername(MYUSER use, char * nome){
  * @brief 			Função que aloca memória para um user
  */
 
-MYUSER createMYUSER(){
+MYUSER createMYUSER(int type){
     MYUSER conta = malloc(sizeof(struct myuser));
 	conta->bio = NULL;
 	conta->username = NULL;
+	conta->type = 1;
 	conta->posts = initSTACKPOST(1);
     return conta;
 }
@@ -285,7 +287,7 @@ TREE createMYUSERS_TREE(char * path){
     xmlChar *key;
 	while (aux != NULL){
 		if (strcmp((char*)aux->name,"row")==0){
-        	use = createMYUSER();
+        	use = createMYUSER(1);
 			cur = aux->properties;
 		 		while (cur != NULL) {
 					key = xmlNodeListGetString(doc,cur->children,1);
