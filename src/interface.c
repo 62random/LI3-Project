@@ -37,12 +37,11 @@ TAD_community init(){
 
 
 static void num_posts_na_HEAP(void * data,void * dataaux){
-	HEAP h = *(HEAP *) dataaux;
+	HEAP h = (HEAP) dataaux;
 	MYUSER user = (MYUSER) data;
 
 	long n_post = getNUM_POST_MYUSER(user);
-	h = insereHEAP(h,n_post,getIdMYUSER(user));
-	*(HEAP*) dataaux = h;
+	insereHEAP(h,n_post,getIdMYUSER(user));
 }
 
 /**
@@ -52,11 +51,10 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 */
 
 static void num_rep_na_HEAP(void * data,void * dataaux){
-	HEAP h = *(HEAP *) dataaux;
+	HEAP h = (HEAP) dataaux;
 	MYUSER user = (MYUSER) data;
 
-	h = insereHEAP(h,getREPMYUSER(user),getIdMYUSER(user));
-	*(HEAP*) dataaux = h;
+	insereHEAP(h,getREPMYUSER(user),getIdMYUSER(user));
 }
 
 /**
@@ -67,7 +65,7 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 
 
 static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
-	HEAP h = *(HEAP *) dataaux;
+	HEAP h = (HEAP) dataaux;
 	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
 	int type = -1;
@@ -83,11 +81,10 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 			if (type == 2){
 				getScoreP(post,&score);
 				getIdP(post,&id);
-				h = insereHEAP(h,score,id);
+				insereHEAP(h,score,id);
 			}
 		}
 	}
-	*(HEAP*) dataaux = h;
 }
 
 /**
@@ -97,7 +94,7 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 */
 
 static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
-	HEAP h = *(HEAP *) dataaux;
+	HEAP h = (HEAP) dataaux;
 	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
 	int type = -1;
@@ -112,11 +109,10 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
 			if (type == 1){
 				getAnswersP(post,&n_resp);
 				getIdP(post,&id);
-				h = insereHEAP(h,n_resp,id);
+				insereHEAP(h,n_resp,id);
 			}
 		}
 	}
-	*(HEAP*) dataaux = h;
 }
 
 /**
@@ -132,12 +128,12 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 	MYDATE b1 = DatetoMYDATE(begin);
 	MYDATE e1 = DatetoMYDATE(end);
 
-	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_nresp,&h,NULL);
+	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_nresp,h,NULL);
 
 	int i;
 	long key,data;
 	for(i=0; i < N && (get_NUM_eleHEAP(h) > 0); i++){
-		h = pop(h,&key,&data);
+		pop(h,&key,&data);
 		set_list(l,i,data);
 	}
 	if (i < N){
@@ -169,7 +165,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	int i;
 	long key,data;
 	for(i=0; i < N && (get_NUM_eleHEAP(h) > 0); i++){
-		h = pop(h,&key,&data);
+		pop(h,&key,&data);
 		set_list(l,i,data);
 	}
 	if (i < N){
@@ -184,10 +180,15 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	return l;
 }
 
+/**
+ * @brief			Função ordena os posts de um user.
+ * @param			Apontador para o user.
+*/
+
 static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
 	MYUSER use = (MYUSER) data1;
 	if (use){
-		order_STACKPOST(getMYLISTuser(use),&ordenaMYUSER);
+		order_STACKPOST(getMYLISTuser(use),&ordenaPOST_MYUSER);
 	}
 }
 
@@ -213,49 +214,13 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->posts_Id = posts_ID;
 	all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
 
-	long key = 0;
-	printf("D:%ld\n",key);
-	printf("I:%ld\n",NUM_nodes(posts_ID));
-	MYUSER use = NULL;
-	printf("KEY\n");
-	while(scanf("%ld",&key) && key != 0){
-		use = search_USER(users,key);
-		if (use){
-			print_post_MYUSER(use);
-		}
-	}
-	/*
-	int dia,mes,ano;
-	long i,id;
-	MYDATE lal;
-	STACKPOST a;
-	MYPOST post;
-
-	printf("KET\n");
-	while(scanf("%d-%d-%d\n",&dia,&mes,&ano)){
-		lal = createMYDate(12,9,2010);
-		a = search_POSTDATA(postsDate,lal);
-		if (a){
-			for(i=0; i < get_NUM_eleSTACKPOST(a); i++){
-				post = get_ele_index_STACKPOST(a,i);
-				if(post){
-					getIdP(post,&id);
-					printf("ID:%ld\n",id);
-				}
-			}
-			printf("I=%ld\n",i);
-		}
-	}*/
-
-
 
 	com->rep_users = initHEAP(NUM_nodes(users));
 	com->pre_rep = NULL;
-	all_nodes_TREE(users,&num_rep_na_HEAP,&com->rep_users);
-	//ordenar o array dos users!!!!
+	all_nodes_TREE(users,&num_rep_na_HEAP,com->rep_users);
 	com->num_posts = initHEAP(NUM_nodes(users));
 	com->pre_posts = NULL;
-	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
+	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
 
 	return com;
 }
@@ -301,7 +266,7 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
 			array[i] = get_ELE_index(com->pre_rep,i);
 		for(; i < N; i++){
-			com->rep_users = pop(com->rep_users,&key,&id);
+			pop(com->rep_users,&key,&id);
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
 		}
@@ -334,8 +299,8 @@ LONG_list top_most_active(TAD_community com, int N){
 		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
 		for(; i < N; i++){
-			com->num_posts = pop(com->num_posts,&key,&id);
-			printf("%ld\n",key);
+			pop(com->num_posts,&key,&id);
+			//printf("%ld\n",key);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
 		}

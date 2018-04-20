@@ -25,7 +25,6 @@ int 		compare_user		(void * key1,void * key2);
 void 		freeKey				(void * a);
 void 		freeTreeUSER		(TREE tree);
 MYUSER 		search_USER			(TREE tree,long id);//rever encapl
-int 		ordenaMYUSER		(void * data1, void * data2);
 int 		setPostToUSER		(TREE tree,long id,MYPOST data);
 long		getNUM_POST_MYUSER	(MYUSER use);
 TREE 		createMYUSERS_TREE	(char * path);

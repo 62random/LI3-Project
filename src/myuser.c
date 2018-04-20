@@ -239,31 +239,6 @@ MYUSER search_USER(TREE tree,long id){
 	return NULL;
 }
 
-/**
- * @brief				Função que calcula o valor da nova ordenação.
- * @param				MYPOST 1;
- * @param				MYPOST 2;
-*/
-
-int ordenaMYUSER(void * data1, void * data2){
-	MYPOST a1 = (MYPOST) data1;
-	MYPOST a2 = (MYPOST) data2;
-
-
-	MYDATE d1 = NULL,d2 = NULL;
-	getDateP(a1,&d1);
-	getDateP(a2,&d2);
-
-
-	int x = compare_MYDATE_AVL(d1,d2);
-	if (x == 1){
-		x = -1;
-	}
-	else if (x == -1)
-		x = 1;
-
-	return x;
-}
 
 /**
  * @brief				Função mete um post no correspondete user.

@@ -27,30 +27,18 @@ struct stackpost {
 };
 
 /**
- * @brief			Função que ordena uma stackpost.
- * @param			STACKPOST.
- * @param			Função de comparação.
+ * @brief				Função que calcula o valor da nova ordenação.
+ * @param				MYPOST 1;
+ * @param				MYPOST 2;
 */
 
-void order_STACKPOST(STACKPOST st, void * func){
-	/*
-	MYPOST aux;
-	MYDATE a = NULL;
-	long i;
-	for(i= 0; i < st->n_elem; i++){
-		aux = st->array[i];
-		if (aux == NULL)
-			printf("pleb\n");
-		if (aux){
-			getDateP(aux,&a);
-			if (a != NULL)
-				printf("D:%d->M:%d->A:%d\n",get_MYday(a),get_MYmonth(a),get_MYyear(a));
-			if (a == NULL){
-				printf("MERDA\n");
-			}
-		}
-	}*/
-	qsort(st->array,st->n_elem,sizeof(MYPOST),func);
+int ordenaPOST_MYUSER(const void * data1, const void * data2){
+	MYPOST a1 = (MYPOST) data1;
+	MYPOST a2 = (MYPOST) data2;
+
+	int x = compare_MYDATE_AVL(a1->cdate,a2->cdate);
+
+	return x;
 }
 
 /**
@@ -69,6 +57,50 @@ static void swapMYPOST(MYPOST * array, long i, long d){
 }
 
 /**
+ * @brief			Função que executa uma partition num Array de MYPOST.
+ * @param 			Array a partir.
+ * @param			Número de elementos.
+ * @param			Função de comparação.
+*/
+
+static long partition(MYPOST * v, long N, int (*f_compare)(MYPOST,MYPOST)){
+	long i,j;
+	for(i=0,j=0; i < N-1; i++){
+		if (f_compare(v[i],v[N-1]) < 0)
+			swapMYPOST(v,i,j++);
+	}
+	swapMYPOST(v,N-1,j);
+	return j;
+}
+
+/**
+ * @brief			Função que ordena um array com quicksort.
+ * @param			Array a ordenar.
+ * @param			Número de elementos.
+ * @param			Função de comparação.
+*/
+
+static void quicksort(MYPOST * v, long N,void * func){
+	long i;
+	if (N > 1){
+		i = partition(v,N,func);
+		quicksort(v,i,func);
+		quicksort(v+i+1,N-i-1,func);
+	}
+}
+
+
+/**
+ * @brief			Função que ordena uma stackpost.
+ * @param			STACKPOST.
+ * @param			Função de comparação.
+*/
+
+void order_STACKPOST(STACKPOST st, void * func){
+	quicksort(st->array,st->n_elem,func);
+}
+
+/**
  * @brief			Função que inicializa um stackpost.
  * @param			Tamanho original da stackpost.
 */
@@ -79,7 +111,7 @@ STACKPOST initSTACKPOST(long size){
 	a->counter2 = 0;
 	a->n_elem = 0;
 	a->size = size;
-	a->array = malloc(size*sizeof(MYPOST));
+	a->array = malloc(size*sizeof(struct mypost *));
 
 	return a;
 }
@@ -131,6 +163,29 @@ long getCounter2_STACKPOST(STACKPOST st){
  * @param			STACKPOST.
  * @param			Post a inserir.
 */
+/*
+void insereSTACKPOST(STACKPOST st, MYPOST post){
+	long i;
+	int type;
+	MYPOST * aux;
+	if (st->n_elem >= st->size){
+		st->size *= 2;
+		aux = malloc(st->size*sizeof(struct mypost *));
+		for(i=0; i < st->n_elem; i++)
+			aux[i] = st->array[i];
+		free(st->array);
+		st->array = aux;
+	}
+	st->array[st->n_elem++] = post;
+	getPostTypeIdP(post,&type);
+	if (type == 1){
+		st->counter1 += 1;
+	}
+	else if (type == 2){
+		st->counter2 += 1;
+	}
+
+}*/
 
 void insereSTACKPOST(STACKPOST st, MYPOST post){
 	long i;
@@ -138,7 +193,7 @@ void insereSTACKPOST(STACKPOST st, MYPOST post){
 	MYPOST * aux;
 	if (st->n_elem >= st->size){
 		st->size *= 2;
-		aux = malloc(st->size*sizeof(MYPOST));
+		aux = malloc(st->size*sizeof(struct mypost *));
 		for(i=0; i < st->n_elem; i++)
 			aux[i] = st->array[i];
 		free(st->array);

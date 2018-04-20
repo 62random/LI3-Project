@@ -56,6 +56,7 @@ void 		setScoreP				(MYPOST post, int  score);
 void 		getScoreP				(MYPOST post, int * score);
 void 		getFilhosP				(MYPOST post, STACKPOST * filhos);
 MYPOST 		createpost				();
+int 		ordenaPOST_MYUSER		(const void * data1, const void * data2);
 void 		freepost				(MYPOST post);
 int 		compare_mypostsAVLDate	(void * data1, void * data2,void * data);
 int 		compare_mypostsLISTDate	(void * data1, void * data2);
