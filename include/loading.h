@@ -4,6 +4,7 @@
 #include <mypost.h>
 #include <myuser.h>
 #include <mydate.h>
+#include <glib.h>
 #include "/usr/include/libxml2/libxml/parser.h"
 #include "/usr/include/libxml2/libxml/xmlwriter.h"
 #include "/usr/include/libxml2/libxml/tree.h"

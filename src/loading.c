@@ -35,6 +35,26 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
 /**
  * @date 			29 Mar 2018
+ * @brief 			Função que tira o primeiro elemento de um GArray e o coloca noutro.
+ * @param 			GArray 1
+ * @param 			GArray 2
+ */
+
+
+static void * concat_post(void * data1, void * data2){
+
+	STACKPOST a1 = (STACKPOST) data1;
+	STACKPOST a2 = (STACKPOST) data2;
+	MYPOST a = get_ele_index_STACKPOST(a2,0);
+	insereSTACKPOST(a1,a);
+
+	freeSTACKPOST_SEM_CLONE(a2);
+
+	return a1;
+}
+
+/**
+ * @date 			29 Mar 2018
  * @brief 			Função que cria as àrvores balanceadas de posts segundo id e data de criação.
  * @param path		O ficheiro Posts.xml.
  * @param tree_id 	O apontador onde ficará apontada a àrvore ordenada segundo id's.
@@ -49,12 +69,12 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 		fprintf(stderr, "Could not create user tree from %s\n", path);
 		return -1;
 	}
-	MYLIST	list;
+	STACKPOST list;
 	MYPOST	post;
 	long * 	keyid;
 	MYDATE 	keydate = NULL;
 	TREE 	treeid 		= createTREE(&compare_user, &freeKey, &freepost,NULL);
-	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, &free_MYLIST,&concat_LIST);
+	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, &freeSTACKPOST_SEM_CLONE,&concat_post); //é preciso dar free á data xD pensar como fazer isso.
 
 	for(cur = cur->children; cur; cur = cur->next) {						// Percorre os posts todos.
 		if(strcmp("row", (char *) cur->name) == 0) {
@@ -65,8 +85,8 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 			getIdP(post, keyid);
 			getDateP(post, &keydate);
 
-			list = init_MYLIST(NULL,NULL,NULL);
-			list = insere_list(list,NULL,post);
+			list = initSTACKPOST(1);
+			insereSTACKPOST(list,post);
 
 			insere_tree(treeid, keyid, post);								//Insere este nodo na árvore ordenada por id's.
 			insere_tree(treedate, keydate, list);							//Insere este nodo na árvore ordenada cronológicamente.
@@ -218,8 +238,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 				if(!flag[5] && strcmp((char *) cur->name, "OwnerUserId") == 0) {
 					l = atol(value);
 					setOwnerIdP(post, l);
-					getDateP(post, &date);
-					setPostToUSER(treeusers, l, date, post);
+					setPostToUSER(treeusers, l, post);
 					flag[5] = 1;
 					free(value);
 					continue;
@@ -273,8 +292,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 	}
 
 	if(parent){
-		getDateP(post,&date);
 		getPIdP(post,&l);
-		setFilhosNoPost(parent,date,post);
+		setFilhosNoPost(parent,post);
 	}
 }

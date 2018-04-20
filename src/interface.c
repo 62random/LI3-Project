@@ -37,12 +37,11 @@ TAD_community init(){
 
 
 static void num_posts_na_HEAP(void * data,void * dataaux){
-	HEAP h = *(HEAP *) dataaux;
+	HEAP h = (HEAP) dataaux;
 	MYUSER user = (MYUSER) data;
 
-	long n_post = get_NUM_ele(getMYLISTuser(user));
-	h = insereHEAP(h,n_post,getIdMYUSER(user));
-	*(HEAP*) dataaux = h;
+	long n_post = getNUM_POST_MYUSER(user);
+	insereHEAP(h,n_post,getIdMYUSER(user));
 }
 
 /**
@@ -52,11 +51,10 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 */
 
 static void num_rep_na_HEAP(void * data,void * dataaux){
-	HEAP h = *(HEAP *) dataaux;
+	HEAP h = (HEAP) dataaux;
 	MYUSER user = (MYUSER) data;
 
-	h = insereHEAP(h,getREPMYUSER(user),getIdMYUSER(user));
-	*(HEAP*) dataaux = h;
+	insereHEAP(h,getREPMYUSER(user),getIdMYUSER(user));
 }
 
 /**
@@ -67,27 +65,26 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 
 
 static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
-	HEAP h = *(HEAP *) dataaux;
-	MYLIST l = (MYLIST) data;
-	LList aux = getFirst_BOX(l);
+	HEAP h = (HEAP) dataaux;
+	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
 	int type = -1;
 	int score = -1;
 	long id = -1;
+	int i;
+	long tam = get_NUM_eleSTACKPOST(arr);
 
-	while(aux){
-		post = getElemente_LList(aux);
+	for(i=0; i < tam; i++){
+		post = get_ele_index_STACKPOST(arr,i);
 		if (post){
 			getPostTypeIdP(post,&type);
 			if (type == 2){
 				getScoreP(post,&score);
 				getIdP(post,&id);
-				h = insereHEAP(h,score,id);
+				insereHEAP(h,score,id);
 			}
 		}
-		aux = getNext_LList(aux);
 	}
-	*(HEAP*) dataaux = h;
 }
 
 /**
@@ -97,27 +94,25 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 */
 
 static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
-	HEAP h = *(HEAP *) dataaux;
-	MYLIST l = (MYLIST) data;
-	LList aux = getFirst_BOX(l);
+	HEAP h = (HEAP) dataaux;
+	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
 	int type = -1;
 	int n_resp = -1;
 	long id = -1;
-
-	while(aux){
-		post = getElemente_LList(aux);
+	int i;
+	long tam = get_NUM_eleSTACKPOST(arr);
+	for(i=0; i < tam; i++){
+		post = get_ele_index_STACKPOST(arr,i);
 		if (post){
 			getPostTypeIdP(post,&type);
 			if (type == 1){
 				getAnswersP(post,&n_resp);
 				getIdP(post,&id);
-				h = insereHEAP(h,n_resp,id);
+				insereHEAP(h,n_resp,id);
 			}
 		}
-		aux = getNext_LList(aux);
 	}
-	*(HEAP*) dataaux = h;
 }
 
 /**
@@ -133,12 +128,12 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 	MYDATE b1 = DatetoMYDATE(begin);
 	MYDATE e1 = DatetoMYDATE(end);
 
-	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_nresp,&h,NULL);
+	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_nresp,h,NULL);
 
 	int i;
 	long key,data;
 	for(i=0; i < N && (get_NUM_eleHEAP(h) > 0); i++){
-		h = pop(h,&key,&data);
+		pop(h,&key,&data);
 		set_list(l,i,data);
 	}
 	if (i < N){
@@ -170,7 +165,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	int i;
 	long key,data;
 	for(i=0; i < N && (get_NUM_eleHEAP(h) > 0); i++){
-		h = pop(h,&key,&data);
+		pop(h,&key,&data);
 		set_list(l,i,data);
 	}
 	if (i < N){
@@ -185,6 +180,17 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	return l;
 }
 
+/**
+ * @brief			Função ordena os posts de um user.
+ * @param			Apontador para o user.
+*/
+
+static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
+	MYUSER use = (MYUSER) data1;
+	if (use){
+		order_STACKPOST(getMYLISTuser(use),&ordenaPOST_MYUSER);
+	}
+}
 
 /**
  * @brief			Função dá load aos ficheiros xml.
@@ -203,14 +209,18 @@ TAD_community load(TAD_community com, char * dump_path){
 	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
 
 	com->users = users;
+
 	com->posts_Date = postsDate;
 	com->posts_Id = posts_ID;
-	com->num_posts = initHEAP(NUM_nodes(users));
-	com->pre_posts = NULL;
+	all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
+
+
 	com->rep_users = initHEAP(NUM_nodes(users));
 	com->pre_rep = NULL;
-	all_nodes_TREE(users,&num_rep_na_HEAP,&com->rep_users);
-	all_nodes_TREE(users,&num_posts_na_HEAP,&com->num_posts);
+	all_nodes_TREE(users,&num_rep_na_HEAP,com->rep_users);
+	com->num_posts = initHEAP(NUM_nodes(users));
+	com->pre_posts = NULL;
+	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
 
 	return com;
 }
@@ -222,6 +232,7 @@ TAD_community load(TAD_community com, char * dump_path){
 
 TAD_community clean(TAD_community com){
 	freeTreeUSER(com->users);
+
 	freeTREE_AVL(com->posts_Id);
 	freeTREE_AVL(com->posts_Date);
 	freeSTACK(com->pre_posts);
@@ -255,7 +266,7 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
 			array[i] = get_ELE_index(com->pre_rep,i);
 		for(; i < N; i++){
-			com->rep_users = pop(com->rep_users,&key,&id);
+			pop(com->rep_users,&key,&id);
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
 		}
@@ -288,7 +299,8 @@ LONG_list top_most_active(TAD_community com, int N){
 		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
 		for(; i < N; i++){
-			com->num_posts = pop(com->num_posts,&key,&id);
+			pop(com->num_posts,&key,&id);
+			//printf("%ld\n",key);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
 		}
@@ -343,32 +355,36 @@ STR_pair info_from_post(TAD_community com, long id){
 */
 
 static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
-	MYLIST r;
-	int type;
-	LList lista2;
+	long aux;
+	int type, i;
+	STACKPOST arr = (STACKPOST) data;
 	MYPOST post;
-	long type1;
-	long type2;
-	if (data != NULL){
-		r = (MYLIST) data;
-		lista2 = getFirst_BOX(r);
-		type1 = *(long*)perguntas;
-		type2 = *(long*)respostas;
-		while(lista2){
-			post = (MYPOST) getElemente_LList(lista2);
-			getPostTypeIdP(post,&type);
-			if (type == 1){ // pergunta
-				type1++;
-			}
-			if (type == 2){ // respotas
-				type2++;
-			}
-			lista2 = getNext_LList(lista2);
-		}
-		*(long*)perguntas = type1;
-		*(long*)respostas = type2;
+	if (data != NULL){ //p->1 r->2
+		*(long *)perguntas += getCounter1_STACKPOST(arr);
+		*(long *)respostas += getCounter2_STACKPOST(arr);
 	}
 }
+/*
+static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
+	long aux1 = 0, aux2 = 0;
+	int type, i;
+	STACKPOST arr = (STACKPOST) data;
+	MYPOST post;
+	if (data != NULL){ //p->1 r->2
+		for(i=0; i < get_NUM_eleSTACKPOST(arr);i++){
+			post = get_ele_index_STACKPOST(arr,i);
+			getPostTypeIdP(post,&type);
+			if (type == 1){
+				aux1++;
+			}
+			else if (type == 2){
+				aux2++;
+			}
+		}
+		*(long *)perguntas += aux1;
+		*(long *)respostas += aux2;
+	}
+}*/
 
 //3
 /**
@@ -410,10 +426,7 @@ USER get_user_info(TAD_community com, long id){
 		for(;aux < 10; aux++)
 			posts[aux] = -1;
 	}
-	char* bio = getBiography(user);
-	USER info = create_user(bio,posts);
-	free(posts);
-	free(bio);
+	USER info = create_user(getBiography(user),posts);// leak mem
 	return info;
 }
 
@@ -423,14 +436,14 @@ USER get_user_info(TAD_community com, long id){
  * @param			Id do post
 */
 long better_answer(TAD_community com, long id){
-		MYLIST respostas;
+		GArray * arr;
 		MYUSER men;
 		long user;
 		int scr,rep,comt;
 		int scoreatual,scoremax;
 		scr=rep=comt=scoremax=scoreatual=0;
 		long	 id2 = -2;
-		int type;
+		int type,i;
 		LList aux;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
@@ -444,9 +457,9 @@ long better_answer(TAD_community com, long id){
 			return -4;
 		}
 
-		getFilhosP(post,&respostas);
-		for (aux = getFirst_BOX(respostas); aux; aux=getNext_LList(aux)){
-			post = (MYPOST)getElemente_LList(aux);
+		getFilhosP(post,&arr);
+		for(i=0; i < arr->len; i++){
+			post = g_array_index(arr,MYPOST,i);
 			getScoreP(post,&scr);
 			getCommentsP(post,&scr);
 			getOwnerIdP(post,&user);
@@ -464,8 +477,28 @@ long better_answer(TAD_community com, long id){
 
 }
 
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado;
+	GArray * arr = (GArray *) data;
+	int existe = 0,i;
+	long idp = -2;
+	MYPOST post;
+	if (data != NULL){
+		for(i=0; i < arr->len; i++){
+			post = g_array_index(arr,MYPOST,i);
+			existe = existeTag(post,tag);
 
-//+++++++++++++++++++++++++++++++++++++++++++++++++QUERY 8+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			if (existe){
+				getIdP(post,&idp);
+				printf("%ld\n",idp );
+				resultado =  *(MYLIST*)result;
+				resultado = insere_list(resultado,&idp,NULL);
+				 *(MYLIST*)result = resultado;
+			}
+
+		}
+	}
+}
 
 
 
@@ -476,6 +509,7 @@ long better_answer(TAD_community com, long id){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
+/*
 static void contains_word_node(void * listbox, void * lista, void * word, void * n){
 	if(listbox == NULL || *((int *) n) <= 0)
 		return;
@@ -500,7 +534,7 @@ static void contains_word_node(void * listbox, void * lista, void * word, void *
 
 	free(title);
 
-}
+}*/
 
 
 /**
@@ -510,12 +544,13 @@ static void contains_word_node(void * listbox, void * lista, void * word, void *
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
+/*
 static void contains_word_list(void * lista, void * res, void * word, void * n){
 	if(lista == NULL)
 		return;
 
 	trans_list(lista, &contains_word_node, res, word, n);
-}
+}*/
 
 
 /**
@@ -540,6 +575,7 @@ static void my_tolonglist(void * llist, void * longlist, void * n, void * nulla)
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
+/*
 LONG_list contains_word(TAD_community com, char* word, int N){
 	MYLIST lista = init_MYLIST(NULL, NULL, NULL);
 	trans_tree(com->posts_Date, &contains_word_list, lista, word, NULL, NULL, 4, N);
@@ -553,7 +589,7 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	free_MYLIST(lista);
 
 	return res;
-}
+}*/
 
 
 

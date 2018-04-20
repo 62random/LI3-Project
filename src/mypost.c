@@ -2,7 +2,6 @@
 #include <mypost.h>
 #include <date.h>
 
-
 struct mypost {
 	long 		id;
 	int			typeid;
@@ -16,8 +15,236 @@ struct mypost {
 	int 		anscount;
 	int			commcount;
 	int			favcount;
-	MYLIST 		filhos;
+	STACKPOST	filhos;
 };
+
+struct stackpost {
+	long counter1;
+	long counter2;
+	long n_elem;
+	long size;
+	MYPOST * array;
+};
+
+/**
+ * @brief				Função que calcula o valor da nova ordenação.
+ * @param				MYPOST 1;
+ * @param				MYPOST 2;
+*/
+
+int ordenaPOST_MYUSER(const void * data1, const void * data2){
+	MYPOST a1 = (MYPOST) data1;
+	MYPOST a2 = (MYPOST) data2;
+
+	int x = compare_MYDATE_AVL(a1->cdate,a2->cdate);
+
+	return x;
+}
+
+/**
+ * @brief			Função que troca dois elementos do array.
+ * @param			Array.
+ * @param			Indice 1.
+ * @param			Indice 2.
+*/
+
+
+static void swapMYPOST(MYPOST * array, long i, long d){
+	MYPOST aux = array[i];
+
+	array[i] = array[d];
+	array[d] = aux;
+}
+
+/**
+ * @brief			Função que executa uma partition num Array de MYPOST.
+ * @param 			Array a partir.
+ * @param			Número de elementos.
+ * @param			Função de comparação.
+*/
+
+static long partition(MYPOST * v, long N, int (*f_compare)(MYPOST,MYPOST)){
+	long i,j;
+	for(i=0,j=0; i < N-1; i++){
+		if (f_compare(v[i],v[N-1]) < 0)
+			swapMYPOST(v,i,j++);
+	}
+	swapMYPOST(v,N-1,j);
+	return j;
+}
+
+/**
+ * @brief			Função que ordena um array com quicksort.
+ * @param			Array a ordenar.
+ * @param			Número de elementos.
+ * @param			Função de comparação.
+*/
+
+static void quicksort(MYPOST * v, long N,void * func){
+	long i;
+	if (N > 1){
+		i = partition(v,N,func);
+		quicksort(v,i,func);
+		quicksort(v+i+1,N-i-1,func);
+	}
+}
+
+
+/**
+ * @brief			Função que ordena uma stackpost.
+ * @param			STACKPOST.
+ * @param			Função de comparação.
+*/
+
+void order_STACKPOST(STACKPOST st, void * func){
+	quicksort(st->array,st->n_elem,func);
+}
+
+/**
+ * @brief			Função que inicializa um stackpost.
+ * @param			Tamanho original da stackpost.
+*/
+
+STACKPOST initSTACKPOST(long size){
+	STACKPOST a = malloc(sizeof(struct stackpost));
+	a->counter1 = 0;
+	a->counter2 = 0;
+	a->n_elem = 0;
+	a->size = size;
+	a->array = malloc(size*sizeof(struct mypost *));
+
+	return a;
+}
+
+/**
+ * @brief			Função que adiciona um valor ao counter2.
+ * @param			STACKPOST.
+ * @param 			Conter 2.
+*/
+
+void incCounter2_STACKPOST(STACKPOST st,long i){
+	if (st){
+		st->counter2 += i;
+	}
+}
+
+/**
+ * @brief			Função que adiciona um valor ao counter1.
+ * @param			STACKPOST.
+ * @param 			Conter 1.
+*/
+
+void incCounter1_STACKPOST(STACKPOST st,long i){
+	if (st){
+		st->counter1 += i;
+	}
+}
+
+/**
+ * @brief			Função que devolve o counter 1.
+ * @param			STACKPOST.
+*/
+
+long getCounter1_STACKPOST(STACKPOST st){
+	return (st) ? st->counter1 : 0;
+}
+
+/**
+ * @brief			Função que devolve o counter 2.
+ * @param			STACKPOST.
+*/
+
+long getCounter2_STACKPOST(STACKPOST st){
+	return (st) ? st->counter2 : 0;
+}
+
+/**
+ * @brief			Função que insere um elemento numa stackpost.
+ * @param			STACKPOST.
+ * @param			Post a inserir.
+*/
+/*
+void insereSTACKPOST(STACKPOST st, MYPOST post){
+	long i;
+	int type;
+	MYPOST * aux;
+	if (st->n_elem >= st->size){
+		st->size *= 2;
+		aux = malloc(st->size*sizeof(struct mypost *));
+		for(i=0; i < st->n_elem; i++)
+			aux[i] = st->array[i];
+		free(st->array);
+		st->array = aux;
+	}
+	st->array[st->n_elem++] = post;
+	getPostTypeIdP(post,&type);
+	if (type == 1){
+		st->counter1 += 1;
+	}
+	else if (type == 2){
+		st->counter2 += 1;
+	}
+
+}*/
+
+void insereSTACKPOST(STACKPOST st, MYPOST post){
+	long i;
+	int type;
+	MYPOST * aux;
+	if (st->n_elem >= st->size){
+		st->size *= 2;
+		aux = malloc(st->size*sizeof(struct mypost *));
+		for(i=0; i < st->n_elem; i++)
+			aux[i] = st->array[i];
+		free(st->array);
+		st->array = aux;
+	}
+	st->array[st->n_elem++] = post;
+	getPostTypeIdP(post,&type);
+	if (type == 1){
+		st->counter1 += 1;
+	}
+	else if (type == 2){
+		st->counter2 += 1;
+	}
+
+}
+
+/**
+ * @brief			Função que calcula o número de elementos de uma stackpost.
+ * @param			STACKPOST.
+*/
+
+long get_NUM_eleSTACKPOST(STACKPOST st){
+	return st ? st->n_elem : 0;
+}
+
+/**
+ * @brief			Função que devolve o elemento na posição dada.
+ * @param			STACKPOST.
+ * @param			Indice a consultar.
+*/
+
+MYPOST get_ele_index_STACKPOST(STACKPOST st, long i){
+	if (i >= st->n_elem)
+		return NULL;
+	return st->array[i];
+}
+
+/**
+ * @brief			Função que dá free a uma stackpost.
+ * @param			STACKPOST.
+*/
+
+void freeSTACKPOST_SEM_CLONE(STACKPOST st){
+	if (st){
+		free(st->array);
+		free(st);
+	}
+}
+
+
+
 /**
  * @brief 			Função que verifica se existe uma data tag num post.
  * @param 			Apontador para a struct do post.
@@ -64,7 +291,7 @@ void getScoreP(MYPOST post, int * score){
  */
 
 //quebra o encap
-void getFilhosP(MYPOST post, MYLIST * filhos){
+void getFilhosP(MYPOST post, STACKPOST * filhos){
 	if(post)
 		(*filhos) = post->filhos;
 }
@@ -77,12 +304,12 @@ void getFilhosP(MYPOST post, MYLIST * filhos){
  * @param				Informação do post.
 */
 
-int setPostToPost(TREE tree,long id,MYDATE date,void * data){
+int setPostToPost(TREE tree,long id,MYPOST data){
 		MYPOST post;
 		post = search_POSTID(tree,id);
 		if (post == NULL)
 			return -1;
-		post->filhos = insere_list(post->filhos,date,data);
+		insereSTACKPOST(post->filhos,data);
 		return 1;
 }
 
@@ -93,10 +320,10 @@ int setPostToPost(TREE tree,long id,MYDATE date,void * data){
  * @param				Informação do post.
 */
 
-void setFilhosNoPost(MYPOST post,MYDATE date,void * data){
+void setFilhosNoPost(MYPOST post,MYPOST data){
 		if (post == NULL)
 			return;
-		post->filhos = insere_list(post->filhos,date,data);
+		insereSTACKPOST(post->filhos,data);
 }
 
 
@@ -389,8 +616,8 @@ void setFavsP(MYPOST post, int fav){
 
 /**
  * @date 			24 Mar 2018
- * @brief 			Função que inicializa a (nossa) representação de um user na memória.
- * @return 			Apontador para a struct do user.
+ * @brief 			Função que inicializa a (nossa) representação de um post na memória.
+ * @return 			Apontador para a struct do post.
  */
 MYPOST createpost() {
 	MYPOST post = malloc(sizeof(struct mypost));
@@ -402,7 +629,7 @@ MYPOST createpost() {
 	post->parent_id = -2;
 	post->favcount	= 0;
 	post->anscount	= 0;
-	post->filhos = init_MYLIST(NULL,&free_MYdate,NULL);
+	post->filhos = initSTACKPOST(1);
 	return post;
 }
 
@@ -415,6 +642,7 @@ MYPOST createpost() {
  * @param 			Apontador para a struct do post.
  */
 void freepost(MYPOST post) {
+
 	if(post == NULL)
 		return;
 
@@ -426,7 +654,7 @@ void freepost(MYPOST post) {
 
 	free_StringArray(post->tags);
 	free_MYdate(post->cdate);
-	free_MYLIST(post->filhos);
+	freeSTACKPOST_SEM_CLONE(post->filhos);
 
 	free(post);
 }
@@ -510,16 +738,11 @@ MYPOST search_POSTID(TREE tree,long id){
 	return NULL;
 }
 
-
-/**
- * @brief				Função que procura um post pela data de criação na estrutura.
- * @param				Id do post a procurar.
-*/
-
-MYPOST search_POSTDATA(TREE tree,MYDATE date){
+// ta aqui só para teste.
+STACKPOST search_POSTDATA(TREE tree,MYDATE data){
 	int valid;
 
-	MYPOST post = search_AVL(tree, date, &valid);
+	STACKPOST post = search_AVL(tree, data, &valid);
 	if (valid)
 		return post;
 	return NULL;
@@ -531,15 +754,14 @@ MYPOST search_POSTDATA(TREE tree,MYDATE date){
 */
 
 void print_posts_MYPOST(MYPOST post){
-	LList aux = getFirst_BOX(post->filhos);
 	MYPOST post2 = NULL;
 	MYDATE data = NULL;
 	long ld=0;
 	int i = 0;
-	printf("Ne:%d\n",get_NUM_ele(post->filhos));
-	while(aux){
-		post2 = (MYPOST) getElemente_LList(aux);
-		if (post != NULL){
+	printf("Ne:%ld\n",post->filhos->n_elem);
+	for(i=0; i < post->filhos->n_elem; i++){
+		post2 = get_ele_index_STACKPOST(post->filhos,i);
+		if (post2 != NULL){
 			getIdP(post2,&ld);
 			getDateP(post2,&data);
 			if (data != NULL){
@@ -547,8 +769,6 @@ void print_posts_MYPOST(MYPOST post){
 				free_MYdate(data);
 			}
 		}
-		i++;
-		aux = getNext_LList(aux);
 	}
 	printf("I=%d\n",i);
 }

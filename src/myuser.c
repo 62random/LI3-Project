@@ -5,7 +5,8 @@ struct myuser{
     int rep;
     char * username;
     char * bio;
-	MYLIST posts;
+	int type;
+	STACKPOST posts;
 };
 
 /**
@@ -53,7 +54,7 @@ char * getBiography(MYUSER use){
  * @param			Apontador para o user.
 */
 
-MYLIST getMYLISTuser(MYUSER use){
+STACKPOST getMYLISTuser(MYUSER use){
 	if (use) return use->posts;
 	return NULL;
 }
@@ -67,17 +68,22 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
 	MYPOST post = NULL;
-	LList aux = getFirst_BOX(use->posts);
+	long k = get_NUM_eleSTACKPOST(use->posts);
 
-	for(i=0; i < n && aux != NULL; i++){
-		post = (MYPOST) getElemente_LList(aux);
+	for(i=0; i < n && i < k; i++){
+		post = get_ele_index_STACKPOST(use->posts,i);
 		if (post != NULL){
 			getIdP(post,r+i);
 		}
-		aux = getNext_LList(aux);
 	}
 	*n_elem = i;
 	return r;
+}
+
+long getNUM_POST_MYUSER(MYUSER use){
+	if (use)
+		return get_NUM_eleSTACKPOST(use->posts);
+	return 0;
 }
 
 /**
@@ -86,14 +92,14 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 */
 
 void print_post_MYUSER(MYUSER use){
-	LList aux = getFirst_BOX(use->posts);
 	MYPOST post = NULL;
 	MYDATE data;
 	long ld=0;
 	int i = 0;
-	printf("Ne:%d\n",get_NUM_ele(use->posts));
-	while(aux){
-		post = (MYPOST) getElemente_LList(aux);
+	long k = get_NUM_eleSTACKPOST(use->posts);
+	printf("Ne:%ld\n",k);
+	for(i = 0; i < k;i++){
+		post = get_ele_index_STACKPOST(use->posts,i);
 		if (post != NULL){
 			getIdP(post,&ld);
 			getDateP(post,&data);
@@ -102,8 +108,7 @@ void print_post_MYUSER(MYUSER use){
 				free_MYdate(data);
 			}
 		}
-		i++;
-		aux = getNext_LList(aux);
+
 	}
 	printf("I=%d\n",i);
 }
@@ -154,11 +159,12 @@ static void setUsername(MYUSER use, char * nome){
  * @brief 			Função que aloca memória para um user
  */
 
-MYUSER createMYUSER(){
+MYUSER createMYUSER(int type){
     MYUSER conta = malloc(sizeof(struct myuser));
 	conta->bio = NULL;
 	conta->username = NULL;
-	conta->posts = init_MYLIST(&compare_MYDATE_LIST,&free_MYdate,NULL);
+	conta->type = 1;
+	conta->posts = initSTACKPOST(1);
     return conta;
 }
 
@@ -175,7 +181,7 @@ void freeMYUSER(void * aux){
         	free(conta->bio);
 		if (conta->username)
         	free(conta->username);
-		free_MYLIST(conta->posts);
+		freeSTACKPOST_SEM_CLONE(conta->posts);
         free(conta);
     }
 }
@@ -235,20 +241,21 @@ MYUSER search_USER(TREE tree,long id){
 	return NULL;
 }
 
+
 /**
  * @brief				Função mete um post no correspondete user.
  * @param				Árvore de users.
  * @param				Identificador do user.
- * @param				Key do post a inserir.
  * @param				Informação do post.
 */
 
-int setPostToUSER(TREE tree,long id,MYDATE date,void * data){
+int setPostToUSER(TREE tree,long id,MYPOST data){
 	MYUSER use;
 	use = search_USER(tree,id);
 	if (use == NULL)
 		return -1;
-	use->posts = insere_list(use->posts,date,data);
+	insereSTACKPOST(use->posts,data);
+
 
 	return 1;
 }
@@ -280,7 +287,7 @@ TREE createMYUSERS_TREE(char * path){
     xmlChar *key;
 	while (aux != NULL){
 		if (strcmp((char*)aux->name,"row")==0){
-        	use = createMYUSER();
+        	use = createMYUSER(1);
 			cur = aux->properties;
 		 		while (cur != NULL) {
 					key = xmlNodeListGetString(doc,cur->children,1);

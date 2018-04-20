@@ -121,7 +121,7 @@ void bubble_down(HEAP * main){
  * @param			Valor da data a inserir.
 */
 
-HEAP insereHEAP(HEAP h, long key, long data){
+void insereHEAP(HEAP h, long key, long data){
 	if (h->n_elem >= h->size){
 		h->array = realloc(h->array,sizeof(struct generico)*h->size*2);
 		h->size *= 2;
@@ -131,7 +131,6 @@ HEAP insereHEAP(HEAP h, long key, long data){
 	h->n_elem++;
 	bubble_up(&h);
 
-	return h;
 }
 
 /**
@@ -141,13 +140,12 @@ HEAP insereHEAP(HEAP h, long key, long data){
  * @param			Apontador para o sítio onde a data fica guardada.
 */
 
-HEAP pop (HEAP h, long * key, long * data){
+void pop (HEAP h, long * key, long * data){
 	if (h->n_elem > 0){
 		*key =h->array[0].key;
 		*data = h->array[0].data;
 		bubble_down(&h);
 	}
-	return h;
 }
 
 /**
@@ -240,29 +238,4 @@ long get_ELE_index(STACK a,int index){
 long get_NUM_eleHEAP(HEAP a){
 	long x;
 	return (x = a ? a->n_elem : 0);
-}
-
-int teste_heap(HEAP h){
-	int fd,fe;
-	int i = 0;
-
-	while(i != h->n_elem){
-		fe = 2*i + 1;
-		fd = 2*i + 2;
-		if (fd < h->n_elem){
-			if (h->array[i].key < h->array[fd].key){
-				printf("%d\n",i);
-				return -1;
-			}
-		}
-		if (fe < h->n_elem){
-			if (h->array[i].key < h->array[fe].key){
-				printf("%d\n",i);
-				return -1;
-			}
-		}
-		i++;
-	}
-
-	return 0;
 }
