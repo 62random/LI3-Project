@@ -160,7 +160,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 	LONG_list l = create_list(N);
 	MYDATE b1 = DatetoMYDATE(begin);
 	MYDATE e1 = DatetoMYDATE(end);
-	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_score,&h,NULL);
+	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_score,h,NULL);
 
 	int i;
 	long key,data;
@@ -426,7 +426,9 @@ USER get_user_info(TAD_community com, long id){
 		for(;aux < 10; aux++)
 			posts[aux] = -1;
 	}
-	USER info = create_user(getBiography(user),posts);// leak mem
+	char* aux2 = getBiography(user);
+	USER info = create_user(aux2,posts);// leak mem
+	free(aux2);
 	free(posts);
 	return info;
 }
@@ -858,5 +860,6 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	for(i = 0; i < size; i++)													//para a LONG_list
 		set_list(res, i, arr[i]);												//a retornar
 
+	free(users);				// dar free a esta shit
 	return res;
 }
