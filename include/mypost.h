@@ -67,4 +67,5 @@ void 		free_StringArray		(char ** arr);
 void 		print_posts_MYPOST		(MYPOST post);
 int			existeTag				(MYPOST post,char * tag);
 STACKPOST 	search_POSTDATA			(TREE tree,MYDATE data);
+void 		trans_arr				(STACKPOST arr, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3);
 #endif

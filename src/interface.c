@@ -509,12 +509,12 @@ static void filtraTags(void * data, void * result, void * tag){
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-/*
-static void contains_word_node(void * listbox, void * lista, void * word, void * n){
-	if(listbox == NULL || *((int *) n) <= 0)
+
+static void contains_word_node(void * post, void * lista, void * word, void * n){
+	if(post == NULL || *((int *) n) <= 0)
 		return;
 
-	MYPOST cpost = getElemente_LList((LList) listbox);
+	MYPOST cpost = (MYPOST) post;
 	int i;								// se não for
 	getPostTypeIdP(cpost, &i);			// uma pergunta
 	if(i != 1)							// então
@@ -534,23 +534,23 @@ static void contains_word_node(void * listbox, void * lista, void * word, void *
 
 	free(title);
 
-}*/
+}
 
 
 /**
- * @brief			Função a aplicar à lista de posts efetuados no mesmo dia, auxiliar á query 8.
- * @param			Lista onde estão armazenados os ids de posts de resposta à query.
+ * @brief			Função a aplicar ao array de posts efetuados no mesmo dia, auxiliar á query 8.
+ * @param			Array onde estão armazenados os ids de posts de resposta à query.
  * @param			Número máximo de resultados N.
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-/*
-static void contains_word_list(void * lista, void * res, void * word, void * n){
-	if(lista == NULL)
+
+static void contains_word_arr(void * arr, void * res, void * word, void * n){
+	if(arr == NULL)
 		return;
 
-	trans_list(lista, &contains_word_node, res, word, n);
-}*/
+	trans_arr(arr, &contains_word_node, res, word, n);
+}
 
 
 /**
@@ -575,21 +575,22 @@ static void my_tolonglist(void * llist, void * longlist, void * n, void * nulla)
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
-/*
+
 LONG_list contains_word(TAD_community com, char* word, int N){
 	MYLIST lista = init_MYLIST(NULL, NULL, NULL);
-	trans_tree(com->posts_Date, &contains_word_list, lista, word, NULL, NULL, 4, N);
+	trans_tree(com->posts_Date, &contains_word_arr, lista, word, NULL, NULL, 4, N);
 
 	int n = get_NUM_ele(lista) - 1;
 
 	LONG_list res = create_list(n + 1);
 
 	trans_list(lista, &my_tolonglist, res, &n, NULL);
+	//sort_list(res, &cmp_longs);
 
 	free_MYLIST(lista);
 
 	return res;
-}*/
+}
 
 
 
@@ -599,7 +600,7 @@ LONG_list contains_word(TAD_community com, char* word, int N){
  * @param			Lista de posts com essa tag.
  * @param			Tag a verificar.
 */
-
+/*
 static void filtraTags(void * data, void * result, void * tag){
 	MYLIST resultado,r;
 	long idp = -2;
@@ -623,7 +624,7 @@ static void filtraTags(void * data, void * result, void * tag){
 		}
 	}
 }
-
+*/
 
 /**
  * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
@@ -742,11 +743,11 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
  * @param			Array dos N users com maior reputação.
  * @param			Número N (tamanho do array de users).
 */
-static void most_used_best_rep_node(void * listbox, void * res, void * users, void * N){
-	if(listbox == NULL)
+static void most_used_best_rep_node(void * vpost, void * res, void * users, void * N){
+	if(vpost == NULL)
 		return;
 
-	MYPOST post = getElemente_LList((LList) listbox);
+	MYPOST post = (MYPOST) vpost;
 	int i;												// se não for
 	getPostTypeIdP(post, &i);							// uma pergunta
 	if(i != 1)											// então
@@ -780,42 +781,18 @@ static void most_used_best_rep_node(void * listbox, void * res, void * users, vo
 
 /**
  * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da árvore de posts organizado por datas, durante a travessia.
- * @param			Lista de posts nesse nodo.
+ * @param			Array de posts nesse nodo.
  * @param			Lista onde são armazenados resultados.
  * @param			Array dos N users com maior reputação.
  * @param			Número N (tamanho do array de users).
 */
-static void most_used_best_rep_list(void * lista, void * res, void * users, void * n){
-	if(lista == NULL)
+static void most_used_best_rep_arr(void * arr, void * res, void * users, void * n){
+	if(arr == NULL)
 		return;
 
-	trans_list(lista, &most_used_best_rep_node, res, users, n);
+	trans_arr(arr, &most_used_best_rep_node, res, users, n);
 }
 
-/**
- * @brief			Função auxiliar que retorna a negação da função de biblioteca strcmp.
- * @param			Primeira string.
- * @param			Segunda string.
-*/
-int not_strcmp(void * str1, void * str2) {
-	char * a = (char *) str1;
-	char * b = (char *) str2;
-	return !strcmp(a, b);
-}
-
-/**
- * @brief			Função auxiliar que compara dois longs.
- * @param			Primeiro long.
- * @param			Segundo long.
-*/
-int cmp_longs(const void * l1, const void * l2){
-	if(*(long *)l1 == *(long *)l2 )
-		return 0;
-	if(*(long *)l1 > *(long *)l2)
-		return -1;
-	else
-		return 1;
-}
 
 /**
  * @brief			Função passa os dados (do tipo int neste caso) da nossa estrutura MYLIST para um array de longs.
@@ -849,7 +826,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	long * users = n_users_with_more_rep(com, N);								//preencher array com N
 																				//users com  maior reputação
 
-	trans_tree(com->posts_Date, &most_used_best_rep_list, lista, users, mybegin, myend, 2, N); 	//travessia inorder
+	trans_tree(com->posts_Date, &most_used_best_rep_arr, lista, users, mybegin, myend, 2, N); 	//travessia inorder
 																								//na árvore de posts
 																								//ordenados por data
 																								//aplicando a função

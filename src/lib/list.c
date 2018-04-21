@@ -34,3 +34,7 @@ int get_listsize(LONG_list l){
 
 	return l->size;
 }
+
+void sort_list(LONG_list l, int (*f_comp)(const void *a, const void * b)){
+	qsort(l->list, l->size, sizeof(long), f_comp);
+}

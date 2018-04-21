@@ -19,14 +19,14 @@ char* megaU = "/home/pedro/Desktop/dump/android";
 char *gets(char *str);
 
 
-int main1(){
+int main(){
 	char string[256];
 	char string2[256];
 	long* auxll;
 	TAD_community com = NULL;
 	clock_t t;
 	long long1,long2;
-	int int1,int2,int3,int4,i, z;
+	int int1,int2,int3,int4,i, z = 0;
 	STR_pair stp = NULL;
 	LONG_list llis = NULL;
 	USER user = NULL;
@@ -341,7 +341,7 @@ int main1(){
 	}
 	free(com);
 
-	z++;
+	return ++z;
 
 	/*int i;
 	long * ks;
@@ -462,7 +462,7 @@ int main1(){
 		t = clock()-t;
 		double a2 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Load->%fms\n",a2);
-		/*
+
 		t = clock();
 		LONG_list l = top_most_active(com,100);
 		t = clock()-t;
@@ -488,7 +488,7 @@ int main1(){
 		printf("Q3->%fms\n",a6);
 		free_date(di);
 		free_date(df);
-		/*
+
 		t = clock();
 		l = contains_word(com, "ubuntu", 100);
 		t = clock()-t;
@@ -541,7 +541,7 @@ int main1(){
 
 //							long teste4 = better_answer(com,2);
 //							printf("\n%ld\n",teste4 );
-*/
+
 /*							LONG_list l;
 							l = top_most_active(com,1000);
 							for(i=0;i < 1000; i++)
@@ -592,16 +592,18 @@ int main1(){
 						t = clock()-t;
 						double a6 = ((double)t)/CLOCKS_PER_SEC*1000;
 						printf("P=%ld -> R=%ld\n",get_fst_long(pat),get_snd_long(pat));
-						printf("Q3->%fms\n",a6);*/
+						printf("Q3->%fms\n",a6);
 
 		t = clock();
 		com = clean(com);
-		t = clock()-t;
+		t = clock() - t;
 		double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
 		printf("Free->%fms\n",a5);
 		free(com);
 
-int main(){
+*/
+
+int main1(){
 	TAD_community com = init();
 	clock_t t;
 	com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
