@@ -427,6 +427,7 @@ USER get_user_info(TAD_community com, long id){
 			posts[aux] = -1;
 	}
 	USER info = create_user(getBiography(user),posts);// leak mem
+	free(posts);
 	return info;
 }
 
@@ -436,7 +437,7 @@ USER get_user_info(TAD_community com, long id){
  * @param			Id do post
 */
 long better_answer(TAD_community com, long id){
-		GArray * arr;
+		STACKPOST * arr = NULL;
 		MYUSER men;
 		long user;
 		int scr,rep,comt;
@@ -458,8 +459,11 @@ long better_answer(TAD_community com, long id){
 		}
 
 		getFilhosP(post,&arr);
-		for(i=0; i < arr->len; i++){
-			post = g_array_index(arr,MYPOST,i);
+		if(arr == NULL)
+			return -2;
+		type = get_NUM_eleSTACKPOST(arr); // nao me apeteceu defenir outro int
+		for(i=0; i < type; i++){
+			post = get_ele_index_STACKPOST(arr,i);
 			getScoreP(post,&scr);
 			getCommentsP(post,&scr);
 			getOwnerIdP(post,&user);
@@ -476,30 +480,6 @@ long better_answer(TAD_community com, long id){
 		return id2;
 
 }
-
-static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado;
-	GArray * arr = (GArray *) data;
-	int existe = 0,i;
-	long idp = -2;
-	MYPOST post;
-	if (data != NULL){
-		for(i=0; i < arr->len; i++){
-			post = g_array_index(arr,MYPOST,i);
-			existe = existeTag(post,tag);
-
-			if (existe){
-				getIdP(post,&idp);
-				printf("%ld\n",idp );
-				resultado =  *(MYLIST*)result;
-				resultado = insere_list(resultado,&idp,NULL);
-				 *(MYLIST*)result = resultado;
-			}
-
-		}
-	}
-}
-
 
 
 /**
@@ -600,6 +580,31 @@ LONG_list contains_word(TAD_community com, char* word, int N){
  * @param			Lista de posts com essa tag.
  * @param			Tag a verificar.
 */
+
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado;
+	STACKPOST * arr = (STACKPOST *) data;
+	int existe = 0,i;
+	long idp = -2;
+	MYPOST post;
+	if (data != NULL){
+		int max = get_NUM_eleSTACKPOST(arr);
+		for(i=0; i < max; i++){
+			post = get_ele_index_STACKPOST(arr,i);
+			existe = existeTag(post,tag);
+
+			if (existe){
+				getIdP(post,&idp);
+					resultado =  *(MYLIST*)result;
+				resultado = insere_list(resultado,idp,NULL);
+				 *(MYLIST*)result = resultado;
+			}
+
+		}
+	}
+}
+
+
 /*
 static void filtraTags(void * data, void * result, void * tag){
 	MYLIST resultado,r;
@@ -662,23 +667,25 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYUSER user1 = search_USER(com->users,id1);
 	MYUSER user2 = search_USER(com->users,id2);
-	MYLIST lista1 = getMYLISTuser(user1);
-	MYLIST lista2 = getMYLISTuser(user2);
+	STACKPOST lista1 = getMYLISTuser(user1);
+	STACKPOST lista2 = getMYLISTuser(user2);
 	int flag=N;
 
 	MYPOST post1,post2;
-	LList aux = NULL;
-	LList aux2 = NULL;
 	long pid1 = -3;
 	long pid2 = -4;
 	int type = 0;
+	int max1 = get_NUM_eleSTACKPOST(lista1);
+	int max2 = get_NUM_eleSTACKPOST(lista2);
+	int i1,i2;
+
 	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);//&(free_MYdate),&(free));
 
 	MYDATE data = NULL;
 
 
-	for (aux = getFirst_BOX(lista1); aux && flag; aux=getNext_LList(aux)){
-		post1 = (MYPOST)getElemente_LList(aux);
+	for (i1 = 0; i1<max1 && flag; i1++){
+		post1 = get_ele_index_STACKPOST(lista1,i1);
 		getPostTypeIdP(post1,&type);
 		if(type == 2)
 			getPIdP(post1,&pid1);
@@ -687,8 +694,8 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 		else
 			break;
 
-		for (aux2 = getFirst_BOX(lista2); aux2; aux2=getNext_LList(aux2)){
-			post2 = (MYPOST)getElemente_LList(aux2);
+		for (i2 = 0; i2<max2; i2++){
+			post2 = get_ele_index_STACKPOST(lista2,i2);
 			getPostTypeIdP(post2,&type);
 
 			if(type == 2)
@@ -698,16 +705,17 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 			else
 				break;
 
-				if(pid1==pid2)
-					if (type == 2){
+				if(pid1==pid2){
+					if (type == 2)
 						post2 = search_POSTID(com->posts_Id,pid2);
 
 					getDateP(post2,&data);
 					result = insere_list(result,data,(void*)pid2);
 
-					}
 					flag--;
 					break;
+				}
+
 
 
 
