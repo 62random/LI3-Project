@@ -25,11 +25,13 @@ long 		getCounter2_STACKPOST	(STACKPOST st);
 long		get_NUM_eleSTACKPOST	(STACKPOST st);
 MYPOST 		get_ele_index_STACKPOST	(STACKPOST st, long i);
 void 		freeSTACKPOST_SEM_CLONE	(STACKPOST st);
+void 		freeSTACKPOST_COM_CLONE	(STACKPOST st);
 
 void 		getIdP					(MYPOST post, long * id);
 void 		setIdP					(MYPOST post, long  id);
 void 		getPostTypeIdP			(MYPOST post, int * id);
 void 		setPostTypeIdP			(MYPOST post, long  id);
+int 		getTYPECLONEP			(MYPOST post);
 void 		getOwnerIdP				(MYPOST post, long * id);
 void 		setOwnerIdP				(MYPOST post, long  id);
 void 		getDateP				(MYPOST post, MYDATE * data);

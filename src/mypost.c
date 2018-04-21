@@ -250,7 +250,7 @@ void freeSTACKPOST_SEM_CLONE(STACKPOST st){
  * @param			STACKPOST.
 */
 
-static void freeSTACKPOST_COM_CLONE(STACKPOST st){
+void freeSTACKPOST_COM_CLONE(STACKPOST st){
 	if (st){
 		long i;
 		for(i=0; i < st->n_elem; i++)
@@ -310,27 +310,9 @@ void getScoreP(MYPOST post, int * score){
  * @param			Apontador onde a função devolve os filhos do post.
  */
 
-//quebra o encap
 void getFilhosP(MYPOST post, STACKPOST * filhos){
 	if(post)
 		(*filhos) = post->filhos;
-}
-
-/**
- * @brief				Função mete um post nos filhos desse mesmo post.
- * @param				Árvore de posts.
- * @param				Identificador do post.
- * @param				Key do filhos a inserir.
- * @param				Informação do post.
-*/
-
-int setPostToPost(TREE tree,long id,MYPOST data){
-		MYPOST post;
-		post = search_POSTID(tree,id);
-		if (post == NULL)
-			return -1;
-		insereSTACKPOST(post->filhos,data);
-		return 1;
 }
 
 /**
@@ -345,8 +327,6 @@ void setFilhosNoPost(MYPOST post,MYPOST data){
 			return;
 		insereSTACKPOST(post->filhos,data);
 }
-
-
 
 
 /**
@@ -380,6 +360,16 @@ void setIdP(MYPOST post, long  id){
 void getPostTypeIdP(MYPOST post, int * id){
 	if(post)
   		*id = post->typeid;
+}
+
+/**
+ * @date 			24 Mar 2018
+ * @brief 			Função que verifica se um post é clone ou não.
+ * @param 			Apontador para a struct do post.
+ */
+
+int getTYPECLONEP(MYPOST post){
+	return post ? post->type : 0;
 }
 
 /**

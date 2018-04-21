@@ -156,16 +156,35 @@ static void setUsername(MYUSER use, char * nome){
 }
 
 /**
- * @brief 			Função que aloca memória para um user
+ * @brief 			Função que aloca memória para um user.
+ * @param			Tipo a criar.
  */
 
 MYUSER createMYUSER(int type){
     MYUSER conta = malloc(sizeof(struct myuser));
 	conta->bio = NULL;
 	conta->username = NULL;
-	conta->type = 1;
-	conta->posts = initSTACKPOST(1);
+	conta->type = type;
+	if (type)
+		conta->posts = initSTACKPOST(1);
+	else conta->posts = NULL;
     return conta;
+}
+
+/**
+ * @brief 			Função que clona um user.
+ * @param			Apontador para o utilizador.
+ */
+
+MYUSER cloneMYUSER(MYUSER use){
+	MYUSER novo = createMYUSER(0);
+	novo->bio = use->bio;
+	novo->username = use->username;
+	novo->rep = use->rep;
+	novo->id = use->id;
+	novo->posts = clone_STACKPOST(use->posts);
+
+	return novo;
 }
 
 /**
@@ -177,11 +196,14 @@ void freeMYUSER(void * aux){
 	MYUSER conta;
     if (aux != NULL){
 		conta = (MYUSER) aux;
-		if (conta->bio)
-        	free(conta->bio);
-		if (conta->username)
-        	free(conta->username);
-		freeSTACKPOST_SEM_CLONE(conta->posts);
+		if (conta->type == 1){
+			if (conta->bio)
+        		free(conta->bio);
+			if (conta->username)
+        		free(conta->username);
+			freeSTACKPOST_SEM_CLONE(conta->posts);
+		}
+		else freeSTACKPOST_COM_CLONE(conta->posts);
         free(conta);
     }
 }
@@ -228,11 +250,25 @@ void freeTreeUSER(TREE tree){
 }
 
 /**
- * @brief				Função que procura um user na estrutura.
+ * @brief				Função que procura um user na estrutura com clone.
  * @param				Id do user a procurar.
 */
 
 MYUSER search_USER(TREE tree,long id){
+	int valid;
+
+	MYUSER use = search_AVL(tree,&id,&valid);
+	if (valid)
+		return cloneMYUSER(use);
+	return NULL;
+}
+
+/**
+ * @brief				Função que procura um user na estrutura sem clone.
+ * @param				Id do user a procurar.
+*/
+
+static MYUSER search_USER_internal(TREE tree,long id){
 	int valid;
 
 	MYUSER use = search_AVL(tree,&id,&valid);
@@ -251,7 +287,9 @@ MYUSER search_USER(TREE tree,long id){
 
 int setPostToUSER(TREE tree,long id,MYPOST data){
 	MYUSER use;
-	use = search_USER(tree,id);
+	if (!getTYPECLONEP(data))
+		return -1;
+	use = search_USER_internal(tree,id);
 	if (use == NULL)
 		return -1;
 	insereSTACKPOST(use->posts,data);
