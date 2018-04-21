@@ -71,5 +71,5 @@ MYPOST 		search_POSTID_parent	(TREE tree,long id,MYPOST aux);
 void 		free_StringArray		(char ** arr);
 void 		print_posts_MYPOST		(MYPOST post);
 int			existeTag				(MYPOST post,char * tag);
-STACKPOST 	search_POSTDATA			(TREE tree,MYDATE data);
+
 #endif
