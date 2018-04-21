@@ -19,7 +19,7 @@ char * 		getBiography		(MYUSER use);
 STACKPOST	getMYLISTuser		(MYUSER use); //rever encapl
 long * 		getNposts			(MYUSER use,int n,int * n_elem);
 void 		print_post_MYUSER	(MYUSER use);
-MYUSER 		createMYUSER		();
+MYUSER 		createMYUSER		(int type);
 void 		freeMYUSER			(void * aux);
 int 		compare_user		(void * key1,void * key2);
 void 		freeKey				(void * a);

@@ -16,6 +16,7 @@ struct mypost {
 	int			commcount;
 	int			favcount;
 	STACKPOST	filhos;
+	int  		type;
 };
 
 struct stackpost {
@@ -25,6 +26,7 @@ struct stackpost {
 	long size;
 	MYPOST * array;
 };
+
 
 /**
  * @brief				Função que calcula o valor da nova ordenação.
@@ -238,6 +240,21 @@ MYPOST get_ele_index_STACKPOST(STACKPOST st, long i){
 
 void freeSTACKPOST_SEM_CLONE(STACKPOST st){
 	if (st){
+		free(st->array);
+		free(st);
+	}
+}
+
+/**
+ * @brief			Função que dá free a um clone stackpost.
+ * @param			STACKPOST.
+*/
+
+static void freeSTACKPOST_COM_CLONE(STACKPOST st){
+	if (st){
+		long i;
+		for(i=0; i < st->n_elem; i++)
+			freepost(st->array[i]);
 		free(st->array);
 		free(st);
 	}
@@ -622,7 +639,7 @@ void setFavsP(MYPOST post, int fav){
  * @brief 			Função que inicializa a (nossa) representação de um post na memória.
  * @return 			Apontador para a struct do post.
  */
-MYPOST createpost() {
+MYPOST createpost(int type) {
 	MYPOST post = malloc(sizeof(struct mypost));
 	post->ownername = NULL;
 	post->tags 	= NULL;
@@ -632,7 +649,11 @@ MYPOST createpost() {
 	post->parent_id = -2;
 	post->favcount	= 0;
 	post->anscount	= 0;
-	post->filhos = initSTACKPOST(1);
+	post->type = type;
+	if (type)
+		post->filhos = initSTACKPOST(1);
+	else post->filhos = NULL;
+
 	return post;
 }
 
@@ -649,15 +670,21 @@ void freepost(MYPOST post) {
 	if(post == NULL)
 		return;
 
-	if(post->title != NULL)
-		free(post->title);
+	if (post->type == 1){
 
-	if(post->ownername != NULL)
-		free(post->ownername);
+		if(post->title != NULL)
+			free(post->title);
 
-	free_StringArray(post->tags);
-	free_MYdate(post->cdate);
-	freeSTACKPOST_SEM_CLONE(post->filhos);
+		if(post->ownername != NULL)
+			free(post->ownername);
+
+		free_StringArray(post->tags);
+		free_MYdate(post->cdate);
+		freeSTACKPOST_SEM_CLONE(post->filhos);
+	}
+	else {
+		freeSTACKPOST_COM_CLONE(post->filhos);
+	}
 
 	free(post);
 }
@@ -728,7 +755,66 @@ int compare_mypostsLISTDate(void * data1, void * data2){
 
 
 /**
- * @brief				Função que procura um post pelo id na estrutura.
+ * @brief				Função que produz o clone de um post sem profundidade.
+ * @param				Apontador para o post.
+*/
+
+static MYPOST clone_MYPOST_NODEEP(MYPOST post){
+	MYPOST novo = createpost(0);
+	novo->id = post->id;
+	novo->typeid = post->typeid;
+	novo->parent_id = post->parent_id;
+	novo->cdate = post->cdate;
+	novo->score = post->score;
+	novo->ownerid = post->ownerid;
+	novo->ownername = post->ownername;
+	novo->title = post->title;
+	novo->tags = post->tags;
+	novo->anscount = post->anscount;
+	novo->commcount = post->commcount;
+	novo->favcount = post->favcount;
+
+	return novo;
+}
+
+/**
+ * @brief				Função que clona uma STACKPOST.
+ * @param				Apontador para a stackpost.
+*/
+
+
+STACKPOST clone_STACKPOST(STACKPOST st){
+	STACKPOST novo = initSTACKPOST(st->n_elem);
+	novo->counter1 = st->counter1;
+	novo->counter2 = st->counter2;
+	novo->n_elem = st->n_elem;
+	novo->size = st->n_elem;
+
+	long i;
+	MYPOST aux;
+	for(i = 0; i < st->n_elem; i++){
+		aux = clone_MYPOST_NODEEP(st->array[i]);
+		novo->array[i] = aux;
+	}
+
+	return novo;
+}
+
+/**
+ * @brief				Função que produz o clone de um post com profundidade.
+ * @param				Apontador para o post.
+*/
+
+MYPOST clone_MYPOST_DEEP(MYPOST post){
+	MYPOST novo = clone_MYPOST_NODEEP(post);
+	novo->filhos = clone_STACKPOST(post->filhos);
+
+	return novo;
+}
+
+
+/**
+ * @brief				Função que procura um post pelo id na estrutura com clone.
  * @param				Id do post a procurar.
 */
 
@@ -737,19 +823,35 @@ MYPOST search_POSTID(TREE tree,long id){
 
 	MYPOST post = search_AVL(tree, &id, &valid);
 	if (valid)
-		return post;
+		return clone_MYPOST_DEEP(post);
 	return NULL;
 }
 
-// ta aqui só para teste.
-STACKPOST search_POSTDATA(TREE tree,MYDATE data){
+/**
+ * @brief				Função que procura um post pelo id na estrutura sem clone.
+ * @param				Id do post a procurar.
+*/
+
+static MYPOST search_POSTID_internal(TREE tree,long id){
 	int valid;
 
-	STACKPOST post = search_AVL(tree, data, &valid);
+	MYPOST post = search_AVL(tree, &id, &valid);
 	if (valid)
 		return post;
 	return NULL;
 }
+
+/**
+ * @brief				Função que procura um post pelo id na estrutura sem clone.
+ * @param				Id do post a procurar.
+*/
+
+MYPOST search_POSTID_parent(TREE tree,long id,MYPOST aux){
+	if (aux->type)
+		return search_POSTID_internal(tree,id);
+	return NULL;
+}
+
 
 /**
  * @brief			Função que imprime os ids das respostas a um post.

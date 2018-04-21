@@ -78,7 +78,7 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 
 	for(cur = cur->children; cur; cur = cur->next) {						// Percorre os posts todos.
 		if(strcmp("row", (char *) cur->name) == 0) {
-			post 	= createpost();											//Cria um nodo post.
+			post = createpost(1);											//Cria um nodo post.
 			xmltoMYPOST(post, cur, doc, treeid, treeusers);					//Preenche essa struct post.
 
 			keyid 	= malloc(sizeof(long));
@@ -207,7 +207,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 
 				if(!flag[2] && strcmp((char *) cur->name, "ParentId") == 0) {
 					l = atol(value);
-					parent = search_POSTID(treeid, l);
+					parent = search_POSTID_parent(treeid, l,post);
 					if(parent) {
 						getAnswersP(parent, &n);
 						setAsnwersP(parent, n + 1);
