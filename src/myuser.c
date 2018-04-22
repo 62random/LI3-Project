@@ -92,6 +92,9 @@ long getNUM_POST_MYUSER(MYUSER use){
 */
 
 void print_post_MYUSER(MYUSER use){
+	if (!use){
+		printf("error\n");
+	}
 	MYPOST post = NULL;
 	MYDATE data;
 	long ld=0;

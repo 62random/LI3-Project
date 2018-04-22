@@ -15,8 +15,5 @@
 
 int 	xml_file_to_struct		(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath);
 int 	createMYPOST_TREES		(char * path, TREE * tree_id, TREE * tree_date, TREE treeusers);
-MYDATE 	xmlToMYDATE				(char * value);
-char ** xmlToStringArray		(char * value);
-void 	xmltoMYPOST				(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE treeusers);
 
 #endif
