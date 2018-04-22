@@ -859,7 +859,6 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 	MYDATE date;
 	MYPOST parent = NULL;
 	long l;
-	int n = 0;
 
 	for(cur = xml->properties; cur; cur = cur->next) {
 				value = (char *) xmlNodeListGetString(doc, cur->children, 1);
@@ -882,10 +881,6 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 				if(!flag[2] && strcmp((char *) cur->name, "ParentId") == 0) {
 					l = atol(value);
 					parent = search_POSTID_internal(treeid, l);
-					if(parent) {
-						getAnswersP(parent, &n);
-						setAnswersP(parent, n + 1);
-					}
 					setPIdP(post, l);
 					flag[2] = 1;
 					free(value);
