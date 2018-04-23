@@ -28,6 +28,24 @@ struct stackpost {
 };
 
 // STACKPOST
+
+/**
+ * @brief			Função percorre um array e aplica a cada nodo uma função.
+ * @param			Array a ser percorrido.
+ * @param			Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
+ * @param			Segundo argumento da função a ser aplicada.
+ * @param			Terceiro argumento da função a ser aplicada.
+ * @param			Quarto argumento da função a ser aplicada.
+
+*/
+void trans_arr(STACKPOST arr, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3){
+	if(arr == NULL)
+		return;
+
+	for(int i = 0;i < arr->n_elem; i++)
+		f_box((void *) arr->array[i],data1, data2, data3);
+}
+
 /**
  * @brief				Função que calcula o valor da nova ordenação.
  * @param				MYPOST 1;
