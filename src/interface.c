@@ -584,7 +584,33 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);//&(free_MYdate),&(free));
 
 	MYDATE data = NULL;
+/*
+	for (i1 = 0; i1<max1 && flag; i1++){
+		post1 = get_ele_index_STACKPOST(lista1,i1);
+		getPostTypeIdP(post1,&type);
+		if(type == 2)
+			getPIdP(post1,&pid1);
+		else if(type == 1)
+			getIdP(post1,&pid1);
+		else
+			break;
+		printf("%ld\n", pid1);
+	}
+	printf("_____________________\n" );
 
+	for (i2 = 0; i2<max2 && flag; i2++){
+		post2 = get_ele_index_STACKPOST(lista2,i2);
+		getPostTypeIdP(post2,&type);
+		if(type == 2)
+			getPIdP(post2,&pid2);
+		else if(type == 1)
+			getIdP(post2,&pid2);
+		else
+			break;
+		printf("%ld\n", pid2);
+	}
+
+*/
 
 	for (i1 = 0; i1<max1 && flag; i1++){
 		post1 = get_ele_index_STACKPOST(lista1,i1);
