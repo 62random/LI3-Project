@@ -12,10 +12,7 @@ struct TCD_community {
 	STACK pre_rep;
 };
 
-/// tirar isto depois
-TREE bla(TAD_community com){
-	return com->posts_Id;
-}
+//++++++++++++++++++++++++++++++++++++++++++++++Init+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 /**
@@ -27,6 +24,8 @@ TAD_community init(){
 	TAD_community aux = malloc(sizeof(struct TCD_community));
 	return aux;
 }
+
+//++++++++++++++++++++++++++++++++++++++++++++++Load+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 /**
@@ -44,6 +43,7 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 	insereHEAP(h,n_post,getIdMYUSER(user));
 }
 
+
 /**
  * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap para reputação.
  * @param			Apontador para a data do nodo.
@@ -58,7 +58,289 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 }
 
 /**
- * @brief			Função adiciona a informação da data de um nodo MYLIST numa heap para scores.
+ * @brief			Função ordena os posts de um user.
+ * @param			Apontador para o user.
+*/
+
+static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
+	MYUSER use = (MYUSER) data1;
+	if (use){
+		order_STACKPOST(getMYLISTuser(use),&ordenaPOST_MYUSER);
+	}
+}
+
+
+/**
+ * @brief			Função dá load aos ficheiros xml.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			String com a diretoria onde se encontram os ficheiros.
+*/
+
+TAD_community load(TAD_community com, char * dump_path){
+	char path [MAX_DUMP_PATH_SIZE];
+	TREE users,postsDate = NULL,posts_ID = NULL;
+
+	sprintf(path,"%s/Users.xml",dump_path);
+	users = createMYUSERS_TREE(path);
+
+	sprintf(path,"%s/Posts.xml",dump_path);
+	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
+
+	com->users = users;
+
+	com->posts_Date = postsDate;
+	com->posts_Id = posts_ID;
+	all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
+
+
+	com->rep_users = initHEAP(NUM_nodes(users));
+	com->pre_rep = NULL;
+	all_nodes_TREE(users,&num_rep_na_HEAP,com->rep_users);
+	com->num_posts = initHEAP(NUM_nodes(users));
+	com->pre_posts = NULL;
+	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
+
+	return com;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 1+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+/**
+ * @brief			Função retorna a informacao de um post.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+STR_pair info_from_post(TAD_community com, long id){
+	char * title = NULL;
+	char * user = NULL;
+	long iduser = -2;
+	int tipopost = -1;
+	long pai = -1;
+	STR_pair result = NULL;
+
+	MYPOST post = search_POSTID(com->posts_Id,id);
+
+	if(!post){
+		return result;
+	}
+
+	getPostTypeIdP(post,&tipopost);
+	if(tipopost == 2){ // resposta
+		getPIdP(post,&pai);
+		freepost(post);
+		post = search_POSTID(com->posts_Id,pai); // se for uma respota vai buscar o seu pai( sua pergunta )
+	}
+
+	getTitleP(post,&title);
+	getOwnerIdP(post,&iduser);
+	MYUSER us = search_USER(com->users,iduser);
+	user = getUsername(us);
+	result = create_str_pair(title,user);
+
+	freeMYUSER(us);
+	freepost(post);
+
+	free(user);
+	free(title);
+
+	return result;
+
+
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 2+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+/**
+ * @brief			Função que calcula os N utilizadores com mais posts.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Número de jogadores.
+*/
+
+LONG_list top_most_active(TAD_community com, int N){
+	LONG_list l = create_list(N);
+	int i;
+	long id,key;
+
+	if (com->pre_posts == NULL)
+		com->pre_posts = initSTACK((long)N);
+
+	if (((long) N) <= get_NUM_eleSTACK(com->pre_posts)){
+		for(i=0; i < N; i++){
+			set_list(l,i,get_ELE_index(com->pre_posts,i));
+		}
+	}
+	else{
+		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
+			set_list(l,i,get_ELE_index(com->pre_posts,i));
+		for(; i < N; i++){
+			pop(com->num_posts,&key,&id);
+			com->pre_posts = insereSTACK(com->pre_posts,id);
+			set_list(l,i,id);
+		}
+	}
+	return l;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 3+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+/**
+ * @brief			Função que corre num nodo e calcula se é resposta ou pergunta.
+ * @param			Apontador para a informação a filtar.
+ * @param			Número de perguntas.
+ * @param			Número de respostas.
+*/
+
+static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
+
+	STACKPOST arr = (STACKPOST) data;
+	if (data != NULL){ //p->1 r->2
+		*(long *)perguntas += getCounter1_STACKPOST(arr);
+		*(long *)respostas += getCounter2_STACKPOST(arr);
+	}
+}
+
+/**
+ * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Data inicial da procura
+ * @param			Data final da procura
+*/
+LONG_pair total_posts(TAD_community com, Date begin, Date end){
+	long res1, res2 ;
+	res1 = res2 = 0;
+	MYDATE nbegin,nend;
+	nbegin = DatetoMYDATE(begin);
+	nend = DatetoMYDATE(end);
+	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraPerguntasRespostas),&res1,&res2);
+
+	free_MYdate(nbegin);
+	free_MYdate(nend);
+
+	LONG_pair result = create_long_pair(res1,res2);
+	return result;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 4+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+/**
+ * @brief			Função que corre num nodo e verifica a existencia de uma tag.
+ * @param			Apontador para a informação a filtar.
+ * @param			Lista de posts com essa tag.
+ * @param			Tag a verificar.
+*/
+
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado;
+	STACKPOST arr = (STACKPOST) data;
+	int existe = 0,i;
+	long idp = -2;
+	MYPOST post;
+	if (data != NULL){
+		int max = get_NUM_eleSTACKPOST(arr);
+		for(i=0; i < max; i++){
+			post = get_ele_index_STACKPOST(arr,i);
+			existe = existeTag(post,tag);
+
+			if (existe){
+				getIdP(post,&idp);
+					resultado =  *(MYLIST*)result;
+				resultado = insere_list(resultado,idp,NULL);
+				 *(MYLIST*)result = resultado;
+			}
+
+		}
+	}
+}
+
+
+/*
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado,r;
+	long idp = -2;
+	LList lista2;
+	MYPOST post;
+	if (data != NULL){
+		r = (MYLIST)data;
+		lista2 = getFirst_BOX(r	);
+		while(lista2){
+			post = (MYPOST)getElemente_LList(lista2);
+
+			if (existeTag(post,tag)){
+				getIdP(post,&idp);
+				resultado =  *(MYLIST*)result;
+				if(resultado){
+				resultado = insere_list(resultado,(void*)idp,NULL);
+				 *(MYLIST*)result = resultado;
+				}
+			}
+			lista2 = getNext_LList(lista2);
+		}
+	}
+}
+*/
+
+/**
+ * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Data inicial da procura
+ * @param			Data final da procura
+*/
+LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
+	MYDATE nbegin,nend;
+ 	nbegin = DatetoMYDATE(begin);
+ 	nend   = DatetoMYDATE(end);
+	MYLIST result = init_MYLIST(NULL,NULL,NULL);
+	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result, tag);
+	free_MYdate(nbegin);
+	free_MYdate(nend);
+
+	LONG_list final= create_list(get_NUM_ele(result));
+	LList lista2 = getFirst_BOX(result);
+	int i=0;
+	for(i=0;lista2;lista2=getNext_LList(lista2),i++){
+		set_list(final,i,(long)get_key_box(lista2));
+	}
+
+	free_MYLIST(result);
+	return final;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 5+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+/**
+ * @brief			Função que dado um id de um user devolve informacao sobre este mesmo.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+USER get_user_info(TAD_community com, long id){
+	MYUSER user = search_USER(com->users,id);
+	if(!user)
+		return NULL;
+	int aux = 0;
+	long * posts;
+	posts = getNposts(user,10,&aux);
+	if(aux != 10){
+		for(;aux < 10; aux++)
+			posts[aux] = -1;
+	}
+	char* aux2 = getBiography(user);
+	USER info = create_user(aux2,posts);// leak mem
+	freeMYUSER(user);
+	free(aux2);
+	free(posts);
+	return info;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 6+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+/**
+ * @brief			Função adiciona a informação da data de um nodo STACKPOST numa heap para scores.
  * @param			Apontador para a data do nodo.
  * @param			Apontador para a heap.
 */
@@ -86,6 +368,40 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 		}
 	}
 }
+
+/**
+ * @brief			Função que dado um intervalo de tempo calcula os N posts com melhor score.
+ * @param			Número de posts a calcular.
+ * @param			Data do começo do intervalo.
+ * @param			Data do fim do intervalo.
+*/
+
+LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
+	HEAP h = initHEAP(NUM_nodes(com->posts_Id));
+	LONG_list l = create_list(N);
+	MYDATE b1 = DatetoMYDATE(begin);
+	MYDATE e1 = DatetoMYDATE(end);
+	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_score,h,NULL);
+
+	int i;
+	long key,data;
+	for(i=0; i < N && (get_NUM_eleHEAP(h) > 0); i++){
+		pop(h,&key,&data);
+		set_list(l,i,data);
+	}
+	if (i < N){
+		for(; i<N ;i++)
+			set_list(l,i,-2);
+	}
+
+	freeMYHEAP(h);
+	free_MYdate(b1);
+	free_MYdate(e1);
+
+	return l;
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 7+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 /**
  * @brief			Função adiciona a informação da data de um nodo MYLIST numa heap para perguntas com mais respostas.
@@ -148,340 +464,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 	return l;
 }
 
-/**
- * @brief			Função que dado um intervalo de tempo calcula os N posts com melhor score.
- * @param			Número de posts a calcular.
- * @param			Data do começo do intervalo.
- * @param			Data do fim do intervalo.
-*/
-
-LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
-	HEAP h = initHEAP(NUM_nodes(com->posts_Id));
-	LONG_list l = create_list(N);
-	MYDATE b1 = DatetoMYDATE(begin);
-	MYDATE e1 = DatetoMYDATE(end);
-	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_score,h,NULL);
-
-	int i;
-	long key,data;
-	for(i=0; i < N && (get_NUM_eleHEAP(h) > 0); i++){
-		pop(h,&key,&data);
-		set_list(l,i,data);
-	}
-	if (i < N){
-		for(; i<N ;i++)
-			set_list(l,i,-2);
-	}
-
-	freeMYHEAP(h);
-	free_MYdate(b1);
-	free_MYdate(e1);
-
-	return l;
-}
-
-/**
- * @brief			Função ordena os posts de um user.
- * @param			Apontador para o user.
-*/
-
-static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
-	MYUSER use = (MYUSER) data1;
-	if (use){
-		order_STACKPOST(getMYLISTuser(use),&ordenaPOST_MYUSER);
-	}
-}
-
-/**
- * @brief			Função dá load aos ficheiros xml.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			String com a diretoria onde se encontram os ficheiros.
-*/
-
-TAD_community load(TAD_community com, char * dump_path){
-	char path [MAX_DUMP_PATH_SIZE];
-	TREE users,postsDate = NULL,posts_ID = NULL;
-
-	sprintf(path,"%s/Users.xml",dump_path);
-	users = createMYUSERS_TREE(path);
-
-	sprintf(path,"%s/Posts.xml",dump_path);
-	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
-
-	com->users = users;
-
-	com->posts_Date = postsDate;
-	com->posts_Id = posts_ID;
-	all_nodes_TREE(com->users,&ordenaMYUSER_ALL_NODES,NULL);
-
-
-	com->rep_users = initHEAP(NUM_nodes(users));
-	com->pre_rep = NULL;
-	all_nodes_TREE(users,&num_rep_na_HEAP,com->rep_users);
-	com->num_posts = initHEAP(NUM_nodes(users));
-	com->pre_posts = NULL;
-	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
-
-	return com;
-}
-
-/**
- * @brief			Função que liberta a memória da estrutura.
- * @param			Estrutura que guarda as outras estruturas.
-*/
-
-TAD_community clean(TAD_community com){
-	freeTreeUSER(com->users);
-
-	freeTREE_AVL(com->posts_Id);
-	freeTREE_AVL(com->posts_Date);
-	freeSTACK(com->pre_posts);
-	freeMYHEAP(com->num_posts);
-	freeSTACK(com->pre_rep);
-	freeMYHEAP(com->rep_users);
-
-	return com;
-}
-
-/**
- * @brief			Função que calcula os N utilizadores com melhor rep.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número de jogadores.
-*/
-
-static long * n_users_with_more_rep(TAD_community com, int N){
-	int i;
-	long * array = malloc(N*sizeof(long));
-	long id,key;
-
-	if (com->pre_rep == NULL)
-		com->pre_rep = initSTACK((long)N);
-
-	if (((long) N) <= get_NUM_eleSTACK(com->pre_rep)){
-		for(i=0; i < N; i++){
-			array[i] = get_ELE_index(com->pre_rep,i);
-		}
-	}
-	else{
-		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
-			array[i] = get_ELE_index(com->pre_rep,i);
-		for(; i < N; i++){
-			pop(com->rep_users,&key,&id);
-			com->pre_rep = insereSTACK(com->pre_rep,id);
-			array[i] = get_ELE_index(com->pre_rep,i);
-		}
-	}
-
-	return array;
-}
-
-//2
-/**
- * @brief			Função que calcula os N utilizadores com mais posts.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número de jogadores.
-*/
-
-LONG_list top_most_active(TAD_community com, int N){
-	LONG_list l = create_list(N);
-	int i;
-	long id,key;
-
-	if (com->pre_posts == NULL)
-		com->pre_posts = initSTACK((long)N);
-
-	if (((long) N) <= get_NUM_eleSTACK(com->pre_posts)){
-		for(i=0; i < N; i++){
-			set_list(l,i,get_ELE_index(com->pre_posts,i));
-		}
-	}
-	else{
-		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
-			set_list(l,i,get_ELE_index(com->pre_posts,i));
-		for(; i < N; i++){
-			pop(com->num_posts,&key,&id);
-			//printf("%ld\n",key);
-			com->pre_posts = insereSTACK(com->pre_posts,id);
-			set_list(l,i,id);
-		}
-	}
-	return l;
-}
-
-//1
-/**
- * @brief			Função retorna a informacao de um post.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
-*/
-STR_pair info_from_post(TAD_community com, long id){
-	char * title = NULL;
-	char * user = NULL;
-	long iduser = -2;
-	int tipopost = -1;
-	long pai = -1;
-	STR_pair result = NULL;
-
-	MYPOST post = search_POSTID(com->posts_Id,id);
-
-	if(!post){
-		return result;
-	}
-
-	getPostTypeIdP(post,&tipopost);
-	if(tipopost == 2){ // resposta
-		getPIdP(post,&pai);
-		post = search_POSTID(com->posts_Id,pai); // se for uma respota vai buscar o seu pai( sua pergunta )
-	}
-
-	getTitleP(post,&title);
-	getOwnerIdP(post,&iduser);
-	MYUSER us = search_USER(com->users,iduser);
-	user = getUsername(us);
-	result = create_str_pair(title,user);
-	free(user);
-	free(title);
-
-	return result;
-
-
-}
-
-/**
- * @brief			Função que corre num nodo e calcula se é resposta ou pergunta.
- * @param			Apontador para a informação a filtar.
- * @param			Número de perguntas.
- * @param			Número de respostas.
-*/
-
-static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
-	long aux;
-	int type, i;
-	STACKPOST arr = (STACKPOST) data;
-	MYPOST post;
-	if (data != NULL){ //p->1 r->2
-		*(long *)perguntas += getCounter1_STACKPOST(arr);
-		*(long *)respostas += getCounter2_STACKPOST(arr);
-	}
-}
-/*
-static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
-	long aux1 = 0, aux2 = 0;
-	int type, i;
-	STACKPOST arr = (STACKPOST) data;
-	MYPOST post;
-	if (data != NULL){ //p->1 r->2
-		for(i=0; i < get_NUM_eleSTACKPOST(arr);i++){
-			post = get_ele_index_STACKPOST(arr,i);
-			getPostTypeIdP(post,&type);
-			if (type == 1){
-				aux1++;
-			}
-			else if (type == 2){
-				aux2++;
-			}
-		}
-		*(long *)perguntas += aux1;
-		*(long *)respostas += aux2;
-	}
-}*/
-
-//3
-/**
- * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Data inicial da procura
- * @param			Data final da procura
-*/
-LONG_pair total_posts(TAD_community com, Date begin, Date end){
-	long res1, res2 ;
-	res1 = res2 = 0;
-	MYDATE nbegin,nend;
-	nbegin = DatetoMYDATE(begin);
-	nend = DatetoMYDATE(end);
-	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraPerguntasRespostas),&res1,&res2);
-
-	free_MYdate(nbegin);
-	free_MYdate(nend);
-
-	LONG_pair result = create_long_pair(res1,res2);
-	return result;
-}
-
-
-
-/**
- * @brief			Função que dado um id de um user devolve informacao sobre este mesmo.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
-*/
-USER get_user_info(TAD_community com, long id){
-	MYUSER user = search_USER(com->users,id);
-	if(!user)
-		return NULL;
-	int aux = 0;
-	long * posts;
-	posts = getNposts(user,10,&aux);
-	if(aux != 10){
-		for(;aux < 10; aux++)
-			posts[aux] = -1;
-	}
-	char* aux2 = getBiography(user);
-	USER info = create_user(aux2,posts);// leak mem
-	free(aux2);
-	free(posts);
-	return info;
-}
-
-/**
- * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
-*/
-long better_answer(TAD_community com, long id){
-		STACKPOST * arr = NULL;
-		MYUSER men;
-		long user;
-		int scr,rep,comt;
-		int scoreatual,scoremax;
-		scr=rep=comt=scoremax=scoreatual=0;
-		long	 id2 = -2;
-		int type,i;
-		LList aux;
-
-		MYPOST post = search_POSTID(com->posts_Id,id);
-		if (!post){
-			printf("Post inexistente\n");
-			return -3;
-		}
-		getPostTypeIdP(post,&type);
-		if(type != 1){
-			printf("Post não é uma pergunta\n");
-			return -4;
-		}
-
-		getFilhosP(post,&arr);
-		if(arr == NULL)
-			return -2;
-		type = get_NUM_eleSTACKPOST(arr); // nao me apeteceu defenir outro int
-		for(i=0; i < type; i++){
-			post = get_ele_index_STACKPOST(arr,i);
-			getScoreP(post,&scr);
-			getCommentsP(post,&scr);
-			getOwnerIdP(post,&user);
-			men = search_USER(com->users,user);
-			rep = getREPMYUSER(men);
-			scoreatual =(scr * 0.65 + rep * 0.25  + comt * 0.1);
-			if (scoreatual > scoremax){
-				scoremax = scoreatual;
-				getIdP(post,&id2);
-	//			printf("score = %d ; post = %ld\n",scoreatual,id2 );
-			}
-
-		}
-		return id2;
-
-}
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 8+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 /**
@@ -574,90 +557,7 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	return res;
 }
 
-
-
-/**
- * @brief			Função que corre num nodo e verifica a existencia de uma tag.
- * @param			Apontador para a informação a filtar.
- * @param			Lista de posts com essa tag.
- * @param			Tag a verificar.
-*/
-
-static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado;
-	STACKPOST * arr = (STACKPOST *) data;
-	int existe = 0,i;
-	long idp = -2;
-	MYPOST post;
-	if (data != NULL){
-		int max = get_NUM_eleSTACKPOST(arr);
-		for(i=0; i < max; i++){
-			post = get_ele_index_STACKPOST(arr,i);
-			existe = existeTag(post,tag);
-
-			if (existe){
-				getIdP(post,&idp);
-					resultado =  *(MYLIST*)result;
-				resultado = insere_list(resultado,idp,NULL);
-				 *(MYLIST*)result = resultado;
-			}
-
-		}
-	}
-}
-
-
-/*
-static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado,r;
-	long idp = -2;
-	LList lista2;
-	MYPOST post;
-	if (data != NULL){
-		r = (MYLIST)data;
-		lista2 = getFirst_BOX(r	);
-		while(lista2){
-			post = (MYPOST)getElemente_LList(lista2);
-
-			if (existeTag(post,tag)){
-				getIdP(post,&idp);
-				resultado =  *(MYLIST*)result;
-				if(resultado){
-				resultado = insere_list(resultado,(void*)idp,NULL);
-				 *(MYLIST*)result = resultado;
-				}
-			}
-			lista2 = getNext_LList(lista2);
-		}
-	}
-}
-*/
-
-/**
- * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Data inicial da procura
- * @param			Data final da procura
-*/
-LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
-	MYDATE nbegin,nend;
- 	nbegin = DatetoMYDATE(begin);
- 	nend   = DatetoMYDATE(end);
-	MYLIST result = init_MYLIST(NULL,NULL,NULL);
-	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result, tag);
-	free_MYdate(nbegin);
-	free_MYdate(nend);
-
-	LONG_list final= create_list(get_NUM_ele(result));
-	LList lista2 = getFirst_BOX(result);
-	int i=0;
-	for(i=0;lista2;lista2=getNext_LList(lista2),i++){
-		set_list(final,i,(long)get_key_box(lista2));
-	}
-
-	free_MYLIST(result);
-	return final;
-}
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 9+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 /**
  * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
@@ -735,8 +635,62 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	for(i=0;i < N-flag;lista3=getNext_LList(lista3),i++)
 		set_list(final,i,(long)getElemente_LList(lista3));
 
+	freeMYUSER(user1);
+	freeMYUSER(user2);
 	free_MYLIST(result);
 	return final;
+
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 10+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+/**
+ * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Id do post
+*/
+long better_answer(TAD_community com, long id){
+		STACKPOST arr = NULL;
+		MYUSER men;
+		long user;
+		int scr,rep,comt;
+		int scoreatual,scoremax;
+		scr=rep=comt=scoremax=scoreatual=0;
+		long	 id2 = -2;
+		int type,i;
+
+		MYPOST post = search_POSTID(com->posts_Id,id);
+		if (!post){
+			printf("Post inexistente\n");
+			return -3;
+		}
+		getPostTypeIdP(post,&type);
+		if(type != 1){
+			printf("Post não é uma pergunta\n");
+			return -4;
+		}
+
+		getFilhosP(post,&arr);
+		if(arr == NULL)
+			return -2;
+		type = get_NUM_eleSTACKPOST(arr); // nao me apeteceu defenir outro int
+		for(i=0; i < type; i++){
+			post = get_ele_index_STACKPOST(arr,i);
+			getScoreP(post,&scr);
+			getCommentsP(post,&scr);
+			getOwnerIdP(post,&user);
+			men = search_USER(com->users,user);
+			rep = getREPMYUSER(men);
+			freeMYUSER(men);
+			scoreatual =(scr * 0.65 + rep * 0.25  + comt * 0.1);
+			if (scoreatual > scoremax){
+				scoremax = scoreatual;
+				getIdP(post,&id2);
+	//			printf("score = %d ; post = %ld\n",scoreatual,id2 );
+			}
+
+		}
+		return id2;
 
 }
 
@@ -744,6 +698,38 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+/**
+ * @brief			Função que calcula os N utilizadores com melhor rep.
+ * @param			Estrutura que guarda as outras estruturas.
+ * @param			Número de jogadores.
+*/
+
+static long * n_users_with_more_rep(TAD_community com, int N){
+	int i;
+	long * array = malloc(N*sizeof(long));
+	long id,key;
+
+	if (com->pre_rep == NULL)
+		com->pre_rep = initSTACK((long)N);
+
+	if (((long) N) <= get_NUM_eleSTACK(com->pre_rep)){
+		for(i=0; i < N; i++){
+			array[i] = get_ELE_index(com->pre_rep,i);
+		}
+	}
+	else{
+		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
+			array[i] = get_ELE_index(com->pre_rep,i);
+		for(; i < N; i++){
+			pop(com->rep_users,&key,&id);
+			com->pre_rep = insereSTACK(com->pre_rep,id);
+			array[i] = get_ELE_index(com->pre_rep,i);
+		}
+	}
+
+	return array;
+}
 
 
 /**
@@ -862,4 +848,23 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 	free(users);				// dar free a esta shit
 	return res;
+}
+
+
+/**
+ * @brief			Função que liberta a memória da estrutura.
+ * @param			Estrutura que guarda as outras estruturas.
+*/
+
+TAD_community clean(TAD_community com){
+	freeTreeUSER(com->users);
+
+	freeTREE_AVL(com->posts_Id);
+	freeTREE_AVL(com->posts_Date);
+	freeSTACK(com->pre_posts);
+	freeMYHEAP(com->num_posts);
+	freeSTACK(com->pre_rep);
+	freeMYHEAP(com->rep_users);
+
+	return com;
 }

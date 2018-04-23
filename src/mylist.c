@@ -301,23 +301,6 @@ MYLIST reverse(MYLIST l){
 	return l;
 }
 
-
-/**
- * @brief			Função passa as keys da nossa estrutura MYLIST para lista de longs dos professores.
- * @param			MYLIST cujas keys serão passadas.
- * @param			LONG_list onde serão guardadas as keys.
- * @param			número
-*/
-void my_tolonglist(void * llist, void * longlist, void * n, void * nulla) {
-
-	LList cllist = (LList) llist;
-	LONG_list clonglist = (LONG_list) longlist;
-	int * cn = (int *) n;
-
-	set_list(clonglist, *cn, (long ) cllist->key);
-	(*cn)--;
-}
-
 /**
  * @brief			Função passa os dados (números inteiros neste caso) da nossa estrutura MYLIST para lista de longs dos professores.
  * @param			MYLIST cujas keys serão passadas.
