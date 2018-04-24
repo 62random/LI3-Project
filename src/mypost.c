@@ -186,7 +186,7 @@ long getCounter2_STACKPOST(STACKPOST st){
 
 void insereSTACKPOST(STACKPOST st, MYPOST post){
 	long i;
-	int type;
+	int type = 0;
 	MYPOST * aux;
 	if (st->n_elem >= st->size){
 		st->size *= 2;

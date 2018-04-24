@@ -257,31 +257,6 @@ static void filtraTags(void * data, void * result, void * tag){
 }
 
 
-/*
-static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado,r;
-	long idp = -2;
-	LList lista2;
-	MYPOST post;
-	if (data != NULL){
-		r = (MYLIST)data;
-		lista2 = getFirst_BOX(r	);
-		while(lista2){
-			post = (MYPOST)getElemente_LList(lista2);
-
-			if (existeTag(post,tag)){
-				getIdP(post,&idp);
-				resultado =  *(MYLIST*)result;
-				if(resultado){
-				resultado = insere_list(resultado,(void*)idp,NULL);
-				 *(MYLIST*)result = resultado;
-				}
-			}
-			lista2 = getNext_LList(lista2);
-		}
-	}
-}
-*/
 
 /**
  * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
@@ -557,32 +532,6 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 9+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-/*
-static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado,r;
-	long idp = -2;
-	LList lista2;
-	MYPOST post;
-	if (data != NULL){
-		r = (MYLIST)data;
-		lista2 = getFirst_BOX(r	);
-		while(lista2){
-			post = (MYPOST)getElemente_LList(lista2);
-
-			if (existeTag(post,tag)){
-				getIdP(post,&idp);
-				resultado =  *(MYLIST*)result;
-				if(resultado){
-				resultado = insere_list(resultado,(void*)idp,NULL);
-				 *(MYLIST*)result = resultado;
-				}
-			}
-			lista2 = getNext_LList(lista2);
-		}
-	}
-}
-*/
-
 /**
  * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
  * @param			Estrutura que guarda as outras estruturas.
@@ -608,33 +557,6 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);//&(free_MYdate),&(free));
 
 	MYDATE data = NULL;
-/*
-	for (i1 = 0; i1<max1 && flag; i1++){
-		post1 = get_ele_index_STACKPOST(lista1,i1);
-		getPostTypeIdP(post1,&type);
-		if(type == 2)
-			getPIdP(post1,&pid1);
-		else if(type == 1)
-			getIdP(post1,&pid1);
-		else
-			break;
-		printf("%ld\n", pid1);
-	}
-	printf("_____________________\n" );
-
-	for (i2 = 0; i2<max2 && flag; i2++){
-		post2 = get_ele_index_STACKPOST(lista2,i2);
-		getPostTypeIdP(post2,&type);
-		if(type == 2)
-			getPIdP(post2,&pid2);
-		else if(type == 1)
-			getIdP(post2,&pid2);
-		else
-			break;
-		printf("%ld\n", pid2);
-	}
-
-*/
 
 	for (i1 = 0; i1<max1 && flag; i1++){
 		post1 = get_ele_index_STACKPOST(lista1,i1);
@@ -736,7 +658,6 @@ long better_answer(TAD_community com, long id){
 			if (scoreatual > scoremax){
 				scoremax = scoreatual;
 				getIdP(post,&id2);
-	//			printf("score = %d ; post = %ld\n",scoreatual,id2 );
 			}
 
 		}

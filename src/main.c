@@ -378,4 +378,6 @@ int main(){
 		printf("P:%ld->R:%ld\n",get_fst_long(a),get_snd_long(a));
 		com = clean(com);
 		free(com);
+
+		return 1;
 	}
