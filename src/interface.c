@@ -432,7 +432,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
  * @param			Número máximo de resultados N.
 */
 
-static void contains_word_node(void * post, void * arr, void * word, void * n){
+static void contains_word_node(void * post, void * arr, void * word, void * n, void * nulla){
 	if(post == NULL || *((int *) n) <= 0)
 		return;
 
@@ -468,7 +468,7 @@ static void contains_word_arr(void * arr, void * res, void * word, void * n){
 	if(arr == NULL)
 		return;
 
-	trans_arr(arr, &contains_word_node, res, word, n);
+	trans_arr(arr, &contains_word_node, res, word, n, NULL);
 }
 
 
@@ -699,71 +699,51 @@ static long * n_users_with_more_rep(TAD_community com, int N){
  * @param			Array dos N users com maior reputação.
  * @param			Número N (tamanho do array de users).
 */
-static void most_used_best_rep_node(void * vpost, void * res, void * users, void * N){
+static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias, void * begin, void * end){
 	if(vpost == NULL)
 		return;
 
 	MYPOST post = (MYPOST) vpost;
-	int i;												// se não for
-														// uma pergunta
-	if(getPostTypeIdP(post) != 1)						// então
-		return;											// retornar
+	int i;
 
-	int n = *((int *) N) ;
+	if(getPostTypeIdP(post) != 1)
+		return;
 
-	for(i = 0; i < n; i++) {							//se o autor
-		if(getOwnerIdP(post) == ((long *) users)[i])	//não é um dos
-			break;										//com mais
-		if(i == n - 1)									//reputação
-			return;										//retornar
-	}
-
+	int r1 = compare_MYDATE_AVL((MYDATE) begin,  getDateP(post));
+	int r2 = compare_MYDATE_AVL((MYDATE) end, getDateP(post));
+	if(r1 < 0 || r2 > 0)
+		return;
 
 	char ** tags;
 	tags = getTagsP(post);
-	int * occ;
+	long * keyid;
+	int * oc;
+	TAD_community com = (TAD_community) vcom;
 
 	for(i = 0; tags[i]; i++)
-		if((occ = (int *) search_list_data((MYLIST) res, tags[i])) != NULL)		//se a tag já foi encontrada
-			(*occ)++;															//incrementar número de ocorrências
-		else																	//caso contrário,
-			insere_list((MYLIST) res, (void *) mystrdup(tags[i]), (void *) 1);	//inserir tag na lista das encontradas
+		if((keyid = g_hash_table_lookup(com->tags, tags[i])) != NULL){
+			if((oc = g_hash_table_lookup(ocorrencias, keyid)) != NULL){
+				(*oc)++;
+			}
+			else {
+				oc = malloc(sizeof(int));
+				(*oc) = 0;
+				g_hash_table_insert(ocorrencias, keyid, oc);
+			}
+		}
 
 
 	free_StringArray(tags);
 
 }
 
-/**
- * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da árvore de posts organizado por datas, durante a travessia.
- * @param			Array de posts nesse nodo.
- * @param			Lista onde são armazenados resultados.
- * @param			Array dos N users com maior reputação.
- * @param			Número N (tamanho do array de users).
-*/
-static void most_used_best_rep_arr(void * arr, void * res, void * users, void * n){
-	if(arr == NULL)
-		return;
+void hash_to_heap(gpointer key, gpointer value, gpointer data) {
+	HEAP heap = (HEAP) data;
+	long ocorrencias, id;
+	ocorrencias = *((long *) value);
+	id = *((long *) key);
 
-	trans_arr(arr, &most_used_best_rep_node, res, users, n);
-}
-
-
-/**
- * @brief			Função passa os dados (do tipo int neste caso) da nossa estrutura MYLIST para um array de longs.
- * @param			LList cujos dados serão passados.
- * @param			Array de longs para onde será passados os dados.
- * @param			Índice onde será colocados os dados.
-*/
-static void my_data_int_toarray(void * llist, void * longs, void * n, void * nulla) {
-
-	LList cllist = (LList) llist;
-	long * clongs = (long *) longs;
-	int * cn = (int *) n;
-
-	int occ = (int) getElemente_LList(cllist);
-	clongs[*cn] = (long ) occ;
-	(*cn)++;
+	insereHEAP(heap, ocorrencias, id);
 }
 
 /**
@@ -774,41 +754,43 @@ static void my_data_int_toarray(void * llist, void * longs, void * n, void * nul
  * @param			Final do período de tempo.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
-	MYLIST lista = init_MYLIST(&not_strcmp, &free, NULL);						//criar lista para tags encontradas
+	GHashTable * ocorrencias = g_hash_table_new_full(&g_direct_hash,&g_direct_equal, NULL,&free);
 	MYDATE mybegin = DatetoMYDATE(begin);										//transformar Date no nosso tipo
 	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
 	long * users = n_users_with_more_rep(com, N);								//preencher array com N
-																				//users com  maior reputação
-
-	trans_tree(com->posts_Date, &most_used_best_rep_arr, lista, users, mybegin, myend, 2, N); 	//travessia inorder
-																								//na árvore de posts
-																								//ordenados por data
-																								//aplicando a função
-																								//most_used_best_rep_list
+	int i, j;																		//users com  maior reputação
+	MYUSER user;
+	STACKPOST posts;
+	for(i = 0; i < N && users[i] != -2; i++){
+		user = search_USER(com->users, users[i]);
+		if(user) {
+			posts = getMYLISTuser(user);
+			trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend);
+		}
+	}
 
 	free_MYdate(mybegin);
 	free_MYdate(myend);
 
-	int size = get_NUM_ele(lista), i = 0;										//transformar a lista de tags encontradas
-	long arr[size];																//num array com as respetivas ocorrencias
-	trans_list(lista, &my_data_int_toarray, arr, &i, NULL);						//percorrendo a lista e aplicando a
-	 																				//função my_data_int_toarray
-	qsort(arr, size, sizeof(long), &cmp_longs);									//ordenar o array inversamente
+	int size = g_hash_table_size(ocorrencias);
+	HEAP heap = initHEAP((long) size);
 
-	free_MYLIST(lista);
+	g_hash_table_foreach(ocorrencias, &hash_to_heap, heap);
 
-	if(size > N)																//determinar o número
-		size = N;																//de elementos a retornar
+	LONG_list res = create_list(size);
 
-	LONG_list res = create_list(size);											//passar os elementos do array
-	for(i = 0; i < size; i++)													//para a LONG_list
-		set_list(res, i, arr[i]);												//a retornar
+	int id, oc;
 
-	free(users);				// dar free a esta shit
+	for(i = 0; i < size; i--) {
+		pop(heap, &oc, &id);
+		set_list(res, i, id);
+	}
+
+	g_hash_table_destroy(ocorrencias);
+	free(users);
 	return res;
 }
-
 
 /**
  * @brief			Função que liberta a memória da estrutura.

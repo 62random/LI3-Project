@@ -17,7 +17,7 @@ typedef struct mypost * MYPOST;
 typedef struct stackpost * STACKPOST;
 
 //Stackpost
-void 		trans_arr				(STACKPOST arr, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3);
+void 		trans_arr				(STACKPOST arr, void (*f_box)(void *, void *, void *, void *, void *), void * data1, void * data2, void * data3, void * data4);
 int 		ordenaPOST_MYUSER		(const void * data1, const void * data2);
 void 		order_STACKPOST			(STACKPOST st, void * func);
 STACKPOST	initSTACKPOST			(long size);
@@ -62,5 +62,4 @@ void 		xmltoMYPOST				(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, 
 MYDATE 		xmlToMYDATE				(char * value);
 char ** 	xmlToStringArray		(char * value);
 STACKPOST 	search_POSTDATA			(TREE tree,MYDATE data);
-void 		trans_arr				(STACKPOST arr, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3);
 #endif
