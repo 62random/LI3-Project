@@ -10,6 +10,7 @@ struct TCD_community {
 	STACK pre_posts;
 	HEAP rep_users;
 	STACK pre_rep;
+	GHashTable * tags;
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++Init+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -85,6 +86,9 @@ TAD_community load(TAD_community com, char * dump_path){
 
 	sprintf(path,"%s/Posts.xml",dump_path);
 	createMYPOST_TREES(path, &posts_ID, &postsDate, users);
+
+	sprintf(path,"%s/Tags.xml",dump_path);
+	com->tags = createMYTAGS_HASH(path);
 
 	com->users = users;
 
@@ -803,6 +807,8 @@ TAD_community clean(TAD_community com){
 	freeMYHEAP(com->num_posts);
 	freeSTACK(com->pre_rep);
 	freeMYHEAP(com->rep_users);
+
+	freeHASH_TAGS(com->tags);
 
 	return com;
 }
