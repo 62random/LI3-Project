@@ -61,5 +61,6 @@ int			existeTag				(MYPOST post,char * tag); // tem printf
 void 		xmltoMYPOST				(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE treeusers);
 MYDATE 		xmlToMYDATE				(char * value);
 char ** 	xmlToStringArray		(char * value);
-
+STACKPOST 	search_POSTDATA			(TREE tree,MYDATE data);
+void 		trans_arr				(STACKPOST arr, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3);
 #endif

@@ -239,3 +239,21 @@ long get_NUM_eleHEAP(HEAP a){
 	long x;
 	return (x = a ? a->n_elem : 0);
 }
+
+
+/**
+ * @brief			Função percorre uma STACK de longs e aplica a cada nodo uma função.
+ * @param			STACK  a ser percorrida.
+ * @param			Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
+ * @param			Segundo argumento da função a ser aplicada.
+ * @param			Terceiro argumento da função a ser aplicada.
+ * @param			Quarto argumento da função a ser aplicada.
+
+*/
+void trans_stack(STACK arr, void (*f_box)(long , void *, void *, void *), void * data1, void * data2, void * data3){
+	if(arr == NULL)
+		return;
+
+	for(int i = 0;i < arr->n_elem; i++)
+		f_box(arr->array[i],data1, data2, data3);
+}

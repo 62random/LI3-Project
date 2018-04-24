@@ -592,22 +592,33 @@ long NUM_nodes(TREE t){
  *@brief			Função que faz uma travessia inorder na árvore.
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
-		trans_inorder(aux->esq,f_nodo,data1, data2, begin, end, n);
-		if (*n <= 0)
-			return;
-		if (begin == NULL)
+		if (begin == NULL || end == NULL) {
+			trans_inorder(aux->esq,f_nodo,data1, data2, begin, end, n);
 			f_nodo(aux->data,data1, data2, n);
-		else {
-			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) <= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) >= 0)
-				f_nodo(aux->data,data1, data2, n);
+			trans_inorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		}
-		trans_inorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+		else {
+			int r1 = compare_MYDATE_AVL((MYDATE) begin, (MYDATE) aux->key );
+			int r2 = compare_MYDATE_AVL((MYDATE) end, (MYDATE) aux->key);
+			if(r1 >= 0 && r2 <= 0) {
+				trans_inorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+				f_nodo(aux->data,data1, data2, n);
+				trans_inorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+			}
+			else if (r1 >= 0)
+				trans_inorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			else if (r2 <= 0)
+				trans_inorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+		}
 	}
 }
 
@@ -616,22 +627,34 @@ static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),v
  *@brief			Função que faz uma travessia inorder na árvore.
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
-
 static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
-		trans_revinorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		if (*n <= 0)
 			return;
-		if (begin == NULL)
+		if (begin == NULL || end == NULL) {
+			trans_revinorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 			f_nodo(aux->data,data1, data2, n);
-		else {
-			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) >= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) <= 0)
-				f_nodo(aux->data,data1, data2, n);
+			trans_revinorder(aux->esq,f_nodo,data1, data2, begin, end, n);
 		}
-		trans_revinorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+		else {
+			int r1 = compare_MYDATE_AVL((MYDATE) begin, (MYDATE) aux->key );
+			int r2 = compare_MYDATE_AVL((MYDATE) end, (MYDATE) aux->key);
+			if(r1 >= 0 && r2 <= 0) {
+				trans_revinorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+				f_nodo(aux->data,data1, data2, n);
+				trans_revinorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			}
+			else if (r1 >= 0)
+				trans_revinorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			else if (r2 <= 0)
+				trans_revinorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+		}
 	}
 }
 
@@ -640,21 +663,34 @@ static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *
  *@brief			Função que faz uma travessia postorder na árvore.
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
-		trans_posorder(aux->esq,f_nodo,data1, data2, begin, end, n);
-		trans_posorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		if (*n <= 0)
 			return;
-		if (begin == NULL)
+		if (begin == NULL || end == NULL) {
+			trans_posorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			trans_posorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 			f_nodo(aux->data,data1, data2, n);
+		}
 		else {
-			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) >= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) <= 0)
+			int r1 = compare_MYDATE_AVL((MYDATE) begin, (MYDATE) aux->key );
+			int r2 = compare_MYDATE_AVL((MYDATE) end, (MYDATE) aux->key);
+			if(r1 >= 0 && r2 <= 0) {
+				trans_posorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+				trans_posorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 				f_nodo(aux->data,data1, data2, n);
+			}
+			else if (r1 >= 0)
+				trans_posorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			else if (r2 <= 0)
+				trans_posorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		}
 	}
 }
@@ -664,21 +700,34 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@param			Apontador para a arvore.
  *@param			Função a aplicar a cada nodo.
  *@param			Apontador a passar à função a aplicar.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
 		if (*n <= 0)
 			return;
-		if (begin == NULL)
+		if (begin == NULL || end == NULL) {
 			f_nodo(aux->data,data1, data2, n);
-		else {
-			if(begin && end && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) begin) >= 0 && compare_MYDATE_AVL((MYDATE) aux->key , (MYDATE) end) <= 0)
-				f_nodo(aux->data,data1, data2, n);
+			trans_posorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			trans_posorder(aux->dir,f_nodo,data1, data2, begin, end, n);
 		}
-		trans_preorder(aux->esq,f_nodo,data1, data2, begin, end, n);
-		trans_preorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+		else {
+			int r1 = compare_MYDATE_AVL((MYDATE) begin, (MYDATE) aux->key );
+			int r2 = compare_MYDATE_AVL((MYDATE) end, (MYDATE) aux->key);
+			if(r1 >= 0 && r2 <= 0) {
+				f_nodo(aux->data,data1, data2, n);
+				trans_preorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+				trans_preorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+			}
+			else if (r1 >= 0)
+				trans_preorder(aux->esq,f_nodo,data1, data2, begin, end, n);
+			else if (r2 <= 0)
+				trans_preorder(aux->dir,f_nodo,data1, data2, begin, end, n);
+		}
+
 	}
 }
 
@@ -690,11 +739,12 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@brief			Função que faz uma travessia na árvore.
  *@param			Apontador para a estrutura arvore.
  *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Tipo de travessia.
- *@param			Número máximo de nodos a percorrer.
+ *@param			Apontador a passar como argumento à função a aplicar a cada nodo.
+ *@param			Apontador a passar como argumento à função a aplicar a cada nodo.
+ *@param			Data início do intervalo a que cada nodo tem de pertencer para a função ser aplicada. (nullable)
+ *@param			Data início do intervalo a que cada nodo tem de pertencer para a função ser aplicada. (nullable)
+ *@param			Número máximo de nodos a percorrer. (nullable)
 */
-
 
 void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int travessia, int n){
 	if (!e)

@@ -475,7 +475,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
  * @param			Número máximo de resultados N.
 */
 
-static void contains_word_node(void * post, void * lista, void * word, void * n){
+static void contains_word_node(void * post, void * arr, void * word, void * n){
 	if(post == NULL || *((int *) n) <= 0)
 		return;
 
@@ -485,14 +485,14 @@ static void contains_word_node(void * post, void * lista, void * word, void * n)
 	if(i != 1)							// então
 		return;							// retornar
 
-	MYLIST clista = (MYLIST) lista;
+	STACK carr = (STACK) arr;
 	char * cword = (char *) word, * title;
 	long id;
 
 	getTitleP(cpost, &title);
 	if(strstr(title, cword) != NULL) {	// se o titulo contem a palavra
 		getIdP(cpost, &id);
-		insere_list(clista, (void *) id, NULL);
+		insereSTACK(carr, id);
 		int * cn = (int *) n;
 		(*cn)--;
 	}
@@ -504,8 +504,8 @@ static void contains_word_node(void * post, void * lista, void * word, void * n)
 
 /**
  * @brief			Função a aplicar ao array de posts efetuados no mesmo dia, auxiliar á query 8.
- * @param			Array onde estão armazenados os ids de posts de resposta à query.
- * @param			Número máximo de resultados N.
+ * @param			Array onde estão armazenados os ids de posts efetuados no mesmo dia.
+ * @param			Array onde estão a ser guardados os ids dos posts de resposta à query.
  * @param			Palavra a ser procurada nos títulos.
  * @param			Número máximo de resultados N.
 */
@@ -524,13 +524,12 @@ static void contains_word_arr(void * arr, void * res, void * word, void * n){
  * @param			LONG_list onde serão guardadas as keys.
  * @param			Índice onde será inserida a key.
 */
-static void my_tolonglist(void * llist, void * longlist, void * n, void * nulla) {
+static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) {
 
-	LList cllist = (LList) llist;
 	LONG_list clonglist = (LONG_list) longlist;
 	int * cn = (int *) n;
 
-	set_list(clonglist, *cn, (long ) get_key_box(cllist));
+	set_list(clonglist, *cn, num);
 	(*cn)--;
 }
 
@@ -542,22 +541,47 @@ static void my_tolonglist(void * llist, void * longlist, void * n, void * nulla)
 */
 
 LONG_list contains_word(TAD_community com, char* word, int N){
-	MYLIST lista = init_MYLIST(NULL, NULL, NULL);
-	trans_tree(com->posts_Date, &contains_word_arr, lista, word, NULL, NULL, 4, N);
-
-	int n = get_NUM_ele(lista) - 1;
+	STACK arr = initSTACK(1);
+	trans_tree(com->posts_Date, &contains_word_arr, arr, word, NULL, NULL, 4, N);
+	int n = get_NUM_eleSTACK(arr) - 1;
 
 	LONG_list res = create_list(n + 1);
 
-	trans_list(lista, &my_tolonglist, res, &n, NULL);
-	//sort_list(res, &cmp_longs);
+	trans_stack(arr, &stack_tolonglist, res, &n, NULL);
+	sort_list(res, &cmp_longs);
 
-	free_MYLIST(lista);
+	freeSTACK(arr);
 
 	return res;
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 9+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+/*
+static void filtraTags(void * data, void * result, void * tag){
+	MYLIST resultado,r;
+	long idp = -2;
+	LList lista2;
+	MYPOST post;
+	if (data != NULL){
+		r = (MYLIST)data;
+		lista2 = getFirst_BOX(r	);
+		while(lista2){
+			post = (MYPOST)getElemente_LList(lista2);
+
+			if (existeTag(post,tag)){
+				getIdP(post,&idp);
+				resultado =  *(MYLIST*)result;
+				if(resultado){
+				resultado = insere_list(resultado,(void*)idp,NULL);
+				 *(MYLIST*)result = resultado;
+				}
+			}
+			lista2 = getNext_LList(lista2);
+		}
+	}
+}
+*/
 
 /**
  * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
@@ -722,8 +746,6 @@ long better_answer(TAD_community com, long id){
 
 
 
-//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 /**
  * @brief			Função que calcula os N utilizadores com melhor rep.
@@ -756,6 +778,11 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 
 	return array;
 }
+
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 
 /**
