@@ -366,16 +366,7 @@ int main(){
 
 	int main1(){
 		TAD_community com = init();
-		clock_t t;
 		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
-		Date di = createDate(1,1,2008);
-		Date df = createDate(1,2,2020);
-		t = clock();
-		LONG_pair a = total_posts(com,di,df);
-		t = clock()-t;
-		double a5 = ((double)t)/CLOCKS_PER_SEC*1000;
-		printf("Q3->%fms\n\n\n",a5);
-		printf("P:%ld->R:%ld\n",get_fst_long(a),get_snd_long(a));
 		com = clean(com);
 		free(com);
 

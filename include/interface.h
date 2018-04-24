@@ -10,6 +10,7 @@
 #include "mydate.h"
 #include "myheap.h"
 #include "loading.h"
+#include "mytags.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
