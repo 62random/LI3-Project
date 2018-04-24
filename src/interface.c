@@ -173,10 +173,14 @@ LONG_list top_most_active(TAD_community com, int N){
 	else{
 		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
-		for(; i < N; i++){
+		for(; i < N && get_NUM_eleHEAP(com->num_posts) > 0; i++){
 			pop(com->num_posts,&key,&id);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
+		}
+		if (i < N){
+			for(; i < N; i++)
+				set_list(l,i,-2);
 		}
 	}
 	return l;
@@ -233,7 +237,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 */
 
 static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado;
+	STACK resultado;
 	STACKPOST arr = (STACKPOST) data;
 	int existe = 0,i;
 	MYPOST post;
@@ -244,9 +248,9 @@ static void filtraTags(void * data, void * result, void * tag){
 			existe = existeTag(post,tag);
 
 			if (existe){
-					resultado =  *(MYLIST*)result;
-				resultado = insere_list(resultado, getIdP(post),NULL);
-				 *(MYLIST*)result = resultado;
+					resultado =  *(STACK*)result;
+					resultado = insereSTACK(resultado, getIdP(post));
+				 	*(STACK*)result = resultado;
 			}
 
 		}
@@ -265,22 +269,21 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	MYDATE nbegin,nend;
  	nbegin = DatetoMYDATE(begin);
  	nend   = DatetoMYDATE(end);
-	MYLIST result = init_MYLIST(NULL,NULL,NULL);
+	STACK result = initSTACK(1);
 	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result, tag);
 	free_MYdate(nbegin);
 	free_MYdate(nend);
 
-	LONG_list final= create_list(get_NUM_ele(result));
-	LList lista2 = getFirst_BOX(result);
+	LONG_list final= create_list(get_NUM_eleSTACK(result));
 	int i=0;
-	for(i=0;lista2;lista2=getNext_LList(lista2),i++){
-		set_list(final,i,(long)get_key_box(lista2));
+	int max = get_NUM_eleSTACK(result);
+	for(i=0;i<max;i++){
+		set_list(final,i,(long)get_ELE_index(result,i));
 	}
 
-	free_MYLIST(result);
+	freeSTACK(result);
 	return final;
 }
-
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 5+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -705,11 +708,12 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 	else{
 		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
 			array[i] = get_ELE_index(com->pre_rep,i);
-		for(; i < N; i++){
+		for(; i < N && (get_NUM_eleHEAP(com->rep_users) > 0); i++){
 			pop(com->rep_users,&key,&id);
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
 		}
+		set_list(l,i,-2);
 	}
 
 	return array;
