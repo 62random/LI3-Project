@@ -367,13 +367,40 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 7+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+/**
+ * @brief			Função que conta o número de post num intervalo.
+ * @param			Apontador para a stack de posts.
+ * @param			Apontador para o inicio do intervalo.
+ * @param			Apontador para o fim do intervalo.
+*/
+
+static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
+	long i, tam = get_NUM_eleSTACKPOST(st);
+	int count = 0,r1,r2;
+	MYDATE pdate;
+	MYPOST post;
+	if (st){
+		for(i=0; i < tam; i++){
+			post = get_ele_index_STACKPOST(st,i);
+			pdate = getDateP(post);
+
+			r1 = compare_MYDATE_AVL(begin,pdate);
+			r2 = compare_MYDATE_AVL(end,pdate);
+			if (r1 >= 0 && r2 <= 0)
+				count++;
+			free_MYdate(pdate);
+		}
+	}
+	return count;
+}
 /**
  * @brief			Função adiciona a informação da data de um nodo MYLIST numa heap para perguntas com mais respostas.
  * @param			Apontador para a data do nodo.
  * @param			Apontador para a heap.
 */
 
-static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
+static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void * end){
 	HEAP h = (HEAP) dataaux;
 	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
@@ -382,9 +409,11 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
 
 	for(i=0; i < tam; i++){
 		post = get_ele_index_STACKPOST(arr,i);
-		if (post)
-			if (getPostTypeIdP(post) == 1)
-				insereHEAP(h, getAnswersP(post), getIdP(post));
+		if (post){
+			if (getPostTypeIdP(post) == 1){
+				insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
+			}
+		}
 	}
 }
 
@@ -401,7 +430,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 	MYDATE b1 = DatetoMYDATE(begin);
 	MYDATE e1 = DatetoMYDATE(end);
 
-	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_nresp,h,NULL);
+	trans_tree(com->posts_Date,&postList_to_HEAP_nresp,h,NULL,begin,end,5,0);
 
 	int i;
 	long key,data;
