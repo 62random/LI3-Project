@@ -31,20 +31,20 @@ MYPOST 		get_ele_index_STACKPOST	(STACKPOST st, long i);
 void 		freeSTACKPOST_SEM_CLONE	(STACKPOST st);
 void 		freeSTACKPOST_COM_CLONE	(STACKPOST st);
 
-void 		getIdP					(MYPOST post, long * id);
-void 		getPostTypeIdP			(MYPOST post, int * id);
+long 		getIdP					(MYPOST post);
+int 		getPostTypeIdP			(MYPOST post);
 int 		getTYPECLONEP			(MYPOST post);
-void 		getOwnerIdP				(MYPOST post, long * id);
-void 		getDateP				(MYPOST post, MYDATE * data);
-void 		getOwnerNameP			(MYPOST post, char ** name);
-void 		getTitleP				(MYPOST post, char ** title);
-void 		getTagsP				(MYPOST post, char *** tags); // tem codigo a comm
-void 		getAnswersP				(MYPOST post, int *answer);
-void 		getCommentsP			(MYPOST post, int *comments);
-void 		getFavsP				(MYPOST post, int *fav);
-void 		getPIdP					(MYPOST post, long * p_id);
-void 		getScoreP				(MYPOST post, int * score);
-void 		getFilhosP				(MYPOST post, STACKPOST * filhos);
+long 		getOwnerIdP				(MYPOST post);
+MYDATE 		getDateP				(MYPOST post);
+char * 		getOwnerNameP			(MYPOST post);
+char * 		getTitleP				(MYPOST post);
+char **		getTagsP				(MYPOST post); // tem codigo a comm
+int 		getAnswersP				(MYPOST post);
+int 		getCommentsP			(MYPOST post);
+int 		getFavsP				(MYPOST post);
+long 		getPIdP					(MYPOST post);
+int 		getScoreP				(MYPOST post);
+STACKPOST	getFilhosP				(MYPOST post);
 void 		setFilhosNoPost			(MYPOST post,MYPOST data);
 
 MYPOST 		createpost				(int type);

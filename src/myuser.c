@@ -73,7 +73,7 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	for(i=0; i < n && i < k; i++){
 		post = get_ele_index_STACKPOST(use->posts,i);
 		if (post != NULL){
-			getIdP(post,r+i);
+			r[i] = getIdP(post);
 		}
 	}
 	*n_elem = i;
@@ -97,17 +97,15 @@ void print_post_MYUSER(MYUSER use){
 	}
 	MYPOST post = NULL;
 	MYDATE data;
-	long ld=0;
 	int i = 0;
 	long k = get_NUM_eleSTACKPOST(use->posts);
 	printf("Ne:%ld\n",k);
 	for(i = 0; i < k;i++){
 		post = get_ele_index_STACKPOST(use->posts,i);
 		if (post != NULL){
-			getIdP(post,&ld);
-			getDateP(post,&data);
+			data = getDateP(post);
 			if (data != NULL){
-				printf("Data-> D:%d M:%d A:%d || ID:%ld \n",get_MYday(data),get_MYmonth(data),get_MYyear(data),ld);
+				printf("Data-> D:%d M:%d A:%d || ID:%ld \n",get_MYday(data),get_MYmonth(data),get_MYyear(data), getIdP(post));
 				free_MYdate(data);
 			}
 		}

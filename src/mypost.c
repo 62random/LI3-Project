@@ -197,7 +197,7 @@ void insereSTACKPOST(STACKPOST st, MYPOST post){
 		st->array = aux;
 	}
 	st->array[st->n_elem++] = post;
-	getPostTypeIdP(post,&type);
+	type = getPostTypeIdP(post);
 	if (type == 1){
 		st->counter1 += 1;
 	}
@@ -260,11 +260,9 @@ void freeSTACKPOST_COM_CLONE(STACKPOST st){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o Id de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde a função devolve o id do post.
  */
-void getIdP(MYPOST post, long * id){
-	if(post)
-  		*id = post->id;
+long getIdP(MYPOST post){
+  	return post ? post->id : -2;
 }
 
 /**
@@ -274,18 +272,16 @@ void getIdP(MYPOST post, long * id){
  * @param			Novo ID do post.
  */
 static void setIdP(MYPOST post, long  id){
-  post->id=id;
+  post->id = id;
 }
 
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o TypeId de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde a função devolve o TypeId do post.
  */
-void getPostTypeIdP(MYPOST post, int * id){
-	if(post)
-  		*id = post->typeid;
+int getPostTypeIdP(MYPOST post){
+	return post ? post->typeid : 0;
 }
 
 /**
@@ -295,7 +291,7 @@ void getPostTypeIdP(MYPOST post, int * id){
  * @param			Novo TypeId do post.
  */
 static void setPostTypeIdP(MYPOST post, long  id){
-  post->typeid=id;
+  post->typeid = id;
 }
 
 /**
@@ -312,11 +308,9 @@ int getTYPECLONEP(MYPOST post){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o OwnerId de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde a função devolve o id do owner post.
  */
-void getOwnerIdP(MYPOST post, long * id){
-	if(post)
-  		*id = post->ownerid;
+long getOwnerIdP(MYPOST post){
+  	return post ? post->ownerid : -2;
 }
 
 /**
@@ -326,23 +320,24 @@ void getOwnerIdP(MYPOST post, long * id){
  * @param			Novo OwnerId do post.
  */
 static void setOwnerIdP(MYPOST post, long  id){
-  post->ownerid = id;
+	post->ownerid = id;
 }
 
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém a data de criação de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador para struct onde a função devolve a data do post.
  */
-void getDateP(MYPOST post, MYDATE * data){
+MYDATE getDateP(MYPOST post){
 	if(post){
 		MYDATE date;
 		date = createMYDate(get_MYday(post->cdate),
 							get_MYmonth(post->cdate),
 					 		get_MYyear(post->cdate));
-  		*data = date;
+  		return date;
 	}
+
+	return NULL;
 }
 
 
@@ -366,11 +361,9 @@ static void setDateP(MYPOST post, MYDATE data){
  * @date 			24 Mar 2018
  * @brief 			Função que inicializa a (nossa) representação de um post na memória.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde afunção devolve o nome do post.
  */
-void getOwnerNameP(MYPOST post, char ** name){
-	if(post)
-		*name = mystrdup(post->ownername);
+char * getOwnerNameP(MYPOST post){
+		return post ? mystrdup(post->ownername) : NULL;
 }
 
 /**
@@ -387,11 +380,9 @@ static void setOwnerNameP(MYPOST post, char *  name){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o título de um post.
  * @param 			Apontador para a struct do post.
- * @param 			Apontador onde a funcao devolve o titulo do post.
  */
-void getTitleP(MYPOST post,char ** title){
-	if(post)
-		*title = mystrdup(post->title);
+char * getTitleP(MYPOST post){
+	return post ? mystrdup(post->title) : NULL;
 }
 
 /**
@@ -408,32 +399,29 @@ static void setTitleP(MYPOST post, char* title){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém as tags de um post.
  * @param 			Apontador para a struct do post.
- * @param 			Apontador para a lista de strings onde vao ser devolvidas as tags do post.
  */
-void getTagsP(MYPOST post,char *** tags){
+char ** getTagsP(MYPOST post){
 	if(post){
-		if(post->tags == NULL) {
-			*tags = NULL;
-			return;
-		}
+		if(post->tags == NULL)
+			return NULL;
 
 		int i ;
+		char ** tags;
 
 		for(i= 0; post->tags[i] != NULL; i++)
 			;
-			*tags = malloc(sizeof(char *)*(i + 1));
+			tags = malloc(sizeof(char *)*(i + 1));
 
 		for(i= 0; post->tags[i] != NULL; i++){
-			(*tags)[i] = mystrdup(post->tags[i]);
+			tags[i] = mystrdup(post->tags[i]);
 		}
 
 
-		(*tags)[i] = NULL;
-
-
-//		for(i=0;(*tags)[i] != NULL;i++)
-	//		printf("%s , %i\n",(*tags)[i],i );
+		tags[i] = NULL;
+		return tags;
 	}
+
+	return NULL;
 }
 
 /**
@@ -463,11 +451,9 @@ static void setTagsP(MYPOST post, char ** tags){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de respostas de um post.
  * @param 			Apontador para a struct do post.
- * @param 			Apontador onde a funcao devolve o numero de respostas do post.
  */
-void getAnswersP(MYPOST post,int *answer){
-	if(post)
-		*answer = post->anscount;
+int getAnswersP(MYPOST post){
+	return post ? post->anscount : 0;
 }
 
 /**
@@ -484,11 +470,9 @@ static void setAnswersP(MYPOST post, int answer){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de comentarios de um post.
  * @param 			Apontador para a struct do post.
- * @param 			Apontador onde a funcao devolve o numero de comentarios do post.
  */
-void getCommentsP(MYPOST post,int *comments){
-	if(post)
-		*comments = post->commcount;
+int getCommentsP(MYPOST post){
+		return post ? post->commcount : 0;
 }
 
 /**
@@ -498,18 +482,16 @@ void getCommentsP(MYPOST post,int *comments){
  * @param			Novo comentarios de respostas do post.
  */
 static void setCommentsP(MYPOST post, int comments){
-  	post->commcount=comments;
+  	post->commcount = comments;
 }
 
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de favoritos de um post.
  * @param 			Apontador para a struct do post.
- * @param 			Apontador onde a funcao devolve o numero de favoritos do post.
  */
-void getFavsP(MYPOST post,int *fav){
-	if(post)
-		*fav = post->favcount;
+int getFavsP(MYPOST post){
+		return post ? post->favcount : 0;
 }
 
 /**
@@ -519,18 +501,16 @@ void getFavsP(MYPOST post,int *fav){
  * @param			Novo favoritos de respostas do post.
  */
 static void setFavsP(MYPOST post, int fav){
-  	post->favcount=fav;
+  	post->favcount = fav;
 }
 
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o ParentId de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde a função devolve o ParentId do post.
  */
-void getPIdP(MYPOST post, long * p_id){
-	if(post)
-  		*p_id = post->parent_id;
+long getPIdP(MYPOST post){
+  		return post ? post->parent_id : -2;
 }
 
 /**
@@ -540,18 +520,16 @@ void getPIdP(MYPOST post, long * p_id){
  * @param			Novo ParendId do post.
  */
 static void setPIdP(MYPOST post, long  id){
-  post->parent_id=id;
+  post->parent_id = id;
 }
 
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o score de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde a função devolve o score do post.
  */
-void getScoreP(MYPOST post, int * score){
-	if(post)
-  		*score = post->score;
+int getScoreP(MYPOST post){
+  		return post ? post->score : 0;
 }
 
 /**
@@ -569,12 +547,10 @@ static void setScoreP(MYPOST post, int  score){
  * @date 			24 Mar 2018
  * @brief 			Função que obtém os filhos de um post.
  * @param 			Apontador para a struct do post.
- * @param			Apontador onde a função devolve os filhos do post.
  */
 
-void getFilhosP(MYPOST post, STACKPOST * filhos){
-	if(post)
-		(*filhos) = post->filhos;
+STACKPOST getFilhosP(MYPOST post){
+		return post ? post->filhos : NULL;
 }
 
 /**
@@ -761,16 +737,15 @@ static MYPOST search_POSTID_internal(TREE tree,long id){
 void print_posts_MYPOST(MYPOST post){
 	MYPOST post2 = NULL;
 	MYDATE data = NULL;
-	long ld=0;
 	int i = 0;
 	printf("Ne:%ld\n",post->filhos->n_elem);
 	for(i=0; i < post->filhos->n_elem; i++){
 		post2 = get_ele_index_STACKPOST(post->filhos,i);
 		if (post2 != NULL){
-			getIdP(post2,&ld);
-			getDateP(post2,&data);
+
+			data = getDateP(post2);
 			if (data != NULL){
-				printf("Data-> D:%d M:%d A:%d || ID:%ld \n",get_MYday(data),get_MYmonth(data),get_MYyear(data),ld);
+				printf("Data-> D:%d M:%d A:%d || ID:%ld \n",get_MYday(data),get_MYmonth(data),get_MYyear(data), getIdP(post2));
 				free_MYdate(data);
 			}
 		}
@@ -788,7 +763,6 @@ int	existeTag(MYPOST post,char * tag){
 	if(!post->tags)
 		return 0;
 	for(i=0;post->tags[i] != NULL;i++){
-//	printf("%s == %s\n",post->tags[i],tag );
 		if(strcmp(post->tags[i],tag) == 0 )
 			{printf("YUPI , %ld\n",post->id);
 			return 1;
@@ -977,8 +951,7 @@ void xmltoMYPOST(MYPOST post, xmlNodePtr xml, xmlDocPtr doc, TREE treeid, TREE t
 				free(value);
 	}
 
-	if(parent){
-		getPIdP(post,&l);
+	if(parent)
 		setFilhosNoPost(parent,post);
-	}
+
 }

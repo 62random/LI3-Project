@@ -72,8 +72,6 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 	STACKPOST list;
 	MYPOST	post;
 	long * 	keyid;
-	long 	l;
-	MYDATE 	keydate 	= NULL;
 	TREE 	treeid 		= createTREE(&compare_user, &freeKey, &freepost,NULL);
 	TREE	treedate	= createTREE(&compare_MYDATE_AVL, &free_MYdate, &freeSTACKPOST_SEM_CLONE,&concat_post); //é preciso dar free á data xD pensar como fazer isso.
 
@@ -83,18 +81,15 @@ int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeu
 			xmltoMYPOST(post, cur, doc, treeid, treeusers);					//Preenche essa struct post.
 
 			keyid 	= malloc(sizeof(long));
-			getIdP(post, keyid);
-			getDateP(post, &keydate);
-			getOwnerIdP(post, &l);
-
-			setPostToUSER(treeusers, l, post);
+			*keyid = getIdP(post);
+			setPostToUSER(treeusers, getOwnerIdP(post), post);
 
 			list = initSTACKPOST(1);
 			insereSTACKPOST(list,post);
 
 
 			insere_tree(treeid, keyid, post);								//Insere este nodo na árvore ordenada por id's.
-			insere_tree(treedate, keydate, list);							//Insere este nodo na árvore ordenada cronológicamente.
+			insere_tree(treedate, getDateP(post), list);							//Insere este nodo na árvore ordenada cronológicamente.
 		}
 	}
 
