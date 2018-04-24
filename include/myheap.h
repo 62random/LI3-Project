@@ -7,7 +7,8 @@
 typedef struct generico GEN;
 typedef struct heap * HEAP;
 typedef struct stack * STACK;
-
+typedef struct keylong * KEYLONG;
+typedef struct keyheap * KEYHEAP;
 
 void 	swap				(GEN * v,int i, int d);
 HEAP 	initHEAP			(long size);
@@ -24,5 +25,5 @@ void  	freeSTACK			(STACK a);
 STACK 	insereSTACK			(STACK a,long id);
 long  	get_NUM_eleSTACK	(STACK a);
 long  	get_ELE_index		(STACK a,int index);
-
+void 	trans_stack			(STACK arr, void (*f_box)(long , void *, void *, void *), void * data1, void * data2, void * data3);
 #endif
