@@ -764,9 +764,7 @@ int	existeTag(MYPOST post,char * tag){
 		return 0;
 	for(i=0;post->tags[i] != NULL;i++){
 		if(strcmp(post->tags[i],tag) == 0 )
-			{printf("YUPI , %ld\n",post->id);
 			return 1;
-			}
 		}
 	return 0;
 }
