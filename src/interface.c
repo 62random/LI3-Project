@@ -104,6 +104,8 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->pre_posts = NULL;
 	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
 
+
+
 	return com;
 }
 
@@ -173,10 +175,14 @@ LONG_list top_most_active(TAD_community com, int N){
 	else{
 		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
-		for(; i < N; i++){
+		for(; i < N && (get_NUM_eleHEAP(com->num_posts) > 0); i++){
 			pop(com->num_posts,&key,&id);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
+		}
+		if (i < N){
+			for(; i < N ; i++)
+				set_list(l,i,-2);
 		}
 	}
 	return l;
@@ -523,7 +529,6 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYUSER user2 = search_USER(com->users,id2);
 	STACKPOST lista1 = getMYLISTuser(user1);
 	STACKPOST lista2 = getMYLISTuser(user2);
-
 	int flag=N;
 
 	MYPOST post1,post2;
@@ -534,17 +539,18 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	int max2 = get_NUM_eleSTACKPOST(lista2);
 	int i1,i2;
 
-	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);
+	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);//&(free_MYdate),&(free));
 
-	for (i1 = 0; i1<max1 ; i1++){
+
+	for (i1 = 0; i1<max1 && flag; i1++){
 		post1 = get_ele_index_STACKPOST(lista1,i1);
 		type = getPostTypeIdP(post1);
 		if(type == 2)
 			pid1 = getPIdP(post1);
 		else if(type == 1)
-			pid1 = getIdP(post1);
+			pid1 = getPIdP(post1);
 		else
-			continue;
+			break;
 
 		for (i2 = 0; i2<max2; i2++){
 			post2 = get_ele_index_STACKPOST(lista2,i2);
@@ -555,20 +561,13 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 			else if(type == 1)
 				pid2 = getIdP(post2);
 			else
-				continue;
+				break;
 
 				if(pid1 == pid2){
-					if (type == 2){
+					if (type == 2)
 						post2 = search_POSTID(com->posts_Id,pid2);
-						if(!post2){
-							printf("post sem coiso\n");
-							break;
-						}
-						result = insere_list(result, getDateP(post2), (void*) pid2);
-						freepost(post2);
-					}
-					else
-						result = insere_list(result, getDateP(post2), (void*) pid2);
+
+					result = insere_list(result, getDateP(post2), (void*) pid2);
 
 					flag--;
 					break;
@@ -581,8 +580,6 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	}
 
 	if (get_NUM_ele(result) == 0){
-		freeMYUSER(user1);
-		freeMYUSER(user2);
 		free_MYLIST(result);
 		return NULL;
 	}
@@ -595,7 +592,6 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 	freeMYUSER(user1);
 	freeMYUSER(user2);
-
 	free_MYLIST(result);
 	return final;
 
@@ -616,38 +612,31 @@ long better_answer(TAD_community com, long id){
 		int n, i;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
-		MYPOST auxcancro = NULL;
 		if (!post){
-			freepost(post);
 			printf("Post inexistente\n");
 			return -3;
 		}
 
 		if(getPostTypeIdP(post) != 1){
-			freepost(post);
 			printf("Post não é uma pergunta\n");
 			return -4;
 		}
 
 		arr = getFilhosP(post);
-		if(arr == NULL){
-			freepost(post);
+		if(arr == NULL)
 			return -2;
-		}
 		n = get_NUM_eleSTACKPOST(arr);
 
 		for(i = 0; i < n; i++){
-			auxcancro = get_ele_index_STACKPOST(arr, i);
-			men = search_USER(com->users, getOwnerIdP(auxcancro));
-			scoreatual =(getScoreP(post) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
+			post = get_ele_index_STACKPOST(arr, i);
+			men = search_USER(com->users, getOwnerIdP(post));
 			freeMYUSER(men);
+			scoreatual =(getScoreP(post) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(post) * 0.1);
 
 			if (scoreatual > scoremax)
 				scoremax = scoreatual;
 		}
-		int result = getIdP(auxcancro);
-		freepost(post);
-		return result;
+		return getIdP(post);
 
 }
 
@@ -676,10 +665,14 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 	else{
 		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
 			array[i] = get_ELE_index(com->pre_rep,i);
-		for(; i < N; i++){
+		for(; i < N && (get_NUM_eleHEAP(com->rep_users) > 0); i++){
 			pop(com->rep_users,&key,&id);
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
+		}
+		if (i < N){
+			for(; i < N; i++)
+				array[i] = -2;
 		}
 	}
 
