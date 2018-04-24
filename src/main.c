@@ -367,6 +367,11 @@ int main(){
 	int main1(){
 		TAD_community com = init();
 		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
+		Date ini ,fi;
+		ini = createDate(1,1,1);
+		fi = createDate(1,1,3000);
+		LONG_list llis;
+		llis = questions_with_tag(com,"rooting",ini,fi);
 		com = clean(com);
 		free(com);
 
