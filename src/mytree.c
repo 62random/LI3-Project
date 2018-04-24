@@ -733,6 +733,38 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
 
 
 
+/**
+ *@brief			Função que faz uma travessia na árvore.
+ *@param			Apontador para a arvore.
+ *@param			Função a aplicar a cada nodo.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Apontador a passar como argumento à função a aplicar.
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+*/
+
+static void trans_4_args(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end){
+	if (aux){
+		if (begin == NULL || end == NULL) {
+			trans_4_args(aux->esq,f_nodo,data1, data2, begin, end);
+			f_nodo(aux->data,data1, begin,end);
+			trans_4_args(aux->dir,f_nodo,data1, data2, begin, end);
+		}
+		else {
+			int r1 = compare_MYDATE_AVL((MYDATE) begin, (MYDATE) aux->key );
+			int r2 = compare_MYDATE_AVL((MYDATE) end, (MYDATE) aux->key);
+			if(r1 >= 0 && r2 <= 0) {
+				trans_4_args(aux->esq,f_nodo,data1, data2, begin, end);
+				f_nodo(aux->data,data1, begin,end);
+				trans_4_args(aux->dir,f_nodo,data1, data2, begin, end);
+			}
+			else if (r1 >= 0)
+				trans_4_args(aux->esq,f_nodo,data1, data2, begin, end);
+			else if (r2 <= 0)
+				trans_4_args(aux->dir,f_nodo,data1, data2, begin, end);
+		}
+	}
+}
 
 
 /**
@@ -757,5 +789,8 @@ void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1
 		trans_preorder(e->arv,f_nodo,data1, data2, begin, end, &n);
 	else if (travessia == 4) {
 		trans_revinorder(e->arv, f_nodo, data1, data2, begin, end, &n);
+	}
+	else if (travessia == 5){
+		trans_4_args(e->arv, f_nodo, data1, data2, begin, end);
 	}
 }
