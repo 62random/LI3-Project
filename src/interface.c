@@ -104,8 +104,6 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->pre_posts = NULL;
 	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
 
-
-
 	return com;
 }
 
@@ -175,14 +173,10 @@ LONG_list top_most_active(TAD_community com, int N){
 	else{
 		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
-		for(; i < N && (get_NUM_eleHEAP(com->num_posts) > 0); i++){
+		for(; i < N; i++){
 			pop(com->num_posts,&key,&id);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
-		}
-		if (i < N){
-			for(; i < N ; i++)
-				set_list(l,i,-2);
 		}
 	}
 	return l;
@@ -239,7 +233,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 */
 
 static void filtraTags(void * data, void * result, void * tag){
-	STACK resultado;
+	MYLIST resultado;
 	STACKPOST arr = (STACKPOST) data;
 	int existe = 0,i;
 	MYPOST post;
@@ -250,9 +244,9 @@ static void filtraTags(void * data, void * result, void * tag){
 			existe = existeTag(post,tag);
 
 			if (existe){
-					resultado =  *(STACK*)result;
-					resultado = insereSTACK(resultado, getIdP(post));
-				 	*(STACK*)result = resultado;
+					resultado =  *(MYLIST*)result;
+				resultado = insere_list(resultado, getIdP(post),NULL);
+				 *(MYLIST*)result = resultado;
 			}
 
 		}
@@ -271,19 +265,19 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	MYDATE nbegin,nend;
  	nbegin = DatetoMYDATE(begin);
  	nend   = DatetoMYDATE(end);
-	STACK result = initSTACK(1);
+	MYLIST result = init_MYLIST(NULL,NULL,NULL);
 	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result, tag);
 	free_MYdate(nbegin);
 	free_MYdate(nend);
 
-	LONG_list final= create_list(get_NUM_eleSTACK(result));
+	LONG_list final= create_list(get_NUM_ele(result));
+	LList lista2 = getFirst_BOX(result);
 	int i=0;
-	int max = get_NUM_eleSTACK(result);
-	for(i=0;i<max;i++){
-		set_list(final,i,(long)get_ELE_index(result,i));
+	for(i=0;lista2;lista2=getNext_LList(lista2),i++){
+		set_list(final,i,(long)get_key_box(lista2));
 	}
 
-	freeSTACK(result);
+	free_MYLIST(result);
 	return final;
 }
 
@@ -529,6 +523,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYUSER user2 = search_USER(com->users,id2);
 	STACKPOST lista1 = getMYLISTuser(user1);
 	STACKPOST lista2 = getMYLISTuser(user2);
+
 	int flag=N;
 
 	MYPOST post1,post2;
@@ -539,18 +534,17 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	int max2 = get_NUM_eleSTACKPOST(lista2);
 	int i1,i2;
 
-	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);//&(free_MYdate),&(free));
+	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);
 
-
-	for (i1 = 0; i1<max1 && flag; i1++){
+	for (i1 = 0; i1<max1 ; i1++){
 		post1 = get_ele_index_STACKPOST(lista1,i1);
 		type = getPostTypeIdP(post1);
 		if(type == 2)
 			pid1 = getPIdP(post1);
 		else if(type == 1)
-			pid1 = getPIdP(post1);
+			pid1 = getIdP(post1);
 		else
-			break;
+			continue;
 
 		for (i2 = 0; i2<max2; i2++){
 			post2 = get_ele_index_STACKPOST(lista2,i2);
@@ -561,13 +555,20 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 			else if(type == 1)
 				pid2 = getIdP(post2);
 			else
-				break;
+				continue;
 
 				if(pid1 == pid2){
-					if (type == 2)
+					if (type == 2){
 						post2 = search_POSTID(com->posts_Id,pid2);
-
-					result = insere_list(result, getDateP(post2), (void*) pid2);
+						if(!post2){
+							printf("post sem coiso\n");
+							break;
+						}
+						result = insere_list(result, getDateP(post2), (void*) pid2);
+						freepost(post2);
+					}
+					else
+						result = insere_list(result, getDateP(post2), (void*) pid2);
 
 					flag--;
 					break;
@@ -580,6 +581,8 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	}
 
 	if (get_NUM_ele(result) == 0){
+		freeMYUSER(user1);
+		freeMYUSER(user2);
 		free_MYLIST(result);
 		return NULL;
 	}
@@ -592,6 +595,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 	freeMYUSER(user1);
 	freeMYUSER(user2);
+
 	free_MYLIST(result);
 	return final;
 
@@ -612,31 +616,38 @@ long better_answer(TAD_community com, long id){
 		int n, i;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
+		MYPOST auxcancro = NULL;
 		if (!post){
+			freepost(post);
 			printf("Post inexistente\n");
 			return -3;
 		}
 
 		if(getPostTypeIdP(post) != 1){
+			freepost(post);
 			printf("Post não é uma pergunta\n");
 			return -4;
 		}
 
 		arr = getFilhosP(post);
-		if(arr == NULL)
+		if(arr == NULL){
+			freepost(post);
 			return -2;
+		}
 		n = get_NUM_eleSTACKPOST(arr);
 
 		for(i = 0; i < n; i++){
-			post = get_ele_index_STACKPOST(arr, i);
-			men = search_USER(com->users, getOwnerIdP(post));
+			auxcancro = get_ele_index_STACKPOST(arr, i);
+			men = search_USER(com->users, getOwnerIdP(auxcancro));
+			scoreatual =(getScoreP(post) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
 			freeMYUSER(men);
-			scoreatual =(getScoreP(post) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(post) * 0.1);
 
 			if (scoreatual > scoremax)
 				scoremax = scoreatual;
 		}
-		return getIdP(post);
+		int result = getIdP(auxcancro);
+		freepost(post);
+		return result;
 
 }
 
@@ -665,14 +676,10 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 	else{
 		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
 			array[i] = get_ELE_index(com->pre_rep,i);
-		for(; i < N && (get_NUM_eleHEAP(com->rep_users) > 0); i++){
+		for(; i < N; i++){
 			pop(com->rep_users,&key,&id);
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
-		}
-		if (i < N){
-			for(; i < N; i++)
-				array[i] = -2;
 		}
 	}
 
@@ -697,19 +704,18 @@ static void most_used_best_rep_node(void * vpost, void * res, void * users, void
 		return;
 
 	MYPOST post = (MYPOST) vpost;
-	int i;													// se não for
-															// uma pergunta
-	if(getPostTypeIdP(post) != 1)							// então
-		return;												// retornar
+	int i;												// se não for
+														// uma pergunta
+	if(getPostTypeIdP(post) != 1)						// então
+		return;											// retornar
 
 	int n = *((int *) N) ;
-	long * cusers = (long *) users;
 
-	for(i = 0; i < n && cusers[i] != -2; i++) {	//se o autor
-		if(getOwnerIdP(post) == cusers[i])		//não é um dos
-			break;											//com mais
-		if(i == n - 1)										//reputação
-			return;											//retornar
+	for(i = 0; i < n; i++) {							//se o autor
+		if(getOwnerIdP(post) == ((long *) users)[i])	//não é um dos
+			break;										//com mais
+		if(i == n - 1)									//reputação
+			return;										//retornar
 	}
 
 
