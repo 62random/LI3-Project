@@ -697,18 +697,19 @@ static void most_used_best_rep_node(void * vpost, void * res, void * users, void
 		return;
 
 	MYPOST post = (MYPOST) vpost;
-	int i;												// se não for
-														// uma pergunta
-	if(getPostTypeIdP(post) != 1)						// então
-		return;											// retornar
+	int i;													// se não for
+															// uma pergunta
+	if(getPostTypeIdP(post) != 1)							// então
+		return;												// retornar
 
 	int n = *((int *) N) ;
+	long * cusers = (long *) users;
 
-	for(i = 0; i < n; i++) {							//se o autor
-		if(getOwnerIdP(post) == ((long *) users)[i])	//não é um dos
-			break;										//com mais
-		if(i == n - 1)									//reputação
-			return;										//retornar
+	for(i = 0; i < n && cusers[i] != -2; i++) {	//se o autor
+		if(getOwnerIdP(post) == cusers[i])		//não é um dos
+			break;											//com mais
+		if(i == n - 1)										//reputação
+			return;											//retornar
 	}
 
 
