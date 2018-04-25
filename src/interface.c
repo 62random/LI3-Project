@@ -40,7 +40,8 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 	HEAP h = (HEAP) dataaux;
 	MYUSER user = (MYUSER) data;
 
-	long n_post = getNUM_POST_MYUSER(user);
+	STACKPOST st = getMYLISTuser(user);
+	long n_post = getCounter1_STACKPOST(st) + getCounter2_STACKPOST(st);
 	insereHEAP(h,n_post,getIdMYUSER(user));
 }
 
@@ -103,6 +104,7 @@ TAD_community load(TAD_community com, char * dump_path){
 	com->num_posts = initHEAP(NUM_nodes(users));
 	com->pre_posts = NULL;
 	all_nodes_TREE(users,&num_posts_na_HEAP,com->num_posts);
+
 
 	return com;
 }
@@ -246,14 +248,15 @@ static void filtraTags(void * data, void * result, void * tag){
 		int max = get_NUM_eleSTACKPOST(arr);
 		for(i=0; i < max; i++){
 			post = get_ele_index_STACKPOST(arr,i);
-			existe = existeTag(post,tag);
+			if (getPostTypeIdP(post) == 1){
+				existe = existeTag(post,tag);
 
-			if (existe){
-				resultado =  *(STACK*)result;
-				resultado = insereSTACK(resultado, getIdP(post));
-				*(STACK*) result = resultado;
+				if (existe){
+					resultado =  *(STACK*)result;
+					resultado = insereSTACK(resultado, getIdP(post));
+					*(STACK*) result = resultado;
+				}
 			}
-
 		}
 	}
 }
@@ -279,9 +282,10 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	LONG_list final= create_list(get_NUM_eleSTACK(result));
 
 	int i=0;
+	int c;
 	int max = get_NUM_eleSTACK(result);
-	for(i=0; i < max ; i++)
-		set_list(final,i,(long)get_ELE_index(result,i));
+	for(i=(max-1), c = 0; i >= 0; i++, c++)
+		set_list(final,c,(long)get_ELE_index(result,i));
 
 	freeSTACK(result);
 	return final;
@@ -392,10 +396,12 @@ static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
 			post = get_ele_index_STACKPOST(st,i);
 			pdate = getDateP(post);
 
-			r1 = compare_MYDATE_AVL(begin,pdate);
-			r2 = compare_MYDATE_AVL(end,pdate);
-			if (r1 >= 0 && r2 <= 0)
-				count++;
+			if (getPostTypeIdP(post) == 2){
+				r1 = compare_MYDATE_AVL(begin,pdate);
+				r2 = compare_MYDATE_AVL(end,pdate);
+				if (r1 >= 0 && r2 <= 0)
+					count++;
+			}
 			free_MYdate(pdate);
 		}
 	}
@@ -420,7 +426,8 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void
 		post = get_ele_index_STACKPOST(arr,i);
 		if (post)
 			if (getPostTypeIdP(post) == 1)
-				insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
+				//insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
+				insereHEAP(h,getAnswersP(post),getIdP(post));
 	}
 }
 
@@ -649,7 +656,7 @@ long better_answer(TAD_community com, long id){
 		MYUSER men;
 		int scoreatual, scoremax;
 		scoremax = scoreatual = 0;
-		int n, i;
+		int n, i,result = -2;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
 		MYPOST auxcancro = NULL;
@@ -678,10 +685,11 @@ long better_answer(TAD_community com, long id){
 			scoreatual =(getScoreP(auxcancro) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
 			freeMYUSER(men);
 
-			if (scoreatual > scoremax)
+			if (scoreatual > scoremax){
 				scoremax = scoreatual;
+				result = getIdP(auxcancro);
+			}
 		}
-		int result = getIdP(auxcancro);
 		freepost(post);
 		return result;
 
