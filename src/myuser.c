@@ -68,12 +68,12 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
 	int i = 0;
 	MYPOST post = NULL;
-	long k = get_NUM_eleSTACKPOST(use->posts);
+	long k = get_NUM_eleSTACKPOST(use->posts), t = 0;
 
-	for(i=0; i < n && i < k; i++){
-		post = get_ele_index_STACKPOST(use->posts,i);
-		if (post != NULL){
-			r[i] = getIdP(post);
+	for(t=0; i < n && t < k; t++){
+		post = get_ele_index_STACKPOST(use->posts,t);
+		if (post != NULL && (getPostTypeIdP(post) == 2 || getPostTypeIdP(post) == 1)){
+			r[i++] = getIdP(post);
 		}
 	}
 	*n_elem = i;
