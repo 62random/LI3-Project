@@ -173,11 +173,16 @@ LONG_list top_most_active(TAD_community com, int N){
 	else{
 		for(i=0;i < get_NUM_eleSTACK(com->pre_posts); i++)
 			set_list(l,i,get_ELE_index(com->pre_posts,i));
-		for(; i < N; i++){
-			pop(com->num_posts, &key, &id);
+		for(; i < N && get_NUM_eleHEAP(com->num_posts) > 0; i++){
+			pop(com->num_posts,&key,&id);
 			com->pre_posts = insereSTACK(com->pre_posts,id);
 			set_list(l,i,id);
 		}
+		if (i < N){
+			for(; i < N; i++)
+				set_list(l,i,-2);
+		}
+
 	}
 	return l;
 }
@@ -233,7 +238,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 */
 
 static void filtraTags(void * data, void * result, void * tag){
-	MYLIST resultado;
+	STACK resultado;
 	STACKPOST arr = (STACKPOST) data;
 	int existe = 0,i;
 	MYPOST post;
@@ -244,9 +249,9 @@ static void filtraTags(void * data, void * result, void * tag){
 			existe = existeTag(post,tag);
 
 			if (existe){
-					resultado =  *(MYLIST*)result;
-				resultado = insere_list(resultado, getIdP(post),NULL);
-				 *(MYLIST*)result = resultado;
+				resultado =  *(STACK*)result;
+				resultado = insereSTACK(resultado, getIdP(post));
+				*(STACK*) result = resultado;
 			}
 
 		}
@@ -265,19 +270,20 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	MYDATE nbegin,nend;
  	nbegin = DatetoMYDATE(begin);
  	nend   = DatetoMYDATE(end);
-	MYLIST result = init_MYLIST(NULL,NULL,NULL);
+	STACK result = initSTACK(1);
+
 	all_nodes_With_Condition(com->posts_Date,nbegin,nend,&(filtraTags),&result, tag);
 	free_MYdate(nbegin);
 	free_MYdate(nend);
 
-	LONG_list final= create_list(get_NUM_ele(result));
-	LList lista2 = getFirst_BOX(result);
-	int i=0;
-	for(i=0;lista2;lista2=getNext_LList(lista2),i++){
-		set_list(final,i,(long)get_key_box(lista2));
-	}
+	LONG_list final= create_list(get_NUM_eleSTACK(result));
 
-	free_MYLIST(result);
+	int i=0;
+	int max = get_NUM_eleSTACK(result);
+	for(i=0; i < max ; i++)
+		set_list(final,i,(long)get_ELE_index(result,i));
+
+	freeSTACK(result);
 	return final;
 }
 
@@ -289,6 +295,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
  * @param			Estrutura que guarda as outras estruturas.
  * @param			Id do post
 */
+
 USER get_user_info(TAD_community com, long id){
 	MYUSER user = search_USER(com->users,id);
 	if(!user)
@@ -367,13 +374,42 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 7+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+/**
+- * @brief			Função que conta o número de post num intervalo.
+- * @param			Apontador para a stack de posts.
+- * @param			Apontador para o inicio do intervalo.
+- * @param			Apontador para o fim do intervalo.
+*/
+
+static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
+	long i, tam = get_NUM_eleSTACKPOST(st);
+	int count = 0,r1,r2;
+	MYDATE pdate;
+	MYPOST post;
+	if (st){
+		for(i=0; i < tam; i++){
+			post = get_ele_index_STACKPOST(st,i);
+			pdate = getDateP(post);
+
+			r1 = compare_MYDATE_AVL(begin,pdate);
+			r2 = compare_MYDATE_AVL(end,pdate);
+			if (r1 >= 0 && r2 <= 0)
+				count++;
+			free_MYdate(pdate);
+		}
+	}
+	return count;
+}
+
+
 /**
  * @brief			Função adiciona a informação da data de um nodo MYLIST numa heap para perguntas com mais respostas.
  * @param			Apontador para a data do nodo.
  * @param			Apontador para a heap.
 */
 
-static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
+static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void * end){
 	HEAP h = (HEAP) dataaux;
 	STACKPOST arr = (STACKPOST) data;
 	MYPOST post = NULL;
@@ -384,7 +420,7 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * lal){
 		post = get_ele_index_STACKPOST(arr,i);
 		if (post)
 			if (getPostTypeIdP(post) == 1)
-				insereHEAP(h, getAnswersP(post), getIdP(post));
+				insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
 	}
 }
 
@@ -401,7 +437,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 	MYDATE b1 = DatetoMYDATE(begin);
 	MYDATE e1 = DatetoMYDATE(end);
 
-	all_nodes_With_Condition(com->posts_Date,b1,e1,&postList_to_HEAP_nresp,h,NULL);
+	trans_tree(com->posts_Date,&postList_to_HEAP_nresp,h,NULL,begin,end,5,0);
 
 	int i;
 	long key,data;
@@ -639,7 +675,7 @@ long better_answer(TAD_community com, long id){
 		for(i = 0; i < n; i++){
 			auxcancro = get_ele_index_STACKPOST(arr, i);
 			men = search_USER(com->users, getOwnerIdP(auxcancro));
-			scoreatual =(getScoreP(post) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
+			scoreatual =(getScoreP(auxcancro) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
 			freeMYUSER(men);
 
 			if (scoreatual > scoremax)
@@ -676,11 +712,12 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 	else{
 		for(i=0; i < get_NUM_eleSTACK(com->pre_rep); i++)
 			array[i] = get_ELE_index(com->pre_rep,i);
-		for(; i < N; i++){
+		for(; i < N && (get_NUM_eleHEAP(com->rep_users) > 0); i++){
 			pop(com->rep_users,&key,&id);
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
 		}
+		array[i] = -2;
 	}
 
 	return array;
