@@ -279,9 +279,10 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	LONG_list final= create_list(get_NUM_eleSTACK(result));
 
 	int i=0;
+	int c;
 	int max = get_NUM_eleSTACK(result);
-	for(i=0; i < max ; i++)
-		set_list(final,i,(long)get_ELE_index(result,i));
+	for(i=(max-1), c = 0; i >= 0 ; i--	, c++)
+		set_list(final,c,(long)get_ELE_index(result,i));
 
 	freeSTACK(result);
 	return final;
@@ -650,6 +651,7 @@ long better_answer(TAD_community com, long id){
 		int scoreatual, scoremax;
 		scoremax = scoreatual = 0;
 		int n, i;
+		int result = -2;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
 		MYPOST auxcancro = NULL;
@@ -678,10 +680,12 @@ long better_answer(TAD_community com, long id){
 			scoreatual =(getScoreP(auxcancro) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
 			freeMYUSER(men);
 
-			if (scoreatual > scoremax)
+			if (scoreatual > scoremax){
 				scoremax = scoreatual;
+				result = getIdP(auxcancro);
+
+			}
 		}
-		int result = getIdP(auxcancro);
 		freepost(post);
 		return result;
 
