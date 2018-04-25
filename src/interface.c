@@ -727,7 +727,7 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 			}
 			else {
 				oc = malloc(sizeof(int));
-				(*oc) = 0;
+				(*oc) = 1;
 				g_hash_table_insert(ocorrencias, keyid, oc);
 			}
 		}
@@ -742,7 +742,6 @@ void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 	long ocorrencias, id;
 	ocorrencias = *((long *) value);
 	id = *((long *) key);
-
 	insereHEAP(heap, ocorrencias, id);
 }
 
@@ -760,7 +759,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
 	long * users = n_users_with_more_rep(com, N);								//preencher array com N
-	int i, j;																		//users com  maior reputação
+	int i;																		//users com  maior reputação
 	MYUSER user;
 	STACKPOST posts;
 	for(i = 0; i < N && users[i] != -2; i++){
@@ -779,15 +778,19 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 	g_hash_table_foreach(ocorrencias, &hash_to_heap, heap);
 
+
+	if(size > N)
+		size = N;
 	LONG_list res = create_list(size);
 
-	int id, oc;
+	long id, oc;
 
-	for(i = 0; i < size; i--) {
+	for(i = 0; i < size; i++) {
 		pop(heap, &oc, &id);
 		set_list(res, i, id);
 	}
 
+	freeMYHEAP(heap);
 	g_hash_table_destroy(ocorrencias);
 	free(users);
 	return res;
