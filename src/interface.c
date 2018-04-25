@@ -656,7 +656,7 @@ long better_answer(TAD_community com, long id){
 		MYUSER men;
 		int scoreatual, scoremax;
 		scoremax = scoreatual = 0;
-		int n, i;
+		int n, i,result = -2;
 
 		MYPOST post = search_POSTID(com->posts_Id,id);
 		MYPOST auxcancro = NULL;
@@ -685,10 +685,11 @@ long better_answer(TAD_community com, long id){
 			scoreatual =(getScoreP(auxcancro) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
 			freeMYUSER(men);
 
-			if (scoreatual > scoremax)
+			if (scoreatual > scoremax){
 				scoremax = scoreatual;
+				result = getIdP(auxcancro);
+			}
 		}
-		int result = getIdP(auxcancro);
 		freepost(post);
 		return result;
 
