@@ -753,9 +753,10 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 
 	if(getPostTypeIdP(post) != 1)
 		return;
-
-	int r1 = compare_MYDATE_AVL((MYDATE) begin,  getDateP(post));
-	int r2 = compare_MYDATE_AVL((MYDATE) end, getDateP(post));
+	MYDATE date = getDateP(post);
+	int r1 = compare_MYDATE_AVL((MYDATE) begin,  date);
+	int r2 = compare_MYDATE_AVL((MYDATE) end, date);
+	free_MYdate(date);
 	if(r1 < 0 || r2 > 0)
 		return;
 
@@ -812,6 +813,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 		if(user) {
 			posts = getMYLISTuser(user);
 			trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend);
+			freeMYUSER(user);
 		}
 	}
 
