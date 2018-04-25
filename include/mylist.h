@@ -23,5 +23,4 @@ MYLIST 	concat_LIST			(MYLIST r1, MYLIST r2);
 long 	count_ELE_MYLIST	(MYLIST r);
 MYLIST	reverse				(MYLIST l);
 void 	trans_list			(MYLIST lista, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3);
-void 	my_data_toarray		(void * llist, void * longlist, void * n, void * nulla);
 #endif
