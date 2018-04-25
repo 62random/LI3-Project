@@ -64,10 +64,20 @@ void bubble_up(HEAP * main){
 	if (h->n_elem > 0){
 		i = h->n_elem -1;
 		pai = PARENT(i);
-		while(h->array[i].key>h->array[pai].key && i != pai){
-			swap(h->array,pai,i);
-			i = pai;
-			pai = PARENT(i);
+		while(h->array[i].key>=h->array[pai].key && i != pai){
+			if (h->array[i].key>h->array[pai].key){
+				swap(h->array,pai,i);
+				i = pai;
+				pai = PARENT(i);
+			}
+			else {
+				if (h->array[i].data>h->array[pai].data){
+					swap(h->array,pai,i);
+					i = pai;
+					pai = PARENT(i);
+				}
+				else break;
+			}
 		}
 	}
 	*main = h;
@@ -94,9 +104,19 @@ void bubble_down(HEAP * main){
 					swap(h->array,i,fe);
 					i = fe;
 				}
-				else{
+				else if(h->array[fe].key < h->array[fd].key){
 					swap(h->array,i,fd);
 					i = fd;
+				}
+				else{
+					if (h->array[fd].data > h->array[fe].data){
+						swap(h->array,i,fd);
+						i = fd;
+					}
+					else {
+						swap(h->array,i,fe);
+						i = fe;
+					}
 				}
 			}
 			else if (fd < h->n_elem){
