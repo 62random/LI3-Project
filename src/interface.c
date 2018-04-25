@@ -282,9 +282,10 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 	LONG_list final= create_list(get_NUM_eleSTACK(result));
 
 	int i=0;
+	int c;
 	int max = get_NUM_eleSTACK(result);
-	for(i=0; i < max ; i++)
-		set_list(final,i,(long)get_ELE_index(result,i));
+	for(i=(max-1), c = 0; i >= 0; i++, c++)
+		set_list(final,c,(long)get_ELE_index(result,i));
 
 	freeSTACK(result);
 	return final;
