@@ -426,8 +426,8 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void
 		post = get_ele_index_STACKPOST(arr,i);
 		if (post)
 			if (getPostTypeIdP(post) == 1)
-				//insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
-				insereHEAP(h,getAnswersP(post),getIdP(post));
+				insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
+				//insereHEAP(h,getAnswersP(post),getIdP(post));
 	}
 }
 
