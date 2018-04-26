@@ -622,18 +622,17 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 		}
 	}
-
-	if (get_NUM_ele(result) == 0){
+	int max = count_ELE_MYLIST(result);
+	if (max == 0){
 		freeMYUSER(user1);
 		freeMYUSER(user2);
 		free_MYLIST(result);
 		return NULL;
 	}
-	LONG_list final= create_list(N-flag);
-	printf("%d\n",(N-flag) );
+	LONG_list final= create_list(max);
 	LList lista3 = getFirst_BOX(result);
 	int i=0;
-	for(i=0;i < N-flag;lista3=getNext_LList(lista3),i++)
+	for(i=0;i<max ;lista3=getNext_LList(lista3),i++)
 		set_list(final,i,(long)getElemente_LList(lista3));
 
 	freeMYUSER(user1);

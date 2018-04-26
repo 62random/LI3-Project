@@ -128,7 +128,12 @@ static MYLIST insere_with_comp(MYLIST r,void * key,void * data){
 			ant = percorre;
 			percorre = percorre->next;
 		}
+		if (percorre && !(r->f_compare(percorre->key,key))){
+			r->destroy_key(key);
+			return r;
+		}
 		novo = create_box(key,data);
+
 		if (ant == NULL){
 			novo->next = pai;
 			pai = novo;
