@@ -790,7 +790,7 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 	HEAP heap = (HEAP) data;
 	long ocorrencias, id;
-	ocorrencias = *((long *) value);
+	ocorrencias = *((int *) value);
 	id = *((long *) key);
 	insereHEAP(heap, ocorrencias, id);
 }
