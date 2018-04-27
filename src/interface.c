@@ -31,8 +31,8 @@ TAD_community init(){
 
 /**
  * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap.
- * @param			Apontador para a data do nodo.
- * @param			Apontador para a heap.
+ * @param	data	Apontador para a data do nodo.
+ * @param	dataaux	Apontador para a heap.
 */
 
 
@@ -48,8 +48,8 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 
 /**
  * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap para reputação.
- * @param			Apontador para a data do nodo.
- * @param			Apontador para a heap.
+ * @param	data	Apontador para a data do nodo.
+ * @param	dataaux	Apontador para a heap.
 */
 
 static void num_rep_na_HEAP(void * data,void * dataaux){
@@ -61,7 +61,7 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 
 /**
  * @brief			Função ordena os posts de um user.
- * @param			Apontador para o user.
+ * @param	data1	Apontador para o user.
 */
 
 static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
@@ -73,9 +73,9 @@ static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
 
 
 /**
- * @brief			Função dá load aos ficheiros xml.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			String com a diretoria onde se encontram os ficheiros.
+ * @brief				Função dá load aos ficheiros xml.
+ * @param	com			Estrutura que guarda as outras estruturas.
+ * @param	dump_path	String com a diretoria onde se encontram os ficheiros.
 */
 
 TAD_community load(TAD_community com, char * dump_path){
@@ -114,8 +114,8 @@ TAD_community load(TAD_community com, char * dump_path){
 
 /**
  * @brief			Função retorna a informacao de um post.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	id		Id do post
 */
 STR_pair info_from_post(TAD_community com, long id){
 	char * title = NULL;
@@ -155,8 +155,8 @@ STR_pair info_from_post(TAD_community com, long id){
 
 /**
  * @brief			Função que calcula os N utilizadores com mais posts.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número de jogadores.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	N		Número de jogadores.
 */
 
 LONG_list top_most_active(TAD_community com, int N){
@@ -193,10 +193,10 @@ LONG_list top_most_active(TAD_community com, int N){
 
 
 /**
- * @brief			Função que corre num nodo e calcula se é resposta ou pergunta.
- * @param			Apontador para a informação a filtar.
- * @param			Número de perguntas.
- * @param			Número de respostas.
+ * @brief				Função que corre num nodo e calcula se é resposta ou pergunta.
+ * @param	data		Apontador para a informação a filtar.
+ * @param	perguntas	Número de perguntas.
+ * @param	respostas	Número de respostas.
 */
 
 static void filtraPerguntasRespostas(void * data, void * perguntas, void * respostas){
@@ -210,9 +210,9 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
 
 /**
  * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Data inicial da procura
- * @param			Data final da procura
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	being	Data inicial da procura
+ * @param	end		Data final da procura
 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	long res1, res2 ;
@@ -234,9 +234,9 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 
 /**
  * @brief			Função que corre num nodo e verifica a existencia de uma tag.
- * @param			Apontador para a informação a filtar.
- * @param			Lista de posts com essa tag.
- * @param			Tag a verificar.
+ * @param	data	Apontador para a informação a filtar.
+ * @param	result	Lista de posts com essa tag.
+ * @param	tag		Tag a verificar.
 */
 
 static void filtraTags(void * data, void * result, void * tag){
@@ -265,9 +265,10 @@ static void filtraTags(void * data, void * result, void * tag){
 
 /**
  * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Data inicial da procura
- * @param			Data final da procura
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	tag		Tag.
+ * @param	begin	Data inicial da procura.
+ * @param	end		Data final da procura.
 */
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
 	MYDATE nbegin,nend;
@@ -296,8 +297,8 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
 /**
  * @brief			Função que dado um id de um user devolve informacao sobre este mesmo.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	id		Id do post.
 */
 
 USER get_user_info(TAD_community com, long id){
@@ -324,8 +325,8 @@ USER get_user_info(TAD_community com, long id){
 
 /**
  * @brief			Função adiciona a informação da data de um nodo STACKPOST numa heap para scores.
- * @param			Apontador para a data do nodo.
- * @param			Apontador para a heap.
+ * @param	data	Apontador para a data do nodo.
+ * @param	dataaux	Apontador para a heap.
 */
 
 
@@ -346,9 +347,10 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
 
 /**
  * @brief			Função que dado um intervalo de tempo calcula os N posts com melhor score.
- * @param			Número de posts a calcular.
- * @param			Data do começo do intervalo.
- * @param			Data do fim do intervalo.
+ * @param	com		Apontador para a base de dados.
+ * @param	N		Número de respostas.
+ * @param	begin	Data do começo do intervalo.
+ * @param	end		Data do fim do intervalo.
 */
 
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
@@ -381,9 +383,9 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 
 /**
 - * @brief			Função que conta o número de post num intervalo.
-- * @param			Apontador para a stack de posts.
-- * @param			Apontador para o inicio do intervalo.
-- * @param			Apontador para o fim do intervalo.
+- * @param	st		Apontador para a stack de posts.
+- * @param	begin	Apontador para o inicio do intervalo.
+- * @param	end		Apontador para o fim do intervalo.
 */
 
 static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
@@ -410,9 +412,11 @@ static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
 
 
 /**
- * @brief			Função adiciona a informação da data de um nodo MYLIST numa heap para perguntas com mais respostas.
- * @param			Apontador para a data do nodo.
- * @param			Apontador para a heap.
+ * @brief			Função adiciona a informação da data de um nodo STACKPOST numa heap para perguntas com mais respostas.
+ * @param	data	Apontador para a data do nodo.
+ * @param	dataaux	Apontador para a heap.
+ * @param	begin	Apontador para a inicio do intervalo.
+ * @param	fim		Apontador para o fim do intervalo.
 */
 
 static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void * end){
@@ -426,16 +430,17 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void
 		post = get_ele_index_STACKPOST(arr,i);
 		if (post)
 			if (getPostTypeIdP(post) == 1)
-				//insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
-				insereHEAP(h,getAnswersP(post),getIdP(post));
+				insereHEAP(h, how_many_post_interval(getFilhosP(post),(MYDATE) begin,(MYDATE) end), getIdP(post));
+				//insereHEAP(h,getAnswersP(post),getIdP(post));
 	}
 }
 
 /**
  * @brief			Função que dado um intervalo de tempo calcula as N perguntas com mais respostas.
- * @param			Número de posts a calcular.
- * @param			Data do começo do intervalo.
- * @param			Data do fim do intervalo.
+ * @param	com		Apontador para a base de dados.
+ * @param	N		Número de posts a calcular.
+ * @param	begin	Data do começo do intervalo.
+ * @param	end		Data do fim do intervalo.
 */
 
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
@@ -622,18 +627,17 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 		}
 	}
-
-	if (get_NUM_ele(result) == 0){
+	int max = count_ELE_MYLIST(result);
+	if (max == 0){
 		freeMYUSER(user1);
 		freeMYUSER(user2);
 		free_MYLIST(result);
 		return NULL;
 	}
-	LONG_list final= create_list(N-flag);
-	printf("%d\n",(N-flag) );
+	LONG_list final= create_list(max);
 	LList lista3 = getFirst_BOX(result);
 	int i=0;
-	for(i=0;i < N-flag;lista3=getNext_LList(lista3),i++)
+	for(i=0;i<max ;lista3=getNext_LList(lista3),i++)
 		set_list(final,i,(long)getElemente_LList(lista3));
 
 	freeMYUSER(user1);

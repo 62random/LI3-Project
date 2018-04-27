@@ -1,9 +1,19 @@
 #include "mytags.h"
 
+/**
+ * @brief			Função dá free a uma hashtable.
+ * @param table		Apontador a hashtable.
+*/
 
 void freeHASH_TAGS(GHashTable * table){
 	g_hash_table_destroy(table);
 }
+
+/**
+ * @brief			Função que ve se duas keys são iguais.
+ * @param data1		Apontador para a key1.
+ * @param data2		Apontador para a key2.
+*/
 
 gboolean hash_equal(const void * data1, const void * data2){
 	char * aux1 = (char *) data1;
@@ -13,6 +23,11 @@ gboolean hash_equal(const void * data1, const void * data2){
 
 	return x == 0 ? TRUE : FALSE;
 }
+
+/**
+ * @brief			Função que dá parse às tags.
+ * @param path		Path para o ficheiro xml.
+*/
 
 
 GHashTable * createMYTAGS_HASH(char * path){
