@@ -23,8 +23,8 @@ struct tree{
 };
 
 /**
- * @brief			Função calcula a altura de um novo.
- * @param			Apontador para a árvore.
+ * @brief			Função calcula a altura de um nodo.
+ * @param a			Apontador para a árvore.
 */
 
 static int altura(AVL a) {
@@ -32,8 +32,8 @@ static int altura(AVL a) {
 }
 
 /**
- * @brief			Função calcula o balanço de um novo.
- * @param			Apontador para a árvore.
+ * @brief			Função calcula o balanço de um nodo.
+ * @param a			Apontador para a árvore.
 */
 
 static int balanceDEEP(AVL a) {
@@ -47,7 +47,7 @@ static int balanceDEEP(AVL a) {
 
 /**
  * @brief			Função calcula a altura de uma árvore.
- * @param			Apontador para a árvore.
+ * @param a			Apontador para a árvore.
 */
 
 static int cal_altura(AVL a){
@@ -65,7 +65,7 @@ static int cal_altura(AVL a){
 
 /**
  * @brief			Função verifica se a árvore é balanceada.
- * @param			Apontador para a árvore.
+ * @param	a			Apontador para a árvore.
 */
 
 static int isBalanced(AVL a){
@@ -83,7 +83,7 @@ static int isBalanced(AVL a){
 
 /**
  * @brief			Função verifica se a arvore da estrutura é balanceada.
- * @param			Apontador para a estrutura.
+ * @param tree		Apontador para a estrutura.
 */
 
 int TREE_balance(TREE tre){
@@ -92,7 +92,7 @@ int TREE_balance(TREE tre){
 
 /**
  * @brief			Função efetua uma rotação para a direita da árvore.
- * @param			Apontador para a árvore.
+ * @param	a		Apontador para a árvore.
 */
 
 static AVL rotate_rigth(AVL a){
@@ -117,7 +117,7 @@ static AVL rotate_rigth(AVL a){
 
 /**
  * @brief			Função efetua uma rotação para a esquerda da árvore.
- * @param			Apontador para a árvore.
+ * @param	a		Apontador para a árvore.
 */
 
 static AVL rotate_left(AVL a){
@@ -142,7 +142,7 @@ static AVL rotate_left(AVL a){
 
 /**
  * @brief			Função efetua o balanceamento da árvore.
- * @param			Apontador para a árvore.
+ * @param	a		Apontador para a árvore.
 */
 
 static AVL balance(AVL a){
@@ -171,7 +171,7 @@ static AVL balance(AVL a){
 
 /**
  * @brief			Função que implementa a nova altura de um dado nodo.
- * @param			Apontador para a árvore.
+ * @param	a		Apontador para a árvore.
 */
 
 static void implementa_alt(AVL * a){
@@ -187,8 +187,8 @@ static void implementa_alt(AVL * a){
 
 /**
  * @brief			Função que cria um novo nodo.
- * @param			Apontador a key.
- * @param			Apontador para a data.
+ * @param key		Apontador a key.
+ * @param data		Apontador para a data.
 */
 
 static AVL create_new_node(void * key, void * data){
@@ -204,92 +204,11 @@ static AVL create_new_node(void * key, void * data){
 }
 
 /**
- * @brief			Função conta o número de nodos da árvore.
- * @param			Apontador para a árvore.
-*/
-/*
-static int count_nodes(AVL a){
-    int r = 0;
-    if (a){
-        r = 1 + count_nodes(a->esq) + count_nodes(a->dir);
-    }
-
-    return r;
-}*/
-
-/**
  * @brief			Função insere um elemento na árvore.
- * @param			Apontador para a estrutura que guarda a árvore.
- * @param			Apontador para a key a inserir.
- * @param			Apontador para a data a inserir.
+ * @param gl		Apontador para a estrutura que guarda a árvore.
+ * @param key		Apontador para a key a inserir.
+ * @param data		Apontador para a data a inserir.
 */
-/*
-TREE insere_tree(TREE gl, void * key, void * data){
-
-    AVL queue[MAX_SIZE];
-    AVL a = gl->arv;
-	int replace = 0;
-	int side;
-
-    int idx = 0;
-    queue[idx++] = NULL;
-
-    if (!a){
-        a = create_new_node(key,data);
-    }
-    else{
-        while(1){
-			side = (gl->f_compare(a->key,key);
-            if (side > 0){
-                if (a->dir){
-                    queue[idx++] = a;
-                    a = a->dir;
-                }
-                else {
-                    a->dir = create_new_node(key,data);
-                    break;
-                }
-            }
-            else {
-                if (a->esq){
-                    queue[idx++] = a;
-                    a = a->esq;
-                }
-                else{
-                    a->esq = create_new_node(key,data);
-                    break;
-                }
-            }
-        }
-
-        AVL pai;
-        int check_side, balan;
-
-        while(1){
-            pai = queue[--idx];
-            check_side = ((!pai) ||pai->esq == a);
-            implementa_alt(&a);
-            balan = altura(a->dir) - altura(a->esq);
-            if (balan < -1 || balan > 1){
-                a = balance(a);
-                if (!pai)
-                    break;
-                else if (check_side)
-                    pai->esq = a;
-                else pai->dir = a;
-            }
-            if(!pai)
-                break;
-            a = pai;
-        }
-    }
-
-    gl->nnodes++;
-    gl->arv = a;
-
-    return gl;
-
-}*/
 
 TREE insere_tree(TREE gl, void * key, void * data){
 
@@ -369,10 +288,11 @@ TREE insere_tree(TREE gl, void * key, void * data){
 }
 
 /**
- * @brief			Função cria a estrutura que contêm a árvore.
- * @param			Apontador para a função de comparação.
- * @param			Apontador para a função que dá free à key.
- * @param			Apontador para a função que dá free à data.
+ * @brief					Função cria a estrutura que contêm a árvore.
+ * @param	f_compare		Apontador para a função de comparação.
+ * @param	destroy_key		Apontador para a função que dá free à key.
+ * @param	destroy_data	Apontador para a função que dá free à data.
+ * @param	replace			Apontador para a função que dá replace à informação.
 */
 
 TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data,void * replace){
@@ -389,10 +309,10 @@ TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data,void * r
 }
 
 /**
- * @brief			Função liberta a memória de uma AVL.
- * @param			Apontador para a AVL.
- * @param			Apontador para a função que destroi a key.
- * @param			Apontador para a função que destroi a data.
+ * @brief					Função liberta a memória de uma AVL.
+ * @param	a				Apontador para a AVL.
+ * @param	destroy_key		Apontador para a função que destroi a key.
+ * @param	destroy_data	Apontador para a função que destroi a data.
 */
 
 
@@ -414,7 +334,7 @@ static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void 
 
 /**
  * @brief			Função liberta a memória da estrutura Tree.
- * @param			Apontador para a tree.
+ * @param	tree	Apontador para a tree.
 */
 
 void freeTREE_AVL(TREE tre){
@@ -430,8 +350,9 @@ void freeTREE_AVL(TREE tre){
 
 /**
  *@brief			Função que procura um elemento na árvore.
- *@param			Estrutura que contém a árvore.
- *@param			Apontador para a key a procurar.
+ *@param tree		Estrutura que contém a árvore.
+ *@param key		Apontador para a key a procurar.
+ *@param valid		Apontador para o passar o resultado da procura.
 */
 
 void * search_AVL(TREE tree, void * key,int * valid){
@@ -454,7 +375,7 @@ void * search_AVL(TREE tree, void * key,int * valid){
 
 /**
  *@brief			Função que testa se os nodos da AVL têm as alturas direitas
- *@param			Apontador para a AVL.
+ *@param a			Apontador para a AVL.
 */
 
 static int check_altura(AVL a){
@@ -472,8 +393,8 @@ static int check_altura(AVL a){
 
 /**
  *@brief			Função que testa a AVL é de procura.
- *@param			Apontador para a AVL.
- *@param			Apontador para a estrutura com a função de comparação.
+ *@param a			Apontador para a AVL.
+ *@param tree		Apontador para a estrutura com a função de comparação.
 */
 
 static int isSearch(AVL a,TREE tree){
@@ -494,9 +415,9 @@ static int isSearch(AVL a,TREE tree){
 
 /**
  *@brief			Função que vai ser aplicada a todos os nodos.
- *@param			Apontador para a arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
+ *@param aux		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar à função a aplicar.
 */
 
 static void all_nodes_trans(AVL aux,void (*f_nodo)(void *,void *),void * data1){
@@ -508,10 +429,10 @@ static void all_nodes_trans(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 }
 
 /**
- *@brief			Função que vai ser aplicada a todos os nodos.
- *@param			Apontador para a estrutura que contem a AVL.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
+ *@brief				Função que vai ser aplicada a todos os nodos.
+ *@param	e			Apontador para a estrutura que contem a AVL.
+ *@param	f_nodo		Função a aplicar a cada nodo.
+ *@param	data1		Apontador a passar à função a aplicar.
 */
 
 void all_nodes_TREE(TREE e,void (*f_nodo)(void *,void *),void * data1){
@@ -520,14 +441,14 @@ void all_nodes_TREE(TREE e,void (*f_nodo)(void *,void *),void * data1){
 }
 
 /**
- *@brief			Função que conta o número de nodos que satisfazem uma condição.
- *@param			Apontador para a AVL.
- *@param			Apontador para a data1 a comparar.
- *@param			Apontador para a data2 a comparar.
- *@param			Apontador para a função que compara.
- *@param			Função a aplicar em todos os nodos.
- *@param			Aparametro 1 a passar à função que aplica nos nodos.
- *@param			Aparametro 2 a passar à função que aplica nos nodos.
+ *@brief				Função que conta o número de nodos que satisfazem uma condição.
+ *@param	aux			Apontador para a AVL.
+ *@param	inicio		Apontador para a data1 a comparar.
+ *@param	fim			Apontador para a data2 a comparar.
+ *@param	f_compare	Apontador para a função que compara.
+ *@param	f_nodo		Função a aplicar em todos os nodos.
+ *@param	data3		Aparametro 1 a passar à função que aplica nos nodos.
+ *@param	data4		Aparametro 2 a passar à função que aplica nos nodos.
 */
 
 static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *),void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
@@ -549,12 +470,12 @@ static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*
 
 /**
  *@brief			Função que conta o número de nodos que satisfazem uma condição.
- *@param			Apontador para a estrutura que contém a árvore.
- *@param			Apontador para a data1 a comparar.
- *@param			Apontador para a data2 a comparar.
- *@param			Função a aplicar em todos os nodos.
- *@param			Aparametro 1 a passar à função que aplica nos nodos.
- *@param			Aparametro 2 a passar à função que aplica nos nodos.
+ *@param tree		Apontador para a estrutura que contém a árvore.
+ *@param data1		Apontador para a data1 a comparar.
+ *@param data2		Apontador para a data2 a comparar.
+ *@param f_nodo		Função a aplicar em todos os nodos.
+ *@param data3		Aparametro 1 a passar à função que aplica nos nodos.
+ *@param data4		Aparametro 2 a passar à função que aplica nos nodos.
 */
 
 void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
@@ -564,24 +485,21 @@ void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nod
 
 /**
  *@brief			Função que testa as propriedas da tree.
- *@param			Estrutura que contém a árvore.
+ *@param tree		Estrutura que contém a árvore.
 */
 
 int test_TREE_PROP(TREE tree){
-	int /*nodos,*/ alturas,procura,balanceada;
-	//nodos = tree->nnodes == count_nodes(tree->arv);
+	int alturas,procura,balanceada;
 	balanceada = isBalanced(tree->arv);
 	alturas = check_altura(tree->arv);
 	procura = isSearch(tree->arv,tree);
 
-
-	//return nodos && balanceada && alturas && procura;
 	return balanceada && alturas && procura;
 }
 
 /**
  *@brief			Função que devolve o número de nodos da árvore.
- *@param			Estrutura que contém a árvore.
+ *@param tree		Estrutura que contém a árvore.
 */
 
 long NUM_nodes(TREE t){
@@ -590,13 +508,13 @@ long NUM_nodes(TREE t){
 
 /**
  *@brief			Função que faz uma travessia inorder na árvore.
- *@param			Apontador para a arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Número máximo de nodos a percorrer. (nullable)
+ *@param aux		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar como argumento à função a aplicar.
+ *@param data2		Apontador a passar como argumento à função a aplicar.
+ *@param begin		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param n			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
@@ -624,14 +542,14 @@ static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),v
 
 
 /**
- *@brief			Função que faz uma travessia inorder na árvore.
- *@param			Apontador para a arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Número máximo de nodos a percorrer. (nullable)
+ *@brief			Função que faz uma travessia revinorder na árvore.
+ *@param aux		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar como argumento à função a aplicar.
+ *@param data2		Apontador a passar como argumento à função a aplicar.
+ *@param begin		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param n			Número máximo de nodos a percorrer. (nullable)
 */
 static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
@@ -661,13 +579,13 @@ static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *
 
 /**
  *@brief			Função que faz uma travessia postorder na árvore.
- *@param			Apontador para a arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Número máximo de nodos a percorrer. (nullable)
+ *@param aux		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar como argumento à função a aplicar.
+ *@param data2		Apontador a passar como argumento à função a aplicar.
+ *@param begin		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param n			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
@@ -697,12 +615,13 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
 
 /**
  *@brief			Função que faz uma travessia preorder na árvore.
- *@param			Apontador para a arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar à função a aplicar.
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Número máximo de nodos a percorrer. (nullable)
+ *@param aux		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar como argumento à função a aplicar.
+ *@param data2		Apontador a passar como argumento à função a aplicar.
+ *@param begin		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param n			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
@@ -734,13 +653,14 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
 
 
 /**
- *@brief			Função que faz uma travessia na árvore.
- *@param			Apontador para a arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Apontador a passar como argumento à função a aplicar.
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
- *@param			Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@brief			Função que faz uma travessia na árvore com 4 argumentos.
+ *@param aux		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar como argumento à função a aplicar.
+ *@param data2		Apontador a passar como argumento à função a aplicar.
+ *@param begin		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param n			Número máximo de nodos a percorrer. (nullable)
 */
 
 static void trans_4_args(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end){
@@ -769,13 +689,14 @@ static void trans_4_args(AVL aux,void (*f_nodo)(void *,void *,void *, void *),vo
 
 /**
  *@brief			Função que faz uma travessia na árvore.
- *@param			Apontador para a estrutura arvore.
- *@param			Função a aplicar a cada nodo.
- *@param			Apontador a passar como argumento à função a aplicar a cada nodo.
- *@param			Apontador a passar como argumento à função a aplicar a cada nodo.
- *@param			Data início do intervalo a que cada nodo tem de pertencer para a função ser aplicada. (nullable)
- *@param			Data início do intervalo a que cada nodo tem de pertencer para a função ser aplicada. (nullable)
- *@param			Número máximo de nodos a percorrer. (nullable)
+ *@param e		Apontador para a arvore.
+ *@param f_nodo		Função a aplicar a cada nodo.
+ *@param data1		Apontador a passar como argumento à função a aplicar.
+ *@param data2		Apontador a passar como argumento à função a aplicar.
+ *@param begin		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
+ *@param travessia	Tipo de travessia.
+ *@param n			Número máximo de nodos a percorrer. (nullable)
 */
 
 void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int travessia, int n){

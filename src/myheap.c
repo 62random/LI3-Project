@@ -23,8 +23,9 @@ struct stack{
 
 /**
  * @brief			Função troca 2 elementos no array.
- * @param			Posição do 1 elemento.
- * @param			Posição do 2 elemento.
+ * @param	v 		Array generico.
+ * @param	i		Posição do 1 elemento.
+ * @param 	d		Posição do 2 elemento.
 */
 
 void swap(GEN * v,int i, int d){
@@ -40,7 +41,7 @@ void swap(GEN * v,int i, int d){
 
 /**
  * @brief			Função que inicializa um heap.
- * @param			Tamanho original da heap.
+ * @param size		Tamanho original da heap.
 */
 
 
@@ -55,7 +56,7 @@ HEAP initHEAP(long size){
 
 /**
  * @brief			Função que coloca o último elemento adicionado na sua posição correta.
- * @param			Apontador para a heap.
+ * @param main		Apontador para a heap.
 */
 
 void bubble_up(HEAP * main){
@@ -85,7 +86,7 @@ void bubble_up(HEAP * main){
 
 /**
  * @brief			Função que realiza as operações necessárias depois de se retirar um elemento.
- * @param			Apontador para a heap.
+ * @param main		Apontador para a heap.
 */
 
 void bubble_down(HEAP * main){
@@ -136,9 +137,9 @@ void bubble_down(HEAP * main){
 
 /**
  * @brief			Função que insere um novo elemento na heap.
- * @param			Heap.
- * @param			Valor da key a inserir.
- * @param			Valor da data a inserir.
+ * @param h			Heap.
+ * @param key		Valor da key a inserir.
+ * @param data		Valor da data a inserir.
 */
 
 void insereHEAP(HEAP h, long key, long data){
@@ -155,9 +156,9 @@ void insereHEAP(HEAP h, long key, long data){
 
 /**
  * @brief			Função que retira um elemento na heap.
- * @param			Heap.
- * @param			Apontador para o sítio onde a key fica guardada.
- * @param			Apontador para o sítio onde a data fica guardada.
+ * @param h			Heap.
+ * @param key		Apontador para o sítio onde a key fica guardada.
+ * @param data		Apontador para o sítio onde a data fica guardada.
 */
 
 void pop (HEAP h, long * key, long * data){
@@ -170,7 +171,7 @@ void pop (HEAP h, long * key, long * data){
 
 /**
  * @brief			Função dá free à heap.
- * @param			Heap.
+ * @param	h		Heap.
 */
 
 void freeMYHEAP(HEAP h){
@@ -182,7 +183,7 @@ void freeMYHEAP(HEAP h){
 
 /**
  * @brief			Função dá inicializa uma stack.
- * @param			Tamanho da stack a inicializar.
+ * @param size		Tamanho da stack a inicializar.
 */
 
 STACK initSTACK(long size){
@@ -196,7 +197,7 @@ STACK initSTACK(long size){
 
 /**
  * @brief			Função dá free à stack.
- * @param			Stack.
+ * @param	a		Stack.
 */
 
 void freeSTACK(STACK a){
@@ -208,8 +209,8 @@ void freeSTACK(STACK a){
 
 /**
  * @brief			Função insere um elemento na stack.
- * @param			Stack.
- * @param			Valor a inserir.
+ * @param	a		Stack.
+ * @param	id		Valor a inserir.
 */
 
 STACK insereSTACK(STACK a,long id){
@@ -227,7 +228,7 @@ STACK insereSTACK(STACK a,long id){
 
 /**
  * @brief			Função calcula o número de elementos na stack.
- * @param			Stack.
+ * @param	a		Stack.
 */
 
 
@@ -240,8 +241,8 @@ long get_NUM_eleSTACK(STACK a){
 
 /**
  * @brief			Função que devolve o elemento numa dada posição.
- * @param			Stack.
- * @param			Indice.
+ * @param	a		Stack.
+ * @param	index	Indice.
 */
 
 long get_ELE_index(STACK a,int index){
@@ -252,7 +253,7 @@ long get_ELE_index(STACK a,int index){
 
 /**
  * @brief			Função calcula o número de elementos na heap.
- * @param			HEAP.
+ * @param	a		HEAP.
 */
 
 long get_NUM_eleHEAP(HEAP a){
@@ -263,11 +264,11 @@ long get_NUM_eleHEAP(HEAP a){
 
 /**
  * @brief			Função percorre uma STACK de longs e aplica a cada nodo uma função.
- * @param			STACK  a ser percorrida.
- * @param			Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
- * @param			Segundo argumento da função a ser aplicada.
- * @param			Terceiro argumento da função a ser aplicada.
- * @param			Quarto argumento da função a ser aplicada.
+ * @param	arr		STACK  a ser percorrida.
+ * @param	f_box	Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
+ * @param	data1	Segundo argumento da função a ser aplicada.
+ * @param	data2	Terceiro argumento da função a ser aplicada.
+ * @param	data3	Quarto argumento da função a ser aplicada.
 
 */
 void trans_stack(STACK arr, void (*f_box)(long , void *, void *, void *), void * data1, void * data2, void * data3){

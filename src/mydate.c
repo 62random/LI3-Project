@@ -9,9 +9,9 @@ struct mydate {
 
 /**
  * @brief			Função inicializa a estrutura de data.
- * @param			Variável para o dia.
- * @param			Variável para o mês.
- * @param			Variável para o ano.
+ * @param	day		Variável para o dia.
+ * @param	month	Variável para o mês.
+ * @param	year	Variável para o ano.
 */
 
 MYDATE createMYDate(int day, int month, int year) {
@@ -24,7 +24,7 @@ MYDATE createMYDate(int day, int month, int year) {
 
 /**
  * @brief			Função devolve a informação para o dia da data.
- * @param			Apontador para a data.
+ * @param	d		Apontador para a data.
 */
 
 int get_MYday(MYDATE d) {
@@ -34,7 +34,7 @@ int get_MYday(MYDATE d) {
 
 /**
  * @brief			Função devolve a informação para o mês da data.
- * @param			Apontador para a data.
+ * @param	d		Apontador para a data.
 */
 
 int get_MYmonth(MYDATE d) {
@@ -44,7 +44,7 @@ int get_MYmonth(MYDATE d) {
 
 /**
  * @brief			Função devolve a informação para o ano da data.
- * @param			Apontador para a data.
+ * @param	d		Apontador para a data.
 */
 
 int get_MYyear(MYDATE d) {
@@ -54,7 +54,7 @@ int get_MYyear(MYDATE d) {
 
 /**
  * @brief			Função liberta a memória da data.
- * @param			Apontador para a data.
+ * @param	d		Apontador para a data.
 */
 
 void free_MYdate(MYDATE d) {
@@ -72,8 +72,8 @@ int MYdate_size() {
 
 /**
  * @brief			Função compara duas datas para árvores.
- * @param			Apontador para a data 1.
- * @param			Apontador para a data 2.
+ * @param	data1	Apontador para a data 1.
+ * @param	data2	Apontador para a data 2.
 */
 
 int compare_MYDATE_AVL(void * data1, void * data2){
@@ -100,8 +100,8 @@ int compare_MYDATE_AVL(void * data1, void * data2){
 
 /**
  * @brief			Função compara duas datas para listas.
- * @param			Apontador para a data 1.
- * @param			Apontador para a data 2.
+ * @param	data1	Apontador para a data 1.
+ * @param	data2	Apontador para a data 2.
 */
 
 int compare_MYDATE_LIST(void * data1, void * data2){
@@ -128,7 +128,7 @@ int compare_MYDATE_LIST(void * data1, void * data2){
 
 /**
  * @brief			Função converte um MYDATE para Date.
- * @param			Apontador para a data.
+ * @param	a		Apontador para a data.
 */
 
 Date MYDATEtoDate(MYDATE a){
@@ -139,7 +139,7 @@ Date MYDATEtoDate(MYDATE a){
 
 /**
  * @brief			Função converte um Date para MYDATE.
- * @param			Apontador para a data.
+ * @param	a		Apontador para a data.
 */
 
 MYDATE DatetoMYDATE(Date a){
@@ -156,7 +156,7 @@ MYDATE DatetoMYDATE(Date a){
 
 /**
  * @brief			Imprimir uma data.
- * @param			Apontador para a data.
+ * @param	d		Apontador para a data.
 */
 
 void printMyDate(MYDATE d){

@@ -20,9 +20,9 @@ struct mylist{
 
 /**
  * @brief			Função inicializa a estrutura da lista.
- * @param			Apontador para a função que compara.
- * @param			Apontador para a função que dá free à key.
- * @param			Apontador para a função que dá free à data.
+ * @param f_comp	Apontador para a função que compara.
+ * @param dest_key	Apontador para a função que dá free à key.
+ * @param dest_data	Apontador para a função que dá free à data.
 */
 
 MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
@@ -38,7 +38,7 @@ MYLIST init_MYLIST(void * f_comp,void * dest_key,void * dest_data){
 
 /**
  * @brief			Função liberta a memória da lista.
- * @param			Apontador para a estrutura da lista.
+ * @param r			Apontador para a estrutura da lista.
 */
 
 void free_MYLIST(MYLIST r){
@@ -60,8 +60,8 @@ void free_MYLIST(MYLIST r){
 
 /**
  * @brief			Função cria uma caixa para a lista.
- * @param			Apontador para a chave a inserir.
- * @param			Apontador para a data a inserir.
+ * @param key		Apontador para a chave a inserir.
+ * @param data 		Apontador para a data a inserir.
 */
 
 LList create_box(void * key,void * data){
@@ -75,7 +75,8 @@ LList create_box(void * key,void * data){
 
 /**
  * @brief			Função que procura um elemento na lista.
- * @param			Apontador para a chave a procurar.
+ * @param key		Apontador para a chave a procurar.
+ * @param pai		Apontador a lista a procurar.
 */
 
 int search_list(MYLIST pai,void * key){
@@ -93,7 +94,8 @@ int search_list(MYLIST pai,void * key){
 
 /**
  * @brief			Função que procura um elemento na lista e retorna apontador para os seus dados.
- * @param			Apontador para a chave a procurar.
+ * @param key		Apontador para a chave a procurar.
+ * @param pai		Apontador a lista a procurar.
 */
 
 void * search_list_data(MYLIST pai,void * key){
@@ -110,8 +112,9 @@ void * search_list_data(MYLIST pai,void * key){
 
 /**
  * @brief			Função que insere um novo elemento na lista com comparador.
- * @param			Apontador para a chave a inserir.
- * @param			Apontador para a data a inserir.
+ * @param r 		Apontador para a lista.
+ * @param key		Apontador para a chave a inserir.
+ * @param data		Apontador para a data a inserir.
 */
 
 static MYLIST insere_with_comp(MYLIST r,void * key,void * data){
@@ -151,8 +154,9 @@ static MYLIST insere_with_comp(MYLIST r,void * key,void * data){
 
 /**
  * @brief			Função que insere um novo elemento na lista sem comparador.
- * @param			Apontador para a chave a inserir.
- * @param			Apontador para a data a inserir.
+ * @param r 		Apontador para a lista.
+ * @param key		Apontador para a chave a inserir.
+ * @param data		Apontador para a data a inserir.
 */
 
 static MYLIST insere_with_no_comp(MYLIST r,void * key,void * data){
@@ -169,8 +173,9 @@ static MYLIST insere_with_no_comp(MYLIST r,void * key,void * data){
 
 /**
  * @brief			Função que insere um novo elemento na lista.
- * @param			Apontador para a chave a inserir.
- * @param			Apontador para a data a inserir.
+ * @param r 		Apontador para a lista.
+ * @param key		Apontador para a chave a inserir.
+ * @param data		Apontador para a data a inserir.
 */
 
 MYLIST 	insere_list	(MYLIST r,void * key,void * data){
@@ -183,7 +188,7 @@ MYLIST 	insere_list	(MYLIST r,void * key,void * data){
 
 /**
  * @brief			Função devolve a data da caixa de uma lista.
- * @param			Caixa de onde se vai tirar o elemento.
+ * @param r			Caixa de onde se vai tirar o elemento.
 */
 
 void * getElemente_LList(LList r){
@@ -195,7 +200,7 @@ void * getElemente_LList(LList r){
 
 /**
  * @brief			Função devolve a data da caixa de uma lista.
- * @param			Caixa de onde se vai tirar o elemento.
+ * @param r 		Caixa de onde se vai tirar o elemento.
 */
 
 LList getNext_LList(LList r){
@@ -207,7 +212,7 @@ LList getNext_LList(LList r){
 
 /**
  * @brief			Função a lista dentro do MYLIST.
- * @param			Caixa inicial.
+ * @param r			Caixa inicial.
 */
 
 LList getFirst_BOX(MYLIST r){
@@ -218,7 +223,7 @@ LList getFirst_BOX(MYLIST r){
 
 /**
  * @brief			Função que retorna o número de elementos na lista.
- * @param			Lista.
+ * @param r			Lista.
 */
 
 int get_NUM_ele(MYLIST r){
@@ -228,7 +233,7 @@ int get_NUM_ele(MYLIST r){
 
 /**
  * @brief			Função que retorna a key de uma box.
- * @param			Box.
+ * @param	r		Box.
 */
 
 void * get_key_box(LList aux){
@@ -239,8 +244,8 @@ void * get_key_box(LList aux){
 
 /**
  * @brief			Função concateneia duas listas.
- * @param			Lista 1.
- * @param			Lista 2.
+ * @param r1		Lista 1.
+ * @param r2		Lista 2.
 */
 
 MYLIST concat_LIST(MYLIST r1, MYLIST r2){
@@ -270,7 +275,7 @@ MYLIST concat_LIST(MYLIST r1, MYLIST r2){
 
 /**
  * @brief			Função conta o número de elementos de uma lista.
- * @param			Lista 1.
+ * @param r			Lista 1.
 */
 
 long count_ELE_MYLIST(MYLIST r){
@@ -287,7 +292,7 @@ long count_ELE_MYLIST(MYLIST r){
 
 /**
  * @brief			Função que dá reverse a uma lista.
- * @param			Lista.
+ * @param l			Lista.
 */
 
 
@@ -310,11 +315,11 @@ MYLIST reverse(MYLIST l){
 
 /**
  * @brief			Função percorre uma lista e aplica a cada nodo uma função.
- * @param			Lista a ser percorrida.
- * @param			Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
- * @param			Segundo argumento da função a ser aplicada.
- * @param			Terceiro argumento da função a ser aplicada.
- * @param			Quarto argumento da função a ser aplicada.
+ * @param	lista	Lista a ser percorrida.
+ * @param	f_box	Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
+ * @param	data1	Segundo argumento da função a ser aplicada.
+ * @param	data2	Terceiro argumento da função a ser aplicada.
+ * @param	data3	Quarto argumento da função a ser aplicada.
 
 */
 void trans_list(MYLIST lista, void (*f_box)(void *, void *, void *, void *), void * data1, void * data2, void * data3){

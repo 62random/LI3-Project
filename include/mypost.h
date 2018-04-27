@@ -21,11 +21,11 @@ void 		trans_arr				(STACKPOST arr, void (*f_box)(void *, void *, void *, void *
 int 		ordenaPOST_MYUSER		(const void * data1, const void * data2);
 void 		order_STACKPOST			(STACKPOST st, void * func);
 STACKPOST	initSTACKPOST			(long size);
-void		insereSTACKPOST			(STACKPOST st, MYPOST post);
 void 		incCounter2_STACKPOST	(STACKPOST st,long i);
 void 		incCounter1_STACKPOST	(STACKPOST st,long i);
 long 		getCounter1_STACKPOST	(STACKPOST st);
 long 		getCounter2_STACKPOST	(STACKPOST st);
+void		insereSTACKPOST			(STACKPOST st, MYPOST post);
 long		get_NUM_eleSTACKPOST	(STACKPOST st);
 MYPOST 		get_ele_index_STACKPOST	(STACKPOST st, long i);
 void 		freeSTACKPOST_SEM_CLONE	(STACKPOST st);
