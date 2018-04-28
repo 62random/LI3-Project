@@ -807,39 +807,39 @@ long better_answer(TAD_community com, long id){
 		scoremax = scoreatual = 0;
 		int n, i,result = -2;
 
-		MYPOST post = search_POSTID(com->posts_Id,id);
-		MYPOST auxcancro = NULL;
-		if (!post){
-			freepost(post);
+		MYPOST pergunta = search_POSTID(com->posts_Id,id);
+		MYPOST resposta = NULL;
+		if (!pergunta){
+			freepost(pergunta);
 			printf("Post inexistente\n");
 			return -3;
 		}
 
-		if(getPostTypeIdP(post) != 1){
-			freepost(post);
+		if(getPostTypeIdP(pergunta) != 1){
+			freepost(pergunta);
 			printf("Post não é uma pergunta\n");
 			return -4;
 		}
 
-		arr = getFilhosP(post);
+		arr = getFilhosP(pergunta);
 		if(arr == NULL){
-			freepost(post);
+			freepost(pergunta);
 			return -2;
 		}
 		n = get_NUM_eleSTACKPOST(arr);
 
 		for(i = 0; i < n; i++){
-			auxcancro = get_ele_index_STACKPOST(arr, i);
-			men = search_USER(com->users, getOwnerIdP(auxcancro));
-			scoreatual =(getScoreP(auxcancro) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
+			resposta = get_ele_index_STACKPOST(arr, i);
+			men = search_USER(com->users, getOwnerIdP(resposta));
+			scoreatual =(getScoreP(resposta) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(resposta) * 0.1);
 			freeMYUSER(men);
 
 			if (scoreatual > scoremax){
 				scoremax = scoreatual;
-				result = getIdP(auxcancro);
+				result = getIdP(resposta);
 			}
 		}
-		freepost(post);
+		freepost(pergunta);
 		return result;
 
 }
