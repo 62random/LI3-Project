@@ -559,13 +559,156 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 9+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+/**
+ * @brief			Função que compara duas keys e diz que os seus valores são iguais.
+ * @param data1		Apontador para a primeira key.
+ * @param data2		Apontador para a segunda key.
+*/
+
+static int hash_long_equals(const void * data1, const void * data2){
+	long id1 = *(long *) data1;
+	long id2 = *(long *) data2;
+	return (id1 == id2);
+}
+
+/**
+ * @brief			Função que insere posts uma hashtable.
+ * @param com		Apontador para estrutura da comunidade.
+ * @param table		Apontador para a hashtable.
+ * @param l_aux		Lista de posts.
+ * @param size_f	Tamanho máximo da lista.
+*/
+
+
+static void preenche_hash_table(TAD_community com, GHashTable * table, STACKPOST l_aux, int size_f){
+	MYPOST novo,novo2,post;
+	long * id;
+
+	int i;
+
+	for(i = 0; i < size_f; i++){					//criar a hash_table com o posts do user com menos posts.
+		post = get_ele_index_STACKPOST(l_aux,i);
+		if (getPostTypeIdP(post) == 1){
+			novo = clone_MYPOST_NODEEP(post);
+			id = malloc(sizeof(long));
+			*id = getIdP(post);
+			g_hash_table_insert(table,id,novo);
+		}
+		else if (getPostTypeIdP(post) == 2){
+			novo2 = search_POSTID(com->posts_Id,getPIdP(post)); // procura o pai
+			if (novo2){
+				novo = clone_MYPOST_NODEEP(novo2); //cria clone simples do pai
+				freepost(novo2);// free clone complexo
+				id = malloc(sizeof(long));
+				*id = getIdP(novo);
+				g_hash_table_insert(table,id,novo); // insere
+			}
+		}
+	}
+}
+
+/**
+ * @brief			Função que retira posts de uma hashtable.
+ * @param com		Apontador para estrutura da comunidade.
+ * @param table		Apontador para a hashtable.
+ * @param queue		Array para guardar os posts.
+ * @param l_aux2	Lista de comparação.
+ * @param size_f	Tamanho máximo da lista.
+*/
+
+static void preenche_stackpost(TAD_community com,GHashTable * table , STACKPOST queue , STACKPOST l_aux2 , int size2){
+	MYPOST post,novo;
+	int i;
+	long idaux;
+
+	for(i = 0; i < size2; i++){
+		post = get_ele_index_STACKPOST(l_aux2,i);
+		if (getPostTypeIdP(post) == 1){
+			idaux = getIdP(post);
+			novo = (MYPOST) g_hash_table_lookup(table,&idaux);
+			if (novo){
+				insere_sem_rep_STACKPOST(queue,novo);
+			}
+		}
+		else if (getPostTypeIdP(post) == 2){
+			novo = search_POSTID(com->posts_Id,getPIdP(post));
+			if (novo){
+					idaux = getIdP(novo);
+					freepost(novo);
+					novo = g_hash_table_lookup(table,&idaux);
+					if (novo){
+						insere_sem_rep_STACKPOST(queue,novo);
+					}
+				}
+			}
+	}
+}
+
 /**
  * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			ID1
- * @param			ID2
- * @param			Numero maximo de N
+ * @param com		Estrutura que guarda as outras estruturas.
+ * @param id1		ID1
+ * @param id2		ID2
+ * @param N			Número máximo de N
 */
+
+LONG_list both_participated(TAD_community com, long id1, long id2, int N){
+	MYUSER user1 = search_USER(com->users,id1);
+	MYUSER user2 = search_USER(com->users,id2);
+	STACKPOST lista1 = getMYLISTuser(user1);// são clones
+	STACKPOST lista2 = getMYLISTuser(user2);// são clones
+
+
+	int size1, size2, size_f,i;
+	size1 = get_NUM_eleSTACKPOST(lista1);
+	size2 = get_NUM_eleSTACKPOST(lista2);
+
+
+	if ((!user1) || (!user2) || size1 == 0 || size2 == 0 || N == 0){
+		freeMYUSER(user1);
+		freeMYUSER(user2);
+		return NULL;
+	}
+
+	GHashTable * table = g_hash_table_new_full(&g_int_hash,&hash_long_equals,&free,&free);
+	LONG_list l = create_list(N);
+
+	STACKPOST l_aux = size1 < size2 ? lista1 : lista2;
+	STACKPOST l_aux2 = size1 < size2 ? lista2 : lista1;
+
+	size_f = size1 < size2 ? size1 : size2;
+	size2 = size1 < size2 ? size2 : size1;
+
+	preenche_hash_table(com,table,l_aux,size_f);
+
+	STACKPOST queue = initSTACKPOST(size_f+1);
+
+
+	preenche_stackpost(com,table,queue,l_aux2,size2);
+	order_STACKPOST(queue,&ordenaPOST_MYUSER);
+
+	MYPOST post;
+
+	for(i = 0; i < get_NUM_eleSTACKPOST(queue) &&  i < N; i++){
+		post = get_ele_index_STACKPOST(queue,i);
+		set_list(l,i,getIdP(post));
+	}
+	if (i < N){
+		for(; i < N; i++)
+			set_list(l,i,-2);
+	}
+
+	freeMYUSER(user1);
+	freeMYUSER(user2);
+	g_hash_table_destroy(table);
+	freeSTACKPOST_SEM_CLONE(queue);
+
+
+	return l;
+}
+
+/*
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYUSER user1 = search_USER(com->users,id1);
 	MYUSER user2 = search_USER(com->users,id2);
@@ -646,7 +789,9 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	free_MYLIST(result);
 	return final;
 
-}
+}*/
+
+
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 10+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -702,6 +847,10 @@ long better_answer(TAD_community com, long id){
 
 
 
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 /**
  * @brief			Função que calcula os N utilizadores com melhor rep.
  * @param			Estrutura que guarda as outras estruturas.
@@ -734,11 +883,6 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 
 	return array;
 }
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 
 /**

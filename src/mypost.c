@@ -208,6 +208,34 @@ void insereSTACKPOST(STACKPOST st, MYPOST post){
 }
 
 /**
+ * @brief			Função que insere um elemento sem repetidos numa stackpost.
+ * @param			STACKPOST.
+ * @param			Post a inserir.
+*/
+
+void insere_sem_rep_STACKPOST(STACKPOST st, MYPOST post){
+	long i;
+	MYPOST * aux;
+	if (st->n_elem >= st->size){
+		st->size *= 2;
+		aux = malloc(st->size*sizeof(struct mypost *));
+		for(i=0; i < st->n_elem; i++)
+			aux[i] = st->array[i];
+		free(st->array);
+		st->array = aux;
+	}
+	for(i=0; i < st->n_elem ; i++){
+		if (getIdP(post) == getIdP(st->array[i]))
+			break;
+	}
+	if (i == st->n_elem)
+		st->array[st->n_elem++] = post;
+
+}
+
+
+
+/**
  * @brief			Função que calcula o número de elementos de uma stackpost.
  * @param			STACKPOST.
 */
@@ -646,7 +674,7 @@ void free_StringArray(char ** arr) {
  * @param				Apontador para o post.
 */
 
-static MYPOST clone_MYPOST_NODEEP(MYPOST post){
+MYPOST clone_MYPOST_NODEEP(MYPOST post){
 	MYPOST novo = createpost(0);
 	novo->id = post->id;
 	novo->typeid = post->typeid;
