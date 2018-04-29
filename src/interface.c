@@ -474,10 +474,10 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 
 /**
  * @brief			Função a aplicar aos posts a ser visitados na travessia, auxiliar á query 8.
- * @param			Post a ser visitado.
- * @param			Lista onde serão guardados os id's dos posts relevantes.
- * @param			Palavra a ser procurada nos títulos.
- * @param			Número máximo de resultados N.
+ * @param	post	Post a ser visitado.
+ * @param	arr 	Array onde serão guardados os id's dos posts relevantes.
+ * @param	word	Palavra a ser procurada nos títulos.
+ * @param	n		Número máximo de resultados N.
 */
 
 static void contains_word_node(void * post, void * arr, void * word, void * n, void * nulla){
@@ -506,10 +506,10 @@ static void contains_word_node(void * post, void * arr, void * word, void * n, v
 
 /**
  * @brief			Função a aplicar ao array de posts efetuados no mesmo dia, auxiliar á query 8.
- * @param			Array onde estão armazenados os ids de posts efetuados no mesmo dia.
- * @param			Array onde estão a ser guardados os ids dos posts de resposta à query.
- * @param			Palavra a ser procurada nos títulos.
- * @param			Número máximo de resultados N.
+ * @param	arr		Array onde estão armazenados os ids de posts efetuados no mesmo dia.
+ * @param	res		Array onde estão a ser guardados os ids dos posts de resposta à query.
+ * @param	word	Palavra a ser procurada nos títulos.
+ * @param	n		Número máximo de resultados N.
 */
 
 static void contains_word_arr(void * arr, void * res, void * word, void * n){
@@ -521,10 +521,10 @@ static void contains_word_arr(void * arr, void * res, void * word, void * n){
 
 
 /**
- * @brief			Função passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
- * @param			LList cuja key será passadas.
- * @param			LONG_list onde serão guardadas as keys.
- * @param			Índice onde será inserida a key.
+ * @brief				Função passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
+ * @param	num			LList cuja key será passadas.
+ * @param	longlist	LONG_list onde serão guardadas as keys.
+ * @param	n			Índice onde será inserida a key.
 */
 static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) {
 
@@ -537,9 +537,9 @@ static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) 
 
 /**
  * @brief			Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Palavra a ser procurada nos títulos.
- * @param			Número máximo de resultados N.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	word	Palavra a ser procurada nos títulos.
+ * @param	N		Número máximo de resultados N.
 */
 
 LONG_list contains_word(TAD_community com, char* word, int N){
@@ -797,8 +797,8 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 /**
  * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	id		Id do post
 */
 long better_answer(TAD_community com, long id){
 		STACKPOST arr = NULL;
@@ -853,8 +853,8 @@ long better_answer(TAD_community com, long id){
 
 /**
  * @brief			Função que calcula os N utilizadores com melhor rep.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número de jogadores.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	N		Número de jogadores.
 */
 
 static long * n_users_with_more_rep(TAD_community com, int N){
@@ -886,11 +886,11 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 
 
 /**
- * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da lista de posts em cada nodo da árvore organizada por datas, durante a travessia.
- * @param			Nodo atual.
- * @param			Lista onde são armazenados resultados.
- * @param			Array dos N users com maior reputação.
- * @param			Número N (tamanho do array de users).
+ * @brief				Função auxiliar à query 11 que será aplicada a cada nodo da lista de posts em cada nodo da árvore organizada por datas, durante a travessia.
+ * @param	vpost		Nodo atual.
+ * @param	vcom		Lista onde são armazenados resultados.
+ * @param	ocorrencias	Array dos N users com maior reputação.
+ * @param	WHAT?????	Número N (tamanho do array de users). ALTERAR ESTA MERDA /////VERIFICAR
 */
 static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias, void * begin, void * end){
 	if(vpost == NULL)
@@ -942,10 +942,10 @@ void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 
 /**
  * @brief			Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número máximo de tags.
- * @param			Início do período de tempo.
- * @param			Final do período de tempo.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	N		Número máximo de tags.
+ * @param	begin	Início do período de tempo.
+ * @param	end		Final do período de tempo.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	GHashTable * ocorrencias = g_hash_table_new_full(&g_direct_hash,&g_direct_equal, NULL,&free);
@@ -993,7 +993,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 /**
  * @brief			Função que liberta a memória da estrutura.
- * @param			Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura que guarda as outras estruturas.
 */
 
 TAD_community clean(TAD_community com){

@@ -31,11 +31,12 @@ struct stackpost {
 
 /**
  * @brief			Função percorre um array e aplica a cada nodo uma função.
- * @param			Array a ser percorrido.
- * @param			Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
- * @param			Segundo argumento da função a ser aplicada.
- * @param			Terceiro argumento da função a ser aplicada.
- * @param			Quarto argumento da função a ser aplicada.
+ * @param	arr		Array a ser percorrido.
+ * @param	f_box	Função a ser aplicada (cujo o primeiro argumento é o nodo a que ela é aplicada).
+ * @param	data1	Primeiro argumento da função a ser aplicada.
+ * @param	data2	Segundo argumento da função a ser aplicada.
+ * @param	data3	Terceiro argumento da função a ser aplicada.
+ * @param	data4	Quarto argumento da função a ser aplicada.
 
 */
 void trans_arr(STACKPOST arr, void (*f_box)(void *, void *, void *, void *, void *), void * data1, void * data2, void * data3, void * data4){
@@ -48,8 +49,8 @@ void trans_arr(STACKPOST arr, void (*f_box)(void *, void *, void *, void *, void
 
 /**
  * @brief				Função que calcula o valor da nova ordenação.
- * @param				MYPOST 1;
- * @param				MYPOST 2;
+ * @param	data1 		MYPOST 1;
+ * @param	data2		MYPOST 2;
 */
 
 int ordenaPOST_MYUSER(const void * data1, const void * data2){
@@ -63,9 +64,9 @@ int ordenaPOST_MYUSER(const void * data1, const void * data2){
 
 /**
  * @brief			Função que troca dois elementos do array.
- * @param			Array.
- * @param			Indice 1.
- * @param			Indice 2.
+ * @param	array	Array.
+ * @param	i		Indice 1.
+ * @param	d		Indice 2.
 */
 
 
@@ -77,10 +78,10 @@ static void swapMYPOST(MYPOST * array, long i, long d){
 }
 
 /**
- * @brief			Função que executa uma partition num Array de MYPOST.
- * @param 			Array a partir.
- * @param			Número de elementos.
- * @param			Função de comparação.
+ * @brief				Função que executa uma partition num Array de MYPOST.
+ * @param 	v			Array a partir.
+ * @param	N			Número de elementos.
+ * @param	f_compare	Função de comparação.
 */
 
 static long partition(MYPOST * v, long N, int (*f_compare)(MYPOST,MYPOST)){
@@ -95,9 +96,9 @@ static long partition(MYPOST * v, long N, int (*f_compare)(MYPOST,MYPOST)){
 
 /**
  * @brief			Função que ordena um array com quicksort.
- * @param			Array a ordenar.
- * @param			Número de elementos.
- * @param			Função de comparação.
+ * @param	v		Array a ordenar.
+ * @param	N		Número de elementos.
+ * @param	func	Função de comparação.
 */
 
 static void quicksort(MYPOST * v, long N,void * func){
@@ -112,8 +113,8 @@ static void quicksort(MYPOST * v, long N,void * func){
 
 /**
  * @brief			Função que ordena uma stackpost.
- * @param			STACKPOST.
- * @param			Função de comparação.
+ * @param	st		STACKPOST.
+ * @param	func		Função de comparação.
 */
 
 void order_STACKPOST(STACKPOST st, void * func){
@@ -122,7 +123,7 @@ void order_STACKPOST(STACKPOST st, void * func){
 
 /**
  * @brief			Função que inicializa um stackpost.
- * @param			Tamanho original da stackpost.
+ * @param	size	Tamanho original da stackpost.
 */
 
 STACKPOST initSTACKPOST(long size){
@@ -138,8 +139,8 @@ STACKPOST initSTACKPOST(long size){
 
 /**
  * @brief			Função que adiciona um valor ao counter2.
- * @param			STACKPOST.
- * @param 			Conter 2.
+ * @param	st		STACKPOST.
+ * @param 	i		Conter 2.
 */
 
 void incCounter2_STACKPOST(STACKPOST st,long i){
@@ -150,8 +151,8 @@ void incCounter2_STACKPOST(STACKPOST st,long i){
 
 /**
  * @brief			Função que adiciona um valor ao counter1.
- * @param			STACKPOST.
- * @param 			Conter 1.
+ * @param	st		STACKPOST.
+ * @param 	i		Conter 1.
 */
 
 void incCounter1_STACKPOST(STACKPOST st,long i){
@@ -162,7 +163,7 @@ void incCounter1_STACKPOST(STACKPOST st,long i){
 
 /**
  * @brief			Função que devolve o counter 1.
- * @param			STACKPOST.
+ * @param	st		STACKPOST.
 */
 
 long getCounter1_STACKPOST(STACKPOST st){
@@ -171,7 +172,7 @@ long getCounter1_STACKPOST(STACKPOST st){
 
 /**
  * @brief			Função que devolve o counter 2.
- * @param			STACKPOST.
+ * @param	st		STACKPOST.
 */
 
 long getCounter2_STACKPOST(STACKPOST st){
@@ -180,8 +181,8 @@ long getCounter2_STACKPOST(STACKPOST st){
 
 /**
  * @brief			Função que insere um elemento numa stackpost.
- * @param			STACKPOST.
- * @param			Post a inserir.
+ * @param	st		STACKPOST.
+ * @param	post		Post a inserir.
 */
 
 void insereSTACKPOST(STACKPOST st, MYPOST post){
@@ -209,8 +210,8 @@ void insereSTACKPOST(STACKPOST st, MYPOST post){
 
 /**
  * @brief			Função que insere um elemento sem repetidos numa stackpost.
- * @param			STACKPOST.
- * @param			Post a inserir.
+ * @param	st		STACKPOST.
+ * @param	post	Post a inserir.
 */
 
 void insere_sem_rep_STACKPOST(STACKPOST st, MYPOST post){
@@ -237,7 +238,7 @@ void insere_sem_rep_STACKPOST(STACKPOST st, MYPOST post){
 
 /**
  * @brief			Função que calcula o número de elementos de uma stackpost.
- * @param			STACKPOST.
+ * @param	st		STACKPOST.
 */
 
 long get_NUM_eleSTACKPOST(STACKPOST st){
@@ -246,8 +247,8 @@ long get_NUM_eleSTACKPOST(STACKPOST st){
 
 /**
  * @brief			Função que devolve o elemento na posição dada.
- * @param			STACKPOST.
- * @param			Indice a consultar.
+ * @param	st		STACKPOST.
+ * @param	i		Indice a consultar.
 */
 
 MYPOST get_ele_index_STACKPOST(STACKPOST st, long i){
@@ -258,7 +259,7 @@ MYPOST get_ele_index_STACKPOST(STACKPOST st, long i){
 
 /**
  * @brief			Função que dá free a uma stackpost.
- * @param			STACKPOST.
+ * @param	st		STACKPOST.
 */
 
 void freeSTACKPOST_SEM_CLONE(STACKPOST st){
@@ -270,7 +271,7 @@ void freeSTACKPOST_SEM_CLONE(STACKPOST st){
 
 /**
  * @brief			Função que dá free a um clone stackpost.
- * @param			STACKPOST.
+ * @param	st		STACKPOST.
 */
 
 void freeSTACKPOST_COM_CLONE(STACKPOST st){
@@ -287,7 +288,7 @@ void freeSTACKPOST_COM_CLONE(STACKPOST st){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o Id de um post.
- * @param 			Apontador para a struct do post.
+ * @param post		Apontador para a struct do post.
  */
 long getIdP(MYPOST post){
   	return post ? post->id : -2;
@@ -296,8 +297,8 @@ long getIdP(MYPOST post){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que altera o Id de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo ID do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	id		Novo ID do post.
  */
 static void setIdP(MYPOST post, long  id){
   post->id = id;
@@ -306,7 +307,7 @@ static void setIdP(MYPOST post, long  id){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o TypeId de um post.
- * @param 			Apontador para a struct do post.
+ * @param  post	 Apontador para a struct do post.
  */
 int getPostTypeIdP(MYPOST post){
 	return post ? post->typeid : 0;
@@ -315,8 +316,8 @@ int getPostTypeIdP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o TypeId de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo TypeId do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	id		Novo TypeId do post.
  */
 static void setPostTypeIdP(MYPOST post, long  id){
   post->typeid = id;
@@ -325,7 +326,7 @@ static void setPostTypeIdP(MYPOST post, long  id){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que verifica se um post é clone ou não.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 
 int getTYPECLONEP(MYPOST post){
@@ -335,7 +336,7 @@ int getTYPECLONEP(MYPOST post){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o OwnerId de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 long getOwnerIdP(MYPOST post){
   	return post ? post->ownerid : -2;
@@ -344,8 +345,8 @@ long getOwnerIdP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o OwnerId de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo OwnerId do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	id		Novo OwnerId do post.
  */
 static void setOwnerIdP(MYPOST post, long  id){
 	post->ownerid = id;
@@ -354,7 +355,7 @@ static void setOwnerIdP(MYPOST post, long  id){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém a data de criação de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 MYDATE getDateP(MYPOST post){
 	if(post){
@@ -372,8 +373,8 @@ MYDATE getDateP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera a data de criação de um post.
- * @param 			Apontador para a struct do post.
- * @param			Nova data do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	data	Nova data do post.
  */
 static void setDateP(MYPOST post, MYDATE data){
 	MYDATE date;
@@ -388,7 +389,7 @@ static void setDateP(MYPOST post, MYDATE data){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que inicializa a (nossa) representação de um post na memória.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 char * getOwnerNameP(MYPOST post){
 		return post ? mystrdup(post->ownername) : NULL;
@@ -397,8 +398,8 @@ char * getOwnerNameP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o OwnerName de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo OwnerName do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	name	Novo OwnerName do post.
  */
 static void setOwnerNameP(MYPOST post, char *  name){
 	post->ownername = mystrdup(name);
@@ -407,7 +408,7 @@ static void setOwnerNameP(MYPOST post, char *  name){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o título de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 char * getTitleP(MYPOST post){
 	return post ? mystrdup(post->title) : NULL;
@@ -416,8 +417,8 @@ char * getTitleP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o título de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo titulo do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	title	Novo titulo do post.
  */
 static void setTitleP(MYPOST post, char* title){
 	post->title = mystrdup(title);
@@ -426,7 +427,7 @@ static void setTitleP(MYPOST post, char* title){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém as tags de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 char ** getTagsP(MYPOST post){
 	if(post){
@@ -455,8 +456,8 @@ char ** getTagsP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera a lista de tags de um post.
- * @param 			Apontador para a struct do post.
- * @param			Nova lista de tags do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	tags	Nova lista de tags do post.
  */
 static void setTagsP(MYPOST post, char ** tags){
 	if(tags == NULL) {
@@ -478,7 +479,7 @@ static void setTagsP(MYPOST post, char ** tags){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de respostas de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 int getAnswersP(MYPOST post){
 	return post ? post->anscount : 0;
@@ -487,8 +488,8 @@ int getAnswersP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o numero de respostas de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo numero de respostas do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	answer	Novo numero de respostas do post.
  */
 static void setAnswersP(MYPOST post, int answer){
   	post->anscount=answer;
@@ -497,7 +498,7 @@ static void setAnswersP(MYPOST post, int answer){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de comentarios de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 int getCommentsP(MYPOST post){
 		return post ? post->commcount : 0;
@@ -505,9 +506,9 @@ int getCommentsP(MYPOST post){
 
 /**
  * @date 			27 Mar 2018
- * @brief 			Função que altera o numero de comentarios de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo comentarios de respostas do post.
+ * @brief 				Função que altera o numero de comentarios de um post.
+ * @param 	post		Apontador para a struct do post.
+ * @param	comments	Novo comentarios de respostas do post.
  */
 static void setCommentsP(MYPOST post, int comments){
   	post->commcount = comments;
@@ -516,7 +517,7 @@ static void setCommentsP(MYPOST post, int comments){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o numero de favoritos de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 int getFavsP(MYPOST post){
 		return post ? post->favcount : 0;
@@ -525,8 +526,8 @@ int getFavsP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o numero de favoritos de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo favoritos de respostas do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	fav		Novo favoritos de respostas do post.
  */
 static void setFavsP(MYPOST post, int fav){
   	post->favcount = fav;
@@ -535,7 +536,7 @@ static void setFavsP(MYPOST post, int fav){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o ParentId de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 long getPIdP(MYPOST post){
   		return post ? post->parent_id : -2;
@@ -544,8 +545,8 @@ long getPIdP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o ParentId de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo ParendId do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	id		Novo ParendId do post.
  */
 static void setPIdP(MYPOST post, long  id){
   post->parent_id = id;
@@ -554,7 +555,7 @@ static void setPIdP(MYPOST post, long  id){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém o score de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 int getScoreP(MYPOST post){
   		return post ? post->score : 0;
@@ -563,8 +564,8 @@ int getScoreP(MYPOST post){
 /**
  * @date 			27 Mar 2018
  * @brief 			Função que altera o score de um post.
- * @param 			Apontador para a struct do post.
- * @param			Novo score do post.
+ * @param 	post	Apontador para a struct do post.
+ * @param	score	Novo score do post.
  */
 static void setScoreP(MYPOST post, int  score){
   post->score=score;
@@ -574,7 +575,7 @@ static void setScoreP(MYPOST post, int  score){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que obtém os filhos de um post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 
 STACKPOST getFilhosP(MYPOST post){
@@ -583,9 +584,8 @@ STACKPOST getFilhosP(MYPOST post){
 
 /**
  * @brief				Função mete um post nos filhos desse mesmo post.
- * @param				Identificador do post.
- * @param				Key do filhos a inserir.
- * @param				Informação do post.
+ * @param	post		Identificador do post.
+ * @param	data		Informação do post.
 */
 
 void setFilhosNoPost(MYPOST post,MYPOST data){
@@ -598,6 +598,7 @@ void setFilhosNoPost(MYPOST post,MYPOST data){
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que inicializa a (nossa) representação de um post na memória.
+ * @param	type	Identicador se o post vai ser ou nao clone.   /////VERIFICAR
  * @return 			Apontador para a struct do post.
  */
 MYPOST createpost(int type) {
@@ -624,7 +625,7 @@ MYPOST createpost(int type) {
 /**
  * @date 			24 Mar 2018
  * @brief 			Função que liberta a memória alocada para um dado post.
- * @param 			Apontador para a struct do post.
+ * @param 	post	Apontador para a struct do post.
  */
 void freepost(MYPOST post) {
 
@@ -671,7 +672,7 @@ void free_StringArray(char ** arr) {
 
 /**
  * @brief				Função que produz o clone de um post sem profundidade.
- * @param				Apontador para o post.
+ * @param	post		Apontador para o post.
 */
 
 MYPOST clone_MYPOST_NODEEP(MYPOST post){
@@ -694,7 +695,7 @@ MYPOST clone_MYPOST_NODEEP(MYPOST post){
 
 /**
  * @brief				Função que clona uma STACKPOST.
- * @param				Apontador para a stackpost.
+ * @param	st			Apontador para a stackpost.
 */
 
 
@@ -717,7 +718,7 @@ STACKPOST clone_STACKPOST(STACKPOST st){
 
 /**
  * @brief				Função que produz o clone de um post com profundidade.
- * @param				Apontador para o post.
+ * @param	post		Apontador para o post.
 */
 
 MYPOST clone_MYPOST_DEEP(MYPOST post){
@@ -730,7 +731,7 @@ MYPOST clone_MYPOST_DEEP(MYPOST post){
 
 /**
  * @brief				Função que procura um post pelo id na estrutura com clone.
- * @param				Id do post a procurar.
+ * @param	id			Id do post a procurar.
 */
 
 MYPOST search_POSTID(TREE tree,long id){
@@ -744,7 +745,8 @@ MYPOST search_POSTID(TREE tree,long id){
 
 /**
  * @brief				Função que procura um post pelo id na estrutura sem clone.
- * @param				Id do post a procurar.
+ * @param	tree		Arvore a ser procurada.
+ * @param	id			Id do post a procurar.
 */
 
 static MYPOST search_POSTID_internal(TREE tree,long id){
@@ -759,7 +761,7 @@ static MYPOST search_POSTID_internal(TREE tree,long id){
 
 /**
  * @brief			Função que imprime os ids das respostas a um post.
- * @param			Apontador para o post.
+ * @param	post	Apontador para o post.
 */
 
 void print_posts_MYPOST(MYPOST post){
@@ -783,8 +785,8 @@ void print_posts_MYPOST(MYPOST post){
 
 /**
  * @brief 			Função que verifica se existe uma data tag num post.
- * @param 			Apontador para a struct do post.
- * @param			Tag a verificar.
+ * @param 	post	Apontador para a struct do post.
+ * @param	tag		Tag a verificar.
  */
 int	existeTag(MYPOST post,char * tag){
 	int i;
