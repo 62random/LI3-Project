@@ -550,7 +550,8 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	LONG_list res = create_list(n + 1);
 
 	trans_stack(arr, &stack_tolonglist, res, &n, NULL);
-	sort_list(res, &cmp_longs);
+	if(res)
+		sort_list(res, &cmp_longs);
 
 	freeSTACK(arr);
 
