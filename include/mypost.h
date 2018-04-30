@@ -26,6 +26,7 @@ void 		incCounter1_STACKPOST	(STACKPOST st,long i);
 long 		getCounter1_STACKPOST	(STACKPOST st);
 long 		getCounter2_STACKPOST	(STACKPOST st);
 void		insereSTACKPOST			(STACKPOST st, MYPOST post);
+void 		insere_sem_rep_STACKPOST(STACKPOST st, MYPOST post);
 long		get_NUM_eleSTACKPOST	(STACKPOST st);
 MYPOST 		get_ele_index_STACKPOST	(STACKPOST st, long i);
 void 		freeSTACKPOST_SEM_CLONE	(STACKPOST st);
@@ -51,7 +52,7 @@ MYPOST 		createpost				(int type);
 void 		freepost				(MYPOST post);
 void 		free_StringArray		(char ** arr);
 
-
+MYPOST 		clone_MYPOST_NODEEP		(MYPOST post);
 STACKPOST 	clone_STACKPOST			(STACKPOST st);
 MYPOST 		clone_MYPOST_DEEP		(MYPOST post);
 MYPOST 		search_POSTID			(TREE tree, long id);

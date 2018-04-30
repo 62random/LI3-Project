@@ -474,10 +474,10 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
 
 /**
  * @brief			Função a aplicar aos posts a ser visitados na travessia, auxiliar á query 8.
- * @param			Post a ser visitado.
- * @param			Lista onde serão guardados os id's dos posts relevantes.
- * @param			Palavra a ser procurada nos títulos.
- * @param			Número máximo de resultados N.
+ * @param	post	Post a ser visitado.
+ * @param	arr 	Array onde serão guardados os id's dos posts relevantes.
+ * @param	word	Palavra a ser procurada nos títulos.
+ * @param	n		Número máximo de resultados N.
 */
 
 static void contains_word_node(void * post, void * arr, void * word, void * n, void * nulla){
@@ -506,10 +506,10 @@ static void contains_word_node(void * post, void * arr, void * word, void * n, v
 
 /**
  * @brief			Função a aplicar ao array de posts efetuados no mesmo dia, auxiliar á query 8.
- * @param			Array onde estão armazenados os ids de posts efetuados no mesmo dia.
- * @param			Array onde estão a ser guardados os ids dos posts de resposta à query.
- * @param			Palavra a ser procurada nos títulos.
- * @param			Número máximo de resultados N.
+ * @param	arr		Array onde estão armazenados os ids de posts efetuados no mesmo dia.
+ * @param	res		Array onde estão a ser guardados os ids dos posts de resposta à query.
+ * @param	word	Palavra a ser procurada nos títulos.
+ * @param	n		Número máximo de resultados N.
 */
 
 static void contains_word_arr(void * arr, void * res, void * word, void * n){
@@ -521,10 +521,10 @@ static void contains_word_arr(void * arr, void * res, void * word, void * n){
 
 
 /**
- * @brief			Função passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
- * @param			LList cuja key será passadas.
- * @param			LONG_list onde serão guardadas as keys.
- * @param			Índice onde será inserida a key.
+ * @brief				Função passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
+ * @param	num			LList cuja key será passadas.
+ * @param	longlist	LONG_list onde serão guardadas as keys.
+ * @param	n			Índice onde será inserida a key.
 */
 static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) {
 
@@ -537,9 +537,9 @@ static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) 
 
 /**
  * @brief			Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Palavra a ser procurada nos títulos.
- * @param			Número máximo de resultados N.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	word	Palavra a ser procurada nos títulos.
+ * @param	N		Número máximo de resultados N.
 */
 
 LONG_list contains_word(TAD_community com, char* word, int N){
@@ -550,7 +550,8 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 	LONG_list res = create_list(n + 1);
 
 	trans_stack(arr, &stack_tolonglist, res, &n, NULL);
-	sort_list(res, &cmp_longs);
+	if(res)
+		sort_list(res, &cmp_longs);
 
 	freeSTACK(arr);
 
@@ -559,13 +560,156 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 9+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+/**
+ * @brief			Função que compara duas keys e diz que os seus valores são iguais.
+ * @param data1		Apontador para a primeira key.
+ * @param data2		Apontador para a segunda key.
+*/
+
+static int hash_long_equals(const void * data1, const void * data2){
+	long id1 = *(long *) data1;
+	long id2 = *(long *) data2;
+	return (id1 == id2);
+}
+
+/**
+ * @brief			Função que insere posts uma hashtable.
+ * @param com		Apontador para estrutura da comunidade.
+ * @param table		Apontador para a hashtable.
+ * @param l_aux		Lista de posts.
+ * @param size_f	Tamanho máximo da lista.
+*/
+
+
+static void preenche_hash_table(TAD_community com, GHashTable * table, STACKPOST l_aux, int size_f){
+	MYPOST novo,novo2,post;
+	long * id;
+
+	int i;
+
+	for(i = 0; i < size_f; i++){					//criar a hash_table com o posts do user com menos posts.
+		post = get_ele_index_STACKPOST(l_aux,i);
+		if (getPostTypeIdP(post) == 1){
+			novo = clone_MYPOST_NODEEP(post);
+			id = malloc(sizeof(long));
+			*id = getIdP(post);
+			g_hash_table_insert(table,id,novo);
+		}
+		else if (getPostTypeIdP(post) == 2){
+			novo2 = search_POSTID(com->posts_Id,getPIdP(post)); // procura o pai
+			if (novo2){
+				novo = clone_MYPOST_NODEEP(novo2); //cria clone simples do pai
+				freepost(novo2);// free clone complexo
+				id = malloc(sizeof(long));
+				*id = getIdP(novo);
+				g_hash_table_insert(table,id,novo); // insere
+			}
+		}
+	}
+}
+
+/**
+ * @brief			Função que retira posts de uma hashtable.
+ * @param com		Apontador para estrutura da comunidade.
+ * @param table		Apontador para a hashtable.
+ * @param queue		Array para guardar os posts.
+ * @param l_aux2	Lista de comparação.
+ * @param size_f	Tamanho máximo da lista.
+*/
+
+static void preenche_stackpost(TAD_community com,GHashTable * table , STACKPOST queue , STACKPOST l_aux2 , int size2){
+	MYPOST post,novo;
+	int i;
+	long idaux;
+
+	for(i = 0; i < size2; i++){
+		post = get_ele_index_STACKPOST(l_aux2,i);
+		if (getPostTypeIdP(post) == 1){
+			idaux = getIdP(post);
+			novo = (MYPOST) g_hash_table_lookup(table,&idaux);
+			if (novo){
+				insere_sem_rep_STACKPOST(queue,novo);
+			}
+		}
+		else if (getPostTypeIdP(post) == 2){
+			novo = search_POSTID(com->posts_Id,getPIdP(post));
+			if (novo){
+					idaux = getIdP(novo);
+					freepost(novo);
+					novo = g_hash_table_lookup(table,&idaux);
+					if (novo){
+						insere_sem_rep_STACKPOST(queue,novo);
+					}
+				}
+			}
+	}
+}
+
 /**
  * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			ID1
- * @param			ID2
- * @param			Numero maximo de N
+ * @param com		Estrutura que guarda as outras estruturas.
+ * @param id1		ID1
+ * @param id2		ID2
+ * @param N			Número máximo de N
 */
+
+LONG_list both_participated(TAD_community com, long id1, long id2, int N){
+	MYUSER user1 = search_USER(com->users,id1);
+	MYUSER user2 = search_USER(com->users,id2);
+	STACKPOST lista1 = getMYLISTuser(user1);// são clones
+	STACKPOST lista2 = getMYLISTuser(user2);// são clones
+
+
+	int size1, size2, size_f,i;
+	size1 = get_NUM_eleSTACKPOST(lista1);
+	size2 = get_NUM_eleSTACKPOST(lista2);
+
+
+	if ((!user1) || (!user2) || size1 == 0 || size2 == 0 || N == 0){
+		freeMYUSER(user1);
+		freeMYUSER(user2);
+		return NULL;
+	}
+
+	GHashTable * table = g_hash_table_new_full(&g_int_hash,&hash_long_equals,&free,&free);
+	LONG_list l = create_list(N);
+
+	STACKPOST l_aux = size1 < size2 ? lista1 : lista2;
+	STACKPOST l_aux2 = size1 < size2 ? lista2 : lista1;
+
+	size_f = size1 < size2 ? size1 : size2;
+	size2 = size1 < size2 ? size2 : size1;
+
+	preenche_hash_table(com,table,l_aux,size_f);
+
+	STACKPOST queue = initSTACKPOST(size_f+1);
+
+
+	preenche_stackpost(com,table,queue,l_aux2,size2);
+	order_STACKPOST(queue,&ordenaPOST_MYUSER);
+
+	MYPOST post;
+
+	for(i = 0; i < get_NUM_eleSTACKPOST(queue) &&  i < N; i++){
+		post = get_ele_index_STACKPOST(queue,i);
+		set_list(l,i,getIdP(post));
+	}
+	if (i < N){
+		for(; i < N; i++)
+			set_list(l,i,-2);
+	}
+
+	freeMYUSER(user1);
+	freeMYUSER(user2);
+	g_hash_table_destroy(table);
+	freeSTACKPOST_SEM_CLONE(queue);
+
+
+	return l;
+}
+
+/*
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	MYUSER user1 = search_USER(com->users,id1);
 	MYUSER user2 = search_USER(com->users,id2);
@@ -646,14 +790,16 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	free_MYLIST(result);
 	return final;
 
-}
+}*/
+
+
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 10+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 /**
  * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Id do post
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	id		Id do post
 */
 long better_answer(TAD_community com, long id){
 		STACKPOST arr = NULL;
@@ -662,39 +808,39 @@ long better_answer(TAD_community com, long id){
 		scoremax = scoreatual = 0;
 		int n, i,result = -2;
 
-		MYPOST post = search_POSTID(com->posts_Id,id);
-		MYPOST auxcancro = NULL;
-		if (!post){
-			freepost(post);
+		MYPOST pergunta = search_POSTID(com->posts_Id,id);
+		MYPOST resposta = NULL;
+		if (!pergunta){
+			freepost(pergunta);
 			printf("Post inexistente\n");
 			return -3;
 		}
 
-		if(getPostTypeIdP(post) != 1){
-			freepost(post);
+		if(getPostTypeIdP(pergunta) != 1){
+			freepost(pergunta);
 			printf("Post não é uma pergunta\n");
 			return -4;
 		}
 
-		arr = getFilhosP(post);
+		arr = getFilhosP(pergunta);
 		if(arr == NULL){
-			freepost(post);
+			freepost(pergunta);
 			return -2;
 		}
 		n = get_NUM_eleSTACKPOST(arr);
 
 		for(i = 0; i < n; i++){
-			auxcancro = get_ele_index_STACKPOST(arr, i);
-			men = search_USER(com->users, getOwnerIdP(auxcancro));
-			scoreatual =(getScoreP(auxcancro) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(auxcancro) * 0.1);
+			resposta = get_ele_index_STACKPOST(arr, i);
+			men = search_USER(com->users, getOwnerIdP(resposta));
+			scoreatual =(getScoreP(resposta) * 0.65 + getREPMYUSER(men) * 0.25  + getCommentsP(resposta) * 0.1);
 			freeMYUSER(men);
 
 			if (scoreatual > scoremax){
 				scoremax = scoreatual;
-				result = getIdP(auxcancro);
+				result = getIdP(resposta);
 			}
 		}
-		freepost(post);
+		freepost(pergunta);
 		return result;
 
 }
@@ -702,10 +848,14 @@ long better_answer(TAD_community com, long id){
 
 
 
+
+//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 /**
  * @brief			Função que calcula os N utilizadores com melhor rep.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número de jogadores.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	N		Número de jogadores.
 */
 
 static long * n_users_with_more_rep(TAD_community com, int N){
@@ -734,11 +884,6 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 
 	return array;
 }
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++QUERY 11+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
 
 /**
@@ -799,7 +944,7 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 	HEAP heap = (HEAP) data;
 	long ocorrencias, id;
-	ocorrencias = *((long *) value);
+	ocorrencias = *((int *) value);
 	id = *((long *) key);
 	insereHEAP(heap, ocorrencias, id);
 }
@@ -807,10 +952,10 @@ void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 
 /**
  * @brief			Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
- * @param			Estrutura que guarda as outras estruturas.
- * @param			Número máximo de tags.
- * @param			Início do período de tempo.
- * @param			Final do período de tempo.
+ * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	N		Número máximo de tags.
+ * @param	begin	Início do período de tempo.
+ * @param	end		Final do período de tempo.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	GHashTable * ocorrencias = g_hash_table_new_full(&g_direct_hash,&g_direct_equal, NULL,&free);
@@ -858,7 +1003,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 /**
  * @brief			Função que liberta a memória da estrutura.
- * @param			Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura que guarda as outras estruturas.
 */
 
 TAD_community clean(TAD_community com){
