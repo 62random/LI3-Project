@@ -318,7 +318,7 @@ USER get_user_info(TAD_community com, long id){
 	free(aux2);
 	free(posts);
 	return info;
-	
+
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 6+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -993,6 +993,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 	for(i = 0; i < size; i++) {
 		pop(heap, &oc, &id);
+		printf("Id:%ld->Oc:%ld\n",id,oc);
 		set_list(res, i, id);
 	}
 
