@@ -742,11 +742,12 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 
 
 /**
- * @brief			Função auxiliar à query 11 que será aplicada a cada nodo da lista de posts em cada nodo da árvore organizada por datas, durante a travessia.
- * @param			Nodo atual.
- * @param			Lista onde são armazenados resultados.
- * @param			Array dos N users com maior reputação.
- * @param			Número N (tamanho do array de users).
+ * @brief				Função auxiliar à query 11 que será aplicada a cada nodo da lista de posts em cada nodo da árvore organizada por datas, durante a travessia.
+ * @param vpost			Nodo atual.
+ * @param vcom			Apontador para a comunidade (para podermos aceder à hash table das tags)
+ * @param ocorrencias	Hash table criada para registar as ocorrencias de cada tag.
+ * @param begin			Data de início do período de tempo da query11.
+ * @param end			Data de fim do período de tempo da query11.
 */
 static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias, void * begin, void * end){
 	if(vpost == NULL)
@@ -787,6 +788,14 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 
 }
 
+
+
+/**
+ * @brief			Funão compatível com a API do glib para inserir numa heap os dados da hashtable com as ocorrencias de cada tag.
+ * @param key		Chave da entrada atual, ou seja, o id da tag.
+ * @param value		Valor a entrada atual, ou seja, o número de ocorrencias da tag.
+ * @param data		Apontador para a heap para a qual queremos passar a informação.
+*/
 void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 	HEAP heap = (HEAP) data;
 	long ocorrencias, id;
