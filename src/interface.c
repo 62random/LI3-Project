@@ -494,7 +494,7 @@ static int contains_word_node(void * post, void * arr, void * word, void * n, vo
 	char * cword = (char *) word, * title;
 
 	title = getTitleP(cpost);
-	if(strstr(title, cword) != NULL) {	// se o titulo contem a palavra
+	if(wordstr(title, cword) ) {	// se o titulo contem a palavra
 		insereSTACK(carr, getIdP(cpost));
 		int * cn = (int *) n;
 		(*cn)--;
