@@ -861,7 +861,7 @@ long better_answer(TAD_community com, long id){
 
 static long * n_users_with_more_rep(TAD_community com, int N){
 	int i;
-	long * array = malloc(N*sizeof(long));
+	long * array = malloc((N + 1)*sizeof(long));
 	long id,key;
 
 	if (com->pre_rep == NULL)
@@ -967,26 +967,22 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
 	long * users = NULL;														//preencher array com N
-	int i, j = 0, n = 0;														//users com  maior reputação
+	int i;														//users com  maior reputação
 	MYUSER user;
 	STACKPOST posts;
 
-	while( j < N) {
-		n += N - j;
-		users = n_users_with_more_rep(com, n);
+	users = n_users_with_more_rep(com, N);
 
-		for(i = j; i < n && users[i] != -2; i++){
-			user = search_USER(com->users, users[i]);
-			if(user) {
-				posts = getMYLISTuser(user);
-				if(trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend) == 1)
-					j++;
-				freeMYUSER(user);
-			}
+	for(i = 0; i < N && users[i] != -2; i++){
+		user = search_USER(com->users, users[i]);
+		if(user) {
+			posts = getMYLISTuser(user);
+			trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend);
+			freeMYUSER(user);
 		}
-		free(users);
 	}
 
+	free(users);
 	free_MYdate(mybegin);
 	free_MYdate(myend);
 
@@ -1010,7 +1006,6 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 	freeMYHEAP(heap);
 	g_hash_table_destroy(ocorrencias);
-	free(users);
 	return res;
 }
 
