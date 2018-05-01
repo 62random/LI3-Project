@@ -65,14 +65,14 @@ void bubble_up(HEAP * main){
 	if (h->n_elem > 0){
 		i = h->n_elem -1;
 		pai = PARENT(i);
-		while(h->array[i].key>=h->array[pai].key && i != pai){
+		while((h->array[i].key>=h->array[pai].key || h->array[i].data<=h->array[pai].data) && i != pai){
 			if (h->array[i].key>h->array[pai].key){
 				swap(h->array,pai,i);
 				i = pai;
 				pai = PARENT(i);
 			}
 			else {
-				if (h->array[i].data>h->array[pai].data){
+				if (h->array[i].data < h->array[pai].data && h->array[i].key == h->array[pai].key){
 					swap(h->array,pai,i);
 					i = pai;
 					pai = PARENT(i);
@@ -99,7 +99,12 @@ void bubble_down(HEAP * main){
 		fd = RCHILD(i);
 		fe = LCHILD(i);
 
-		while(i < h->n_elem && ((fd < h->n_elem && h->array[i].key < h->array[fd].key) || (fe < h->n_elem && h->array[i].key < h->array[fe].key))){
+		while(i < h->n_elem && fd < h->n_elem && fe < h->n_elem &&
+											(	(h->array[i].key < h->array[fd].key) ||
+								 				(h->array[i].key < h->array[fe].key) ||
+												(h->array[i].data > h->array[fd].data && h->array[i].key == h->array[fe].key) ||
+												(h->array[i].data > h->array[fe].data && h->array[i].key == h->array[fe].key) )
+			){
 			if (fd < h->n_elem && fe < h->n_elem){
 				if (h->array[fe].key > h->array[fd].key){
 					swap(h->array,i,fe);
@@ -110,7 +115,7 @@ void bubble_down(HEAP * main){
 					i = fd;
 				}
 				else{
-					if (h->array[fd].data > h->array[fe].data){
+					if (h->array[fd].data < h->array[fe].data && h->array[fe].key == h->array[fd].key){
 						swap(h->array,i,fd);
 						i = fd;
 					}

@@ -39,12 +39,16 @@ struct stackpost {
  * @param	data4	Quarto argumento da função a ser aplicada.
 
 */
-void trans_arr(STACKPOST arr, void (*f_box)(void *, void *, void *, void *, void *), void * data1, void * data2, void * data3, void * data4){
+int trans_arr(STACKPOST arr, int (*f_box)(void *, void *, void *, void *, void *), void * data1, void * data2, void * data3, void * data4){
 	if(arr == NULL)
-		return;
+		return 0;
+	int flag = 0;
 
 	for(int i = arr->n_elem - 1;i >= 0; i--)
-		f_box((void *) arr->array[i],data1, data2, data3, data4);
+		if(f_box((void *) arr->array[i],data1, data2, data3, data4))
+			flag = 1;
+
+	return flag;
 }
 
 /**

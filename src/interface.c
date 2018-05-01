@@ -481,14 +481,14 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
  * @param	n		Número máximo de resultados N.
 */
 
-static void contains_word_node(void * post, void * arr, void * word, void * n, void * nulla){
+static int contains_word_node(void * post, void * arr, void * word, void * n, void * nulla){
 	if(post == NULL || *((int *) n) <= 0)
-		return;
+		return 0;
 
 	MYPOST cpost = (MYPOST) post;
 										// se não for uma pergunta
 	if(getPostTypeIdP(cpost) != 1)		// então
-		return;							// retornar
+		return 0;						// retornar
 
 	STACK carr = (STACK) arr;
 	char * cword = (char *) word, * title;
@@ -501,7 +501,7 @@ static void contains_word_node(void * post, void * arr, void * word, void * n, v
 	}
 
 	free(title);
-
+	return 1;
 }
 
 
@@ -895,27 +895,30 @@ static long * n_users_with_more_rep(TAD_community com, int N){
  * @param begin			Data de início do período de tempo da query11.
  * @param end			Data de fim do período de tempo da query11.
 */
-static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias, void * begin, void * end){
+static int most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias, void * begin, void * end){
 	if(vpost == NULL)
-		return;
+		return 0;
 
 	MYPOST post = (MYPOST) vpost;
 	int i;
 
 	if(getPostTypeIdP(post) != 1)
-		return;
+		return 0;
 	MYDATE date = getDateP(post);
 	int r1 = compare_MYDATE_AVL((MYDATE) begin,  date);
 	int r2 = compare_MYDATE_AVL((MYDATE) end, date);
 	free_MYdate(date);
 	if(r1 < 0 || r2 > 0)
-		return;
+		return 0;
 
-	char ** tags;
+	char ** tags = NULL;
 	tags = getTagsP(post);
 	long * keyid;
 	int * oc;
 	TAD_community com = (TAD_community) vcom;
+
+	if(!tags)
+		return 0;
 
 	for(i = 0; tags[i]; i++)
 		if((keyid = g_hash_table_lookup(com->tags, tags[i])) != NULL){
@@ -931,7 +934,7 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 
 
 	free_StringArray(tags);
-
+	return 1;
 }
 
 
@@ -945,7 +948,7 @@ static void most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencia
 void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 	HEAP heap = (HEAP) data;
 	long ocorrencias, id;
-	ocorrencias = *((int *) value);
+	ocorrencias = (long) *((int *) value);
 	id = *((long *) key);
 	insereHEAP(heap, ocorrencias, id);
 }
@@ -963,17 +966,25 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	MYDATE mybegin = DatetoMYDATE(begin);										//transformar Date no nosso tipo
 	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
-	long * users = n_users_with_more_rep(com, N);								//preencher array com N
-	int i;																		//users com  maior reputação
+	long * users = NULL;														//preencher array com N
+	int i, j = 0, n = 0;														//users com  maior reputação
 	MYUSER user;
 	STACKPOST posts;
-	for(i = 0; i < N && users[i] != -2; i++){
-		user = search_USER(com->users, users[i]);
-		if(user) {
-			posts = getMYLISTuser(user);
-			trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend);
-			freeMYUSER(user);
+
+	while( j < N) {
+		n += N - j;
+		users = n_users_with_more_rep(com, n);
+
+		for(i = j; i < n && users[i] != -2; i++){
+			user = search_USER(com->users, users[i]);
+			if(user) {
+				posts = getMYLISTuser(user);
+				if(trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend) == 1)
+					j++;
+				freeMYUSER(user);
+			}
 		}
+		free(users);
 	}
 
 	free_MYdate(mybegin);

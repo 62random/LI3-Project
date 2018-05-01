@@ -352,10 +352,15 @@ int main(){
 
 			}
 
+			if(strcmp(string,"exit")==0){
+				free(com);
+				exit(0);
+			}
+
+
 
 			printf("NOPE\n");
 		}
-		free(com);
 
 		z++;
 
