@@ -58,6 +58,10 @@ int main(){
 
 
 				printf("A dar load plz wait bitch\n\n");
+				t = clock();
+
+
+
 				if (int1 == 1)
 					com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
 				else if (int1 == 2)
@@ -70,8 +74,15 @@ int main(){
 					com = load(com,"/home/pedro/Desktop/dump/ubuntu");
 				else if (int1 == 6)
 					com = load(com,"/home/alexrone/a/ubuntu");
+				t = clock()-t;
+
 				loaded = 1;
 				printf("LOAD done\n\n");
+
+				double a5 = ((double)t)/CLOCKS_PER_SEC;
+				printf("LOAD->%fs\n\n\n",a5);
+
+
 
 				continue;
 			}
