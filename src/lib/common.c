@@ -69,7 +69,8 @@ int wordstr(char str[], char w[]){
 			for(j = 0; j < wlen; j++){
 				if(str[i+j] != w[j]){
 
-					gotoNextWord(str,&i);
+					while(isspace(str[i]) == 0 && ispunct(str[i]) == 0 && str[i] != '\0')
+						i++;
 					break;
 				}
 			}
@@ -81,7 +82,8 @@ int wordstr(char str[], char w[]){
 			}
 		}
 		else{
-			gotoNextWord(str,&i);
+			while(isspace(str[i]) == 0 && ispunct(str[i]) == 0 && str[i] != '\0')
+				i++;
 		}
 		i++;
 	}
