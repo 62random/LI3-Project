@@ -545,6 +545,8 @@ static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) 
 
 LONG_list contains_word(TAD_community com, char* word, int N){
 	STACK arr = initSTACK(1);
+	if(N <= 0 || !word)
+		return NULL;
 	trans_tree(com->posts_Date, &contains_word_arr, arr, word, NULL, NULL, 4, N);
 	int n = get_NUM_eleSTACK(arr) - 1;
 
@@ -861,7 +863,7 @@ long better_answer(TAD_community com, long id){
 
 static long * n_users_with_more_rep(TAD_community com, int N){
 	int i;
-	long * array = malloc((N + 1)*sizeof(long));
+	long * array = malloc(N*sizeof(long));
 	long id,key;
 
 	if (com->pre_rep == NULL)
@@ -880,7 +882,8 @@ static long * n_users_with_more_rep(TAD_community com, int N){
 			com->pre_rep = insereSTACK(com->pre_rep,id);
 			array[i] = get_ELE_index(com->pre_rep,i);
 		}
-		array[i] = -2;
+		if(i < N)
+			array[i] = -2;
 	}
 
 	return array;
@@ -962,12 +965,14 @@ void hash_to_heap(gpointer key, gpointer value, gpointer data) {
  * @param	end		Final do período de tempo.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
+	if(N <= 0 || !begin || !end)
+		return NULL;
 	GHashTable * ocorrencias = g_hash_table_new_full(&g_direct_hash,&g_direct_equal, NULL,&free);
 	MYDATE mybegin = DatetoMYDATE(begin);										//transformar Date no nosso tipo
 	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
 	long * users = NULL;														//preencher array com N
-	int i;														//users com  maior reputação
+	int i;																		//users com  maior reputação
 	MYUSER user;
 	STACKPOST posts;
 
@@ -1000,7 +1005,6 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 	for(i = 0; i < size; i++) {
 		pop(heap, &oc, &id);
-		printf("Id:%ld->Oc:%ld\n",id,oc);
 		set_list(res, i, id);
 	}
 
