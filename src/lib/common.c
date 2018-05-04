@@ -16,6 +16,8 @@ char * mystrdup (const char *s) {
  * @brief			Função auxiliar que retorna a negação da função de biblioteca strcmp.
  * @param	str1	Primeira string.
  * @param	str2	Segunda string.
+ * @return 			Inteiro que representa um boolean.
+
 */
 int not_strcmp(void * str1, void * str2) {
 	char * a = (char *) str1;
@@ -27,6 +29,7 @@ int not_strcmp(void * str1, void * str2) {
  * @brief			Função auxiliar que compara dois longs.
  * @param	l1		Primeiro long.
  * @param	l2		Segundo long.
+ * @return 			Inteiro que representa um boolean.
 */
 int cmp_longs(const void * l1, const void * l2){
 	if(*(long *)l1 == *(long *)l2 )
@@ -44,6 +47,7 @@ int cmp_longs(const void * l1, const void * l2){
  * @brief			Função que verificar se uma palavra existe numa string.
  * @param	str		String.
  * @param	w		Palavra a verificar.
+ * @return 			Inteiro que representa um boolean.
 */
 int wordstr(char str[], char w[]){
 

@@ -13,6 +13,8 @@ void freeHASH_TAGS(GHashTable * table){
  * @brief			Função que ve se duas keys são iguais.
  * @param data1		Apontador para a key1.
  * @param data2		Apontador para a key2.
+ * @return 			boolean (TRUE caso encontre FALSE caso nao).
+
 */
 
 gboolean hash_equal(const void * data1, const void * data2){
@@ -27,6 +29,8 @@ gboolean hash_equal(const void * data1, const void * data2){
 /**
  * @brief			Função que dá parse às tags.
  * @param path		Path para o ficheiro xml.
+ * @return 			Tabela de HASH das tags.
+
 */
 
 

@@ -25,6 +25,8 @@ struct tree{
 /**
  * @brief			Função calcula a altura de um nodo.
  * @param a			Apontador para a árvore.
+ * @return 			Altura da árvore.
+
 */
 
 static int altura(AVL a) {
@@ -34,6 +36,8 @@ static int altura(AVL a) {
 /**
  * @brief			Função calcula o balanço de um nodo.
  * @param a			Apontador para a árvore.
+ * @return 			Inteiro com o valor de boolean;
+
 */
 
 static int balanceDEEP(AVL a) {
@@ -48,6 +52,8 @@ static int balanceDEEP(AVL a) {
 /**
  * @brief			Função calcula a altura de uma árvore.
  * @param a			Apontador para a árvore.
+ * @return 			Altura da árvore.
+
 */
 
 static int cal_altura(AVL a){
@@ -65,7 +71,9 @@ static int cal_altura(AVL a){
 
 /**
  * @brief			Função verifica se a árvore é balanceada.
- * @param	a			Apontador para a árvore.
+ * @param	a		Apontador para a árvore.
+ * @return 			Inteiro a ser usado como booelan.
+
 */
 
 static int isBalanced(AVL a){
@@ -84,6 +92,8 @@ static int isBalanced(AVL a){
 /**
  * @brief			Função verifica se a arvore da estrutura é balanceada.
  * @param tree		Apontador para a estrutura.
+ * @return 			Inteiro a ser usado como booelan.
+
 */
 
 int TREE_balance(TREE tre){
@@ -93,6 +103,8 @@ int TREE_balance(TREE tre){
 /**
  * @brief			Função efetua uma rotação para a direita da árvore.
  * @param	a		Apontador para a árvore.
+ * @return 			Árvore apos ser rodad para a direita.
+
 */
 
 static AVL rotate_rigth(AVL a){
@@ -118,6 +130,8 @@ static AVL rotate_rigth(AVL a){
 /**
  * @brief			Função efetua uma rotação para a esquerda da árvore.
  * @param	a		Apontador para a árvore.
+ * @return 			Árvore apos ser rodada para a esquerda.
+
 */
 
 static AVL rotate_left(AVL a){
@@ -143,6 +157,8 @@ static AVL rotate_left(AVL a){
 /**
  * @brief			Função efetua o balanceamento da árvore.
  * @param	a		Apontador para a árvore.
+ * @return 			Árvore balanceada.
+
 */
 
 static AVL balance(AVL a){
@@ -189,6 +205,8 @@ static void implementa_alt(AVL * a){
  * @brief			Função que cria um novo nodo.
  * @param key		Apontador a key.
  * @param data		Apontador para a data.
+ * @return 			Apontador para o nodo da árvore.
+
 */
 
 static AVL create_new_node(void * key, void * data){
@@ -208,6 +226,8 @@ static AVL create_new_node(void * key, void * data){
  * @param gl		Apontador para a estrutura que guarda a árvore.
  * @param key		Apontador para a key a inserir.
  * @param data		Apontador para a data a inserir.
+ * @return 			Apntador para a árvore apos ser inserido o valor.
+
 */
 
 TREE insere_tree(TREE gl, void * key, void * data){
@@ -293,6 +313,8 @@ TREE insere_tree(TREE gl, void * key, void * data){
  * @param	destroy_key		Apontador para a função que dá free à key.
  * @param	destroy_data	Apontador para a função que dá free à data.
  * @param	replace			Apontador para a função que dá replace à informação.
+ * @return 					Apontador da árvore criada.
+
 */
 
 TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data,void * replace){
@@ -353,6 +375,8 @@ void freeTREE_AVL(TREE tre){
  *@param tree		Estrutura que contém a árvore.
  *@param key		Apontador para a key a procurar.
  *@param valid		Apontador para o passar o resultado da procura.
+ *@return 			Data da árvore apos ser procurado o elemento, retorna NULL caso falhe na procura.
+
 */
 
 void * search_AVL(TREE tree, void * key,int * valid){
@@ -376,6 +400,8 @@ void * search_AVL(TREE tree, void * key,int * valid){
 /**
  *@brief			Função que testa se os nodos da AVL têm as alturas direitas
  *@param a			Apontador para a AVL.
+ *@return 			Inteiro a ser usado como booelan.
+
 */
 
 static int check_altura(AVL a){
@@ -395,6 +421,8 @@ static int check_altura(AVL a){
  *@brief			Função que testa a AVL é de procura.
  *@param a			Apontador para a AVL.
  *@param tree		Apontador para a estrutura com a função de comparação.
+ *@return 			Inteiro a ser usado como booelan.
+
 */
 
 static int isSearch(AVL a,TREE tree){
@@ -486,6 +514,8 @@ void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nod
 /**
  *@brief			Função que testa as propriedas da tree.
  *@param tree		Estrutura que contém a árvore.
+ *@return 			Inteiro a ser usado como booelan.
+
 */
 
 int test_TREE_PROP(TREE tree){
@@ -500,6 +530,8 @@ int test_TREE_PROP(TREE tree){
 /**
  *@brief			Função que devolve o número de nodos da árvore.
  *@param tree		Estrutura que contém a árvore.
+ *@return 			Numero de nodos da árvore.
+
 */
 
 long NUM_nodes(TREE t){

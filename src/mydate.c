@@ -12,6 +12,8 @@ struct mydate {
  * @param	day		Variável para o dia.
  * @param	month	Variável para o mês.
  * @param	year	Variável para o ano.
+ * @return 			Apontador para MYDATE criada.
+
 */
 
 MYDATE createMYDate(int day, int month, int year) {
@@ -25,6 +27,8 @@ MYDATE createMYDate(int day, int month, int year) {
 /**
  * @brief			Função devolve a informação para o dia da data.
  * @param	d		Apontador para a data.
+ * @return 			Inteiro com o valor do dia.
+
 */
 
 int get_MYday(MYDATE d) {
@@ -35,6 +39,7 @@ int get_MYday(MYDATE d) {
 /**
  * @brief			Função devolve a informação para o mês da data.
  * @param	d		Apontador para a data.
+ * @return 			Inteiro com o valor do mes.
 */
 
 int get_MYmonth(MYDATE d) {
@@ -45,6 +50,8 @@ int get_MYmonth(MYDATE d) {
 /**
  * @brief			Função devolve a informação para o ano da data.
  * @param	d		Apontador para a data.
+ * @return 			Inteiro com o valor do ano.
+
 */
 
 int get_MYyear(MYDATE d) {
@@ -64,6 +71,8 @@ void free_MYdate(MYDATE d) {
 
 /**
  * @brief			Função calcula o tamanho de uma data.
+ * @return 			Tamanho da estrutura mydate.
+
 */
 
 int MYdate_size() {
@@ -74,6 +83,8 @@ int MYdate_size() {
  * @brief			Função compara duas datas para árvores.
  * @param	data1	Apontador para a data 1.
  * @param	data2	Apontador para a data 2.
+ * @return 			Inteiro usado como boolean.
+
 */
 
 int compare_MYDATE_AVL(void * data1, void * data2){
@@ -102,6 +113,8 @@ int compare_MYDATE_AVL(void * data1, void * data2){
  * @brief			Função compara duas datas para listas.
  * @param	data1	Apontador para a data 1.
  * @param	data2	Apontador para a data 2.
+ * @return 			Inteiro usado como boolean.
+
 */
 
 int compare_MYDATE_LIST(void * data1, void * data2){
@@ -129,6 +142,8 @@ int compare_MYDATE_LIST(void * data1, void * data2){
 /**
  * @brief			Função converte um MYDATE para Date.
  * @param	a		Apontador para a data.
+ * @return 			Apontador para Date.
+
 */
 
 Date MYDATEtoDate(MYDATE a){
@@ -140,6 +155,8 @@ Date MYDATEtoDate(MYDATE a){
 /**
  * @brief			Função converte um Date para MYDATE.
  * @param	a		Apontador para a data.
+ * @return 			Apontador para MYDATE.
+
 */
 
 MYDATE DatetoMYDATE(Date a){

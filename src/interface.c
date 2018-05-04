@@ -18,6 +18,7 @@ struct TCD_community {
 
 /**
  * @brief			Função inicializa a estrutura da comunidade.
+ * @return 			Apontador para a estrutura inicializada.
 */
 
 
@@ -76,6 +77,7 @@ static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
  * @brief				Função dá load aos ficheiros xml.
  * @param	com			Estrutura que guarda as outras estruturas.
  * @param	dump_path	String com a diretoria onde se encontram os ficheiros.
+ * @return 				Apontador para a estura carregada em memoria.
 */
 
 TAD_community load(TAD_community com, char * dump_path){
@@ -115,7 +117,8 @@ TAD_community load(TAD_community com, char * dump_path){
 /**
  * @brief			Função retorna a informacao de um post.
  * @param	com		Estrutura que guarda as outras estruturas.
- * @param	id		Id do post
+ * @param	id		Id do post4
+ * @return 			STR_pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
 */
 STR_pair info_from_post(TAD_community com, long id){
 	char * title = NULL;
@@ -157,6 +160,8 @@ STR_pair info_from_post(TAD_community com, long id){
  * @brief			Função que calcula os N utilizadores com mais posts.
  * @param	com		Estrutura que guarda as outras estruturas.
  * @param	N		Número de jogadores.
+ * @return 			LONG_list com os N users mais ativos, retorna -2 nos restantes indices da lista caso exceda o numero de users.
+
 */
 
 LONG_list top_most_active(TAD_community com, int N){
@@ -213,6 +218,7 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
  * @param	com		Estrutura que guarda as outras estruturas.
  * @param	being	Data inicial da procura
  * @param	end		Data final da procura
+ * @return 			LONG_pair com o numero total de perguntas e resposta no dado intervalo.
 */
 LONG_pair total_posts(TAD_community com, Date begin, Date end){
 	long res1, res2 ;
@@ -269,6 +275,7 @@ static void filtraTags(void * data, void * result, void * tag){
  * @param	tag		Tag.
  * @param	begin	Data inicial da procura.
  * @param	end		Data final da procura.
+ * @return 			LONG_list com o id de todas as tags que ocorreram no dado intervalo de tempo.
 */
 LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end){
 	MYDATE nbegin,nend;
@@ -299,6 +306,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
  * @brief			Função que dado um id de um user devolve informacao sobre este mesmo.
  * @param	com		Estrutura que guarda as outras estruturas.
  * @param	id		Id do post.
+ * @return 			Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
 */
 
 USER get_user_info(TAD_community com, long id){
@@ -328,6 +336,7 @@ USER get_user_info(TAD_community com, long id){
  * @brief			Função adiciona a informação da data de um nodo STACKPOST numa heap para scores.
  * @param	data	Apontador para a data do nodo.
  * @param	dataaux	Apontador para a heap.
+
 */
 
 
@@ -352,6 +361,7 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
  * @param	N		Número de respostas.
  * @param	begin	Data do começo do intervalo.
  * @param	end		Data do fim do intervalo.
+ * @return 			LONG_list com os N utilizadores que mais votaram no dado intervalo de tempo.
 */
 
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
@@ -387,6 +397,8 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 - * @param	st		Apontador para a stack de posts.
 - * @param	begin	Apontador para o inicio do intervalo.
 - * @param	end		Apontador para o fim do intervalo.
+- * @return 		Numero de posts num dado intervalo.
+
 */
 
 static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
@@ -442,6 +454,7 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void
  * @param	N		Número de posts a calcular.
  * @param	begin	Data do começo do intervalo.
  * @param	end		Data do fim do intervalo.
+ * @return 			LONG_list com os N utilizadores que mais votaram no intervalo dado.
 */
 
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
@@ -479,6 +492,7 @@ LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end
  * @param	arr 	Array onde serão guardados os id's dos posts relevantes.
  * @param	word	Palavra a ser procurada nos títulos.
  * @param	n		Número máximo de resultados N.
+ * @return 			Inteiro que funciona como boolean.
 */
 
 static int contains_word_node(void * post, void * arr, void * word, void * n, void * nulla){
@@ -541,6 +555,7 @@ static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) 
  * @param	com		Estrutura que guarda as outras estruturas.
  * @param	word	Palavra a ser procurada nos títulos.
  * @param	N		Número máximo de resultados N.
+ * @return 			LONG_list com as N perguntas mais recentes que contêm a palavra dada.
 */
 
 LONG_list contains_word(TAD_community com, char* word, int N){
@@ -568,6 +583,8 @@ LONG_list contains_word(TAD_community com, char* word, int N){
  * @brief			Função que compara duas keys e diz que os seus valores são iguais.
  * @param data1		Apontador para a primeira key.
  * @param data2		Apontador para a segunda key.
+ * @return 			Inteiro que funciona como boolean.
+
 */
 
 static int hash_long_equals(const void * data1, const void * data2){
@@ -655,6 +672,7 @@ static void preenche_stackpost(TAD_community com,GHashTable * table , STACKPOST 
  * @param id1		ID1
  * @param id2		ID2
  * @param N			Número máximo de N
+ * @return 			LONG_list com as N perguntas mais recentes em que ambos os users participaram, caso a lista seja menor que N os restantes indices ficam com o valor de -2.
 */
 
 LONG_list both_participated(TAD_community com, long id1, long id2, int N){
@@ -712,90 +730,6 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 	return l;
 }
 
-/*
-LONG_list both_participated(TAD_community com, long id1, long id2, int N){
-	MYUSER user1 = search_USER(com->users,id1);
-	MYUSER user2 = search_USER(com->users,id2);
-	STACKPOST lista1 = getMYLISTuser(user1);
-	STACKPOST lista2 = getMYLISTuser(user2);
-
-	int flag=N;
-
-	MYPOST post1,post2;
-	long pid1 = -3;
-	long pid2 = -4;
-	int type = 0;
-	int max1 = get_NUM_eleSTACKPOST(lista1);
-	int max2 = get_NUM_eleSTACKPOST(lista2);
-	int i1,i2;
-
-	MYLIST result = init_MYLIST(&(compare_MYDATE_LIST),&(free_MYdate),NULL);
-
-	for (i1 = 0; i1<max1 ; i1++){
-		post1 = get_ele_index_STACKPOST(lista1,i1);
-		type = getPostTypeIdP(post1);
-		if(type == 2)
-			pid1 = getPIdP(post1);
-		else if(type == 1)
-			pid1 = getIdP(post1);
-		else
-			continue;
-
-		for (i2 = 0; i2<max2; i2++){
-			post2 = get_ele_index_STACKPOST(lista2,i2);
-			type = getPostTypeIdP(post2);
-
-			if(type == 2)
-				pid2 = getPIdP(post2);
-			else if(type == 1)
-				pid2 = getIdP(post2);
-			else
-				continue;
-
-				if(pid1 == pid2){
-					if (type == 2){
-						post2 = search_POSTID(com->posts_Id,pid2);
-						if(!post2){
-							printf("post sem coiso\n");
-							break;
-						}
-						result = insere_list(result, getDateP(post2), (void*) pid2);
-						freepost(post2);
-					}
-					else
-						result = insere_list(result, getDateP(post2), (void*) pid2);
-
-					flag--;
-					break;
-				}
-
-
-
-
-		}
-	}
-	int max = count_ELE_MYLIST(result);
-	if (max == 0){
-		freeMYUSER(user1);
-		freeMYUSER(user2);
-		free_MYLIST(result);
-		return NULL;
-	}
-	LONG_list final= create_list(max);
-	LList lista3 = getFirst_BOX(result);
-	int i=0;
-	for(i=0;i<max ;lista3=getNext_LList(lista3),i++)
-		set_list(final,i,(long)getElemente_LList(lista3));
-
-	freeMYUSER(user1);
-	freeMYUSER(user2);
-
-	free_MYLIST(result);
-	return final;
-
-}*/
-
-
 
 //++++++++++++++++++++++++++++++++++++++++++++++QUERY 10+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -803,6 +737,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
  * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
  * @param	com		Estrutura que guarda as outras estruturas.
  * @param	id		Id do post
+ * @return 			ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota, -3 caso a pergunta nao seja encontrado o post e -4 caso o id do post dado nao corresponda a uma pergunta.
 */
 long better_answer(TAD_community com, long id){
 		STACKPOST arr = NULL;
@@ -858,7 +793,9 @@ long better_answer(TAD_community com, long id){
 /**
  * @brief			Função que calcula os N utilizadores com melhor rep.
  * @param	com		Estrutura que guarda as outras estruturas.
- * @param	N		Número de jogadores.
+ * @param	N		Número de jogadores.4
+ * @return 			O array com os N users com mais rep, caso nao sejam encontrado N users retorna -2 primeiro indice apos nao serem encontrados mais.
+
 */
 
 static long * n_users_with_more_rep(TAD_community com, int N){
@@ -897,6 +834,7 @@ static long * n_users_with_more_rep(TAD_community com, int N){
  * @param ocorrencias	Hash table criada para registar as ocorrencias de cada tag.
  * @param begin			Data de início do período de tempo da query11.
  * @param end			Data de fim do período de tempo da query11.
+ * @return 				Inteiro usado como boolean.
 */
 static int most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias, void * begin, void * end){
 	if(vpost == NULL)
@@ -963,6 +901,7 @@ void hash_to_heap(gpointer key, gpointer value, gpointer data) {
  * @param	N		Número máximo de tags.
  * @param	begin	Início do período de tempo.
  * @param	end		Final do período de tempo.
+ * @return 			LONG_list com as N tags mais usados num dado intervalo de tempo pelos users com mais reputacao.
 */
 LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	if(N <= 0 || !begin || !end)
@@ -1016,6 +955,8 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 /**
  * @brief			Função que liberta a memória da estrutura.
  * @param	com		Estrutura que guarda as outras estruturas.
+ * @return 			Apontador para a estrutura apos levar free.
+
 */
 
 TAD_community clean(TAD_community com){

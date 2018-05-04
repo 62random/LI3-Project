@@ -13,6 +13,7 @@
  * @param doc		O apontador do ficheiro xml.
  * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
  * @param filepath 	O filepath do ficheiro xml a ser lido e carregado.
+ * @return			Inteiro usado como boolean
  */
 int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 
@@ -60,6 +61,8 @@ static void * concat_post(void * data1, void * data2){
  * @param tree_id 	O apontador onde ficará apontada a àrvore ordenada segundo id's.
  * @param tree_date	O apontador onde ficará apontada a àrvore ordenada segundo datas de criação.
  * @param treeusers A árvore de users.
+ * @return 			Inteiro usado como boolean.
+
  */
 int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeusers) {
 	xmlDocPtr 	doc;

@@ -42,6 +42,7 @@ void swap(GEN * v,int i, int d){
 /**
  * @brief			Função que inicializa um heap.
  * @param size		Tamanho original da heap.
+ * @return 			Apontador para a HEAP.
 */
 
 
@@ -189,6 +190,8 @@ void freeMYHEAP(HEAP h){
 /**
  * @brief			Função dá inicializa uma stack.
  * @param size		Tamanho da stack a inicializar.
+ * @return 			Apontador para STACK inicializa.
+
 */
 
 STACK initSTACK(long size){
@@ -216,6 +219,8 @@ void freeSTACK(STACK a){
  * @brief			Função insere um elemento na stack.
  * @param	a		Stack.
  * @param	id		Valor a inserir.
+ * @return 			Apontador para a stack apos ser inserido o elemento, returna NULL caso a stack seja nula.
+
 */
 
 STACK insereSTACK(STACK a,long id){
@@ -234,6 +239,8 @@ STACK insereSTACK(STACK a,long id){
 /**
  * @brief			Função calcula o número de elementos na stack.
  * @param	a		Stack.
+ * @return 			Numero de elementos da stack.
+
 */
 
 
@@ -248,6 +255,8 @@ long get_NUM_eleSTACK(STACK a){
  * @brief			Função que devolve o elemento numa dada posição.
  * @param	a		Stack.
  * @param	index	Indice.
+ * @return 			Elemento na posicao dada.
+
 */
 
 long get_ELE_index(STACK a,int index){
@@ -259,6 +268,8 @@ long get_ELE_index(STACK a,int index){
 /**
  * @brief			Função calcula o número de elementos na heap.
  * @param	a		HEAP.
+ * @return 			Numero de elementos na heap.
+
 */
 
 long get_NUM_eleHEAP(HEAP a){

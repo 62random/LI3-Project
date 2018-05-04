@@ -12,6 +12,8 @@ struct myuser{
 /**
  * @brief				Função que devolve o id do user.
  * @param use			Apontador para o user.
+ * @return 				ID do user.
+
 */
 
 long getIdMYUSER(MYUSER use){
@@ -20,7 +22,9 @@ long getIdMYUSER(MYUSER use){
 
 /**
  * @brief			Função que devolve a rep do user.
- * @param use		Apontador para o user.
+ * @param  use		Apontador para o user.
+ * @return 			REP do user.
+
 */
 
 int getREPMYUSER(MYUSER use){
@@ -29,7 +33,9 @@ int getREPMYUSER(MYUSER use){
 
 /**
  * @brief			Função que devolve o Username do user.
- * @param use		Apontador para o user.
+ * @param  use		Apontador para o user.
+ * @return 			Username do user.
+
 */
 
 char * getUsername(MYUSER use){
@@ -40,7 +46,9 @@ char * getUsername(MYUSER use){
 
 /**
  * @brief			Função que devolve a biografia do user.
- * @param			Apontador para o user.
+ * @param	use		Apontador para o user.
+ * @return 			Biografia do user.
+
 */
 
 char * getBiography(MYUSER use){
@@ -51,7 +59,9 @@ char * getBiography(MYUSER use){
 
 /**
  * @brief			Função que devolve a lista de posts de um USER.
- * @param use		Apontador para o user.
+ * @param  use		Apontador para o user.
+ * @return 			Lista de posts feito pelo user.
+
 */
 
 STACKPOST getMYLISTuser(MYUSER use){
@@ -64,6 +74,8 @@ STACKPOST getMYLISTuser(MYUSER use){
  * @param use		Apontador para o user.
  * @param n			Número de posts.
  * @param n_elem	Apontador para onde se colocam o número de valores inseridos.
+ * @return 			Array com os ultimos N posts do user.
+
 */
 long * getNposts(MYUSER use,int n,int * n_elem){
 	long * r = malloc(n*sizeof(long));
@@ -84,6 +96,8 @@ long * getNposts(MYUSER use,int n,int * n_elem){
 /**
  * @brief			Função que devolve o número de posts de um utilizador.
  * @param use		Apontador para o user.
+ * @return 			Numero de posts feitos pelo user.
+
 */
 
 long getNUM_POST_MYUSER(MYUSER use){
@@ -165,6 +179,8 @@ static void setUsername(MYUSER use, char * nome){
 /**
  * @brief 			Função que aloca memória para um user.
  * @param type		Tipo a criar.
+ * @return 			Apontador para a struct myuser.
+
  */
 
 MYUSER createMYUSER(int type){
@@ -181,6 +197,8 @@ MYUSER createMYUSER(int type){
 /**
  * @brief 			Função que clona um user.
  * @param user		Apontador para o utilizador.
+ * @return 			Clone da estruturao myuser.
+
  */
 
 MYUSER cloneMYUSER(MYUSER use){
@@ -219,6 +237,8 @@ void freeMYUSER(void * aux){
  * @brief				Função que compara 2 keys de user diferentes.
  * @param key1			Apontador para a primeira key.
  * @param key2			Apontador para a segunda key.
+ * @return 				Inteiro a ser usado como booelan.
+
 */
 
 int compare_user(void * key1,void * key2){
@@ -261,6 +281,8 @@ void freeTreeUSER(TREE tree){
  * @brief				Função que procura um user na estrutura com clone.
  * @param tree			Estrutura da árvore.
  * @param id			Id do user a procurar.
+ * @return 				Estrutura clonada apos feita procura, retorna NULL caso a procura falhe.
+
 */
 
 MYUSER search_USER(TREE tree,long id){
@@ -276,6 +298,8 @@ MYUSER search_USER(TREE tree,long id){
  * @brief				Função que procura um user na estrutura sem clone.
  * @param tree			Estrutura da árvore.
  * @param id			Id do user a procurar.
+ * @return 				Estrutura sem ser clonada apos feita procura, retorna NULL caso a procura falhe.
+
 */
 
 static MYUSER search_USER_internal(TREE tree,long id){
@@ -293,6 +317,8 @@ static MYUSER search_USER_internal(TREE tree,long id){
  * @param tree			Árvore de users.
  * @param id			Identificador do user.
  * @param data			Informação do post.
+ * @return 				Inteiro a ser usado como booelan.
+
 */
 
 int setPostToUSER(TREE tree,long id,MYPOST data){
@@ -311,6 +337,8 @@ int setPostToUSER(TREE tree,long id,MYPOST data){
 /**
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
  * @param path 			Path para o ficheiro a dar parse.
+ * @return 				Apontador para a arvore criada.
+ 
 */
 
 TREE createMYUSERS_TREE(char * path){
