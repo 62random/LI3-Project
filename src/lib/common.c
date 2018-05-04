@@ -39,17 +39,6 @@ int cmp_longs(const void * l1, const void * l2){
 
 
 
-/**
- * @brief			Função auxiliar que avança para a proxima palavra de uma string.
- * @param	str		String.
- * @param	aux		Endereço para a posicao da proxima palavra.
-*/
-static void gotoNextWord(char str[],int * aux){
-	int i = *aux;
-	while(isspace(str[i]) == 0 && ispunct(str[i]) == 0 && str[i] != '\0')
-		i++;
-	*aux=i;
-}
 
 /**
  * @brief			Função que verificar se uma palavra existe numa string.

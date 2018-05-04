@@ -379,7 +379,7 @@ int main(){
 
 
 
-
+/*
 	int main1(){
 		TAD_community com = init();
 		com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
@@ -393,3 +393,4 @@ int main(){
 
 		return 1;
 	}
+*/
