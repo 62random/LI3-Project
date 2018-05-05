@@ -1,6 +1,5 @@
 /**
  * @file 	loading.c
- * @date 	24 Mar 2018
  * @brief	Ficheiro contendo funções utilizadas na gestão do carregamento do dump para memória.
  */
 #include <loading.h>

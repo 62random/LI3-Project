@@ -1,10 +1,13 @@
+/**
+ * @file 	mytags.c
+ * @brief	Ficheiro contendo funções utilizadas na gestão da estrutura que armazena Id's de Tags.
+ */
 #include "mytags.h"
 
 /**
  * @brief			Função dá free a uma hashtable.
  * @param table		Apontador a hashtable.
 */
-
 void freeHASH_TAGS(GHashTable * table){
 	g_hash_table_destroy(table);
 }
@@ -14,9 +17,7 @@ void freeHASH_TAGS(GHashTable * table){
  * @param data1		Apontador para a key1.
  * @param data2		Apontador para a key2.
  * @return 			boolean (TRUE caso encontre FALSE caso nao).
-
 */
-
 gboolean hash_equal(const void * data1, const void * data2){
 	char * aux1 = (char *) data1;
 	char * aux2 = (char *) data2;
@@ -27,13 +28,10 @@ gboolean hash_equal(const void * data1, const void * data2){
 }
 
 /**
- * @brief			Função que dá parse às tags.
+ * @brief			Função que efetua o parsing do ficheiro das Tags e as coloca numa tabela de hash do glib.
  * @param path		Path para o ficheiro xml.
  * @return 			Tabela de HASH das tags.
-
 */
-
-
 GHashTable * createMYTAGS_HASH(char * path){
 
 	xmlDocPtr doc;
