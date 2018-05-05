@@ -1,5 +1,11 @@
 #include "myuser.h"
 
+/**
+ * @file 	myuser.c
+ * @brief	Ficheiro contendo todas a funções relativa à estrutura MYUSER.
+*/
+
+
 struct myuser{
     long id;
     int rep;
@@ -338,7 +344,7 @@ int setPostToUSER(TREE tree,long id,MYPOST data){
  * @brief				Função lê o ficheiro User.xml e cria uma arvore.
  * @param path 			Path para o ficheiro a dar parse.
  * @return 				Apontador para a arvore criada.
- 
+
 */
 
 TREE createMYUSERS_TREE(char * path){

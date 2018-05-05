@@ -1,5 +1,10 @@
 #include "mytree.h"
 
+/**
+ * @file 	mytree.c
+ * @brief	Ficheiro contendo funções utilizadas na construção da AVL utilizada no programa bem como todas as funcionalidades pela mesma suportadas.
+ */
+
 #define MAX(a,b) a > b ? a : b;
 #define MAX_SIZE 40
 
@@ -25,7 +30,7 @@ struct tree{
 /**
  * @brief			Função calcula a altura de um nodo.
  * @param a			Apontador para a árvore.
- * @return 			Altura da árvore.
+ * @return 			Altura de um nodo.
 
 */
 
@@ -36,7 +41,7 @@ static int altura(AVL a) {
 /**
  * @brief			Função calcula o balanço de um nodo.
  * @param a			Apontador para a árvore.
- * @return 			Inteiro com o valor de boolean;
+ * @return 			Inteiro com o valor do balanço.
 
 */
 
@@ -72,7 +77,7 @@ static int cal_altura(AVL a){
 /**
  * @brief			Função verifica se a árvore é balanceada.
  * @param	a		Apontador para a árvore.
- * @return 			Inteiro a ser usado como booelan.
+ * @return 			Inteiro a ser usado como boolean.
 
 */
 
@@ -92,7 +97,7 @@ static int isBalanced(AVL a){
 /**
  * @brief			Função verifica se a arvore da estrutura é balanceada.
  * @param tree		Apontador para a estrutura.
- * @return 			Inteiro a ser usado como booelan.
+ * @return 			Inteiro a ser usado como boolean.
 
 */
 
@@ -103,7 +108,7 @@ int TREE_balance(TREE tre){
 /**
  * @brief			Função efetua uma rotação para a direita da árvore.
  * @param	a		Apontador para a árvore.
- * @return 			Árvore apos ser rodad para a direita.
+ * @return 			Árvore após ser rodada para a direita.
 
 */
 
@@ -130,7 +135,7 @@ static AVL rotate_rigth(AVL a){
 /**
  * @brief			Função efetua uma rotação para a esquerda da árvore.
  * @param	a		Apontador para a árvore.
- * @return 			Árvore apos ser rodada para a esquerda.
+ * @return 			Árvore após ser rodada para a esquerda.
 
 */
 
@@ -226,7 +231,7 @@ static AVL create_new_node(void * key, void * data){
  * @param gl		Apontador para a estrutura que guarda a árvore.
  * @param key		Apontador para a key a inserir.
  * @param data		Apontador para a data a inserir.
- * @return 			Apntador para a árvore apos ser inserido o valor.
+ * @return 			Apontador para a estrutura após ser inserido o valor.
 
 */
 
@@ -313,7 +318,7 @@ TREE insere_tree(TREE gl, void * key, void * data){
  * @param	destroy_key		Apontador para a função que dá free à key.
  * @param	destroy_data	Apontador para a função que dá free à data.
  * @param	replace			Apontador para a função que dá replace à informação.
- * @return 					Apontador da árvore criada.
+ * @return 					Apontador para a estrutura criada.
 
 */
 
@@ -469,7 +474,7 @@ void all_nodes_TREE(TREE e,void (*f_nodo)(void *,void *),void * data1){
 }
 
 /**
- *@brief				Função que conta o número de nodos que satisfazem uma condição.
+ *@brief				Função que aplica uma função aos nodos que satisfazem uma condição.
  *@param	aux			Apontador para a AVL.
  *@param	inicio		Apontador para a data1 a comparar.
  *@param	fim			Apontador para a data2 a comparar.
@@ -497,7 +502,7 @@ static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*
 }
 
 /**
- *@brief			Função que conta o número de nodos que satisfazem uma condição.
+ *@brief			Função que aplica uma função aos nodos que satisfazem uma condição.
  *@param tree		Apontador para a estrutura que contém a árvore.
  *@param data1		Apontador para a data1 a comparar.
  *@param data2		Apontador para a data2 a comparar.

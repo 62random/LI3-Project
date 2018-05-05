@@ -1,5 +1,11 @@
 #include "myheap.h"
 
+/**
+ * @file 	myheap.c
+ * @brief	Ficheiro contendo funções utilizadas na construção de uma heap e de uma stack utilizadas no programa bem como todas as funcionalidades pelas mesmas suportadas.
+ */
+
+
 #define PARENT(n) (n-1)/2
 #define LCHILD(n) (2*n +1)
 #define RCHILD(n) (2*n +2)
@@ -188,7 +194,7 @@ void freeMYHEAP(HEAP h){
 }
 
 /**
- * @brief			Função dá inicializa uma stack.
+ * @brief			Função que inicializa uma stack.
  * @param size		Tamanho da stack a inicializar.
  * @return 			Apontador para STACK inicializa.
 
@@ -237,9 +243,9 @@ STACK insereSTACK(STACK a,long id){
 }
 
 /**
- * @brief			Função calcula o número de elementos na stack.
+ * @brief			Função que calcula o número de elementos na stack.
  * @param	a		Stack.
- * @return 			Numero de elementos da stack.
+ * @return 			Número de elementos da stack.
 
 */
 
@@ -254,7 +260,7 @@ long get_NUM_eleSTACK(STACK a){
 /**
  * @brief			Função que devolve o elemento numa dada posição.
  * @param	a		Stack.
- * @param	index	Indice.
+ * @param	index	Indíce.
  * @return 			Elemento na posicao dada.
 
 */
@@ -266,7 +272,7 @@ long get_ELE_index(STACK a,int index){
 }
 
 /**
- * @brief			Função calcula o número de elementos na heap.
+ * @brief			Função que calcula o número de elementos na heap.
  * @param	a		HEAP.
  * @return 			Numero de elementos na heap.
 
