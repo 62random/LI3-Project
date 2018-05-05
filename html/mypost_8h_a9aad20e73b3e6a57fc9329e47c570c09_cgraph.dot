@@ -1,0 +1,26 @@
+digraph "print_posts_MYPOST"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="print_posts_MYPOST",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="free_MYdate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#a47a8a92914dfb1a80155143103d3183c",tooltip="Função liberta a memória da data. "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="get_ele_index_STACKPOST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#ab5f84eeb5ef5145c0058f17b63ff41ae",tooltip="Função que devolve o elemento na posição dada. "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="get_MYday",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#aa3411c3bed105d605ac9400ffa851127",tooltip="Função que devolve a informação do dia da data. "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="get_MYmonth",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#a8e3bb2ee4a75232efb95e5710f5427ad",tooltip="Função que devolve a informação do mês da data. "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="get_MYyear",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#a21393f309c08c543e814be7269672def",tooltip="Função que devolve a informação do ano da data. "];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="getDateP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#adf9b3f45c7d3d9aba8e882521cc22a4d",tooltip="Função que obtém a data de criação de um post. "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="createMYDate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#a641c1c8236312a67f3e78d5d7ad3e4cd",tooltip="Função inicializa a estrutura de data. "];
+  Node7 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node9 [label="getIdP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#afa0a87d0e3edc6a72af78a5dca815fd3",tooltip="Função que obtém o Id de um post. "];
+}

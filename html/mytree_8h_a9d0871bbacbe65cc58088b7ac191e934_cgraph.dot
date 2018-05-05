@@ -1,0 +1,24 @@
+digraph "trans_tree"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="trans_tree",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="trans_4_args",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8c.html#a156aa0178f6500776a444fde74925451",tooltip="Função que faz uma travessia na árvore com 4 argumentos. "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="compare_MYDATE_AVL",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#ae95826e93f0d924a0a1fc74eec38219e",tooltip="Função compara duas datas para árvores. "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="trans_inorder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8c.html#a5b8f2651a399c15feba25a2adc4d6445",tooltip="Função que faz uma travessia inorder na árvore. "];
+  Node4 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="trans_posorder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8c.html#a9ff0e899b58bfa7f6c02734dda523426",tooltip="Função que faz uma travessia postorder na árvore. "];
+  Node5 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="trans_preorder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8c.html#ac9925c062551284368596eccfa091c2f",tooltip="Função que faz uma travessia preorder na árvore. "];
+  Node6 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="trans_revinorder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8c.html#a8cbfc3bbde1070c9424f78c32e23ed54",tooltip="Função que faz uma travessia revinorder na árvore. "];
+  Node7 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+}

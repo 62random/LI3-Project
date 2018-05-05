@@ -1,0 +1,36 @@
+digraph "mypost.c"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="mypost.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="common.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8h.html"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="mypost.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8h.html"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="mydate.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8h.html"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="stdlib.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="date.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$date_8h.html"];
+  Node3 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="mytree.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8h.html"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="stdio.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node9 [label="string.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node10 [label="math.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node7 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node11 [label="/usr/include/libxml2\l/libxml/parser.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node12 [label="/usr/include/libxml2\l/libxml/xmlwriter.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node13 [label="/usr/include/libxml2\l/libxml/tree.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node14 [label="/usr/include/libxml2\l/libxml/xmlmemory.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+}

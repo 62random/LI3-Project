@@ -1,0 +1,19 @@
+digraph "cloneMYUSER"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="cloneMYUSER",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="clone_STACKPOST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#afffc91de20d84043a601037df1424c00",tooltip="Função que clona uma STACKPOST. "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="clone_MYPOST_NODEEP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a85ab9cdb786f099706850b447b715b7b",tooltip="Função que produz o clone de um post sem profundidade. "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="createpost",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a226bc0c43835f1b4ced9d34f295ddbc6",tooltip="Função que inicializa a (nossa) representação de um post na memória. "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="initSTACKPOST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#ac441cbdcf1391689526aba31a5e5aae9",tooltip="Função que inicializa um stackpost. "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="createMYUSER",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$myuser_8c.html#accd6026eed60ad74ffe1dca295541e13",tooltip="Função que aloca memória para um user. "];
+  Node6 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+}

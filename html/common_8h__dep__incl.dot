@@ -1,0 +1,38 @@
+digraph "common.h"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  Node1 [label="common.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="common.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8c.html"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="pair.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$pair_8c.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="user.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$user_8c.html"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="mypost.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html",tooltip="Ficheiro contendo onde está definido tipo adotado para os posts e funções relativas ao mesmo..."];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="myuser.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$myuser_8h.html"];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="main.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8c.html"];
+  Node6 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node8 [label="myuser.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$myuser_8c.html",tooltip="Ficheiro contendo todas a funções relativa à estrutura MYUSER. "];
+  Node6 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node9 [label="interface.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_8h.html"];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node10 [label="interface.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$interface_8c.html",tooltip="Ficheiro contendo funções predefinidas para responder as querys bem como as suas funcoes auxiliares..."];
+  Node9 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node11 [label="loading.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$loading_8h.html"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node12 [label="loading.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$loading_8c.html",tooltip="Ficheiro contendo funções utilizadas na gestão do carregamento do dump para memória. "];
+  Node11 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node11 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node11 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node11 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node13 [label="mytags.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytags_8h.html"];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node14 [label="mytags.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytags_8c.html",tooltip="Ficheiro contendo funções utilizadas na gestão da estrutura que armazena Id&#39;s de Tags. "];
+  Node13 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+}

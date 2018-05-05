@@ -1,0 +1,26 @@
+var myuser_8c =
+[
+    [ "myuser", "structmyuser.html", "structmyuser" ],
+    [ "cloneMYUSER", "myuser_8c.html#a6d00e57a87f5caca4d8fc1f16653f485", null ],
+    [ "compare_user", "myuser_8c.html#a5830d24c6af616f7abda520ed1dc1444", null ],
+    [ "createMYUSER", "myuser_8c.html#accd6026eed60ad74ffe1dca295541e13", null ],
+    [ "createMYUSERS_TREE", "myuser_8c.html#a773f5af522e3e98df29de85f9d01efd0", null ],
+    [ "freeKey", "myuser_8c.html#a6ab0300c891cf4faa61df2f878bce54a", null ],
+    [ "freeMYUSER", "myuser_8c.html#a5123e16973f221037824315bb060bc91", null ],
+    [ "freeTreeUSER", "myuser_8c.html#a9637d68f04980568f55caac1cd2f606a", null ],
+    [ "getBiography", "myuser_8c.html#a2a7ce5ed70d0b45d4b08de0f259e1bbc", null ],
+    [ "getIdMYUSER", "myuser_8c.html#a05262dc9622081c6658a606912b0092e", null ],
+    [ "getMYLISTuser", "myuser_8c.html#a3a1051fdb7a0f3c780890eb22aa29e27", null ],
+    [ "getNposts", "myuser_8c.html#a8e28c186cb715390010fe16bbbf643b1", null ],
+    [ "getNUM_POST_MYUSER", "myuser_8c.html#a95b0877e28365ad9309d3ab0578ef756", null ],
+    [ "getREPMYUSER", "myuser_8c.html#aabd3a0ebf20d134d1c8ca6f54564a617", null ],
+    [ "getUsername", "myuser_8c.html#ac8aea2a9e5ca24fabec193fc49100f88", null ],
+    [ "print_post_MYUSER", "myuser_8c.html#abc5a74102e648179498fb33daf655b15", null ],
+    [ "search_USER", "myuser_8c.html#a89c3e32fead4720ca892da0e7f2c559b", null ],
+    [ "search_USER_internal", "myuser_8c.html#ae92c6fe9feb2b00c1ad4620532cef7c1", null ],
+    [ "setBio", "myuser_8c.html#af21f1f8f22ee05837bade70fb725aa5e", null ],
+    [ "setIdUSER", "myuser_8c.html#a5f10dcba893cd127b40d95237f766c1b", null ],
+    [ "setPostToUSER", "myuser_8c.html#a13edd4695686a72bb4f3b4f2d39dd5d5", null ],
+    [ "setRp", "myuser_8c.html#a40c7f0f33db1d4597bd91108ce661826", null ],
+    [ "setUsername", "myuser_8c.html#ada309f176f1c06c034ef9d4a44ce3da6", null ]
+];

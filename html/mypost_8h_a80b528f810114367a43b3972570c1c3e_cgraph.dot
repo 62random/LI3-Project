@@ -1,0 +1,18 @@
+digraph "freeSTACKPOST_COM_CLONE"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="freeSTACKPOST_COM_CLONE",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="freepost",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a08e79594d5f2f7acf98a907972c05c51",tooltip="Função que liberta a memória alocada para um dado post. "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="free_MYdate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mydate_8c.html#a47a8a92914dfb1a80155143103d3183c",tooltip="Função liberta a memória da data. "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="free_StringArray",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#aab669e7098e15119ed28ed6e38174c06",tooltip="Função que liberta um array de strings. "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="freeSTACKPOST_COM_CLONE",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a80b528f810114367a43b3972570c1c3e",tooltip="Função que dá free a um clone stackpost. "];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="freeSTACKPOST_SEM_CLONE",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a91b21fb278f52144ead6215a80e864a5",tooltip="Função que dá free a uma stackpost. "];
+}

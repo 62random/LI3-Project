@@ -1,0 +1,11 @@
+digraph "filtraPerguntasRespostas"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="filtraPerguntasRespostas",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="getCounter1_STACKPOST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a116b0dce7a5cab12e184d35be46c5cf1",tooltip="Função que devolve o counter 1. "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="getCounter2_STACKPOST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#ab0e062be9da4eda6929330ae3bc76d50",tooltip="Função que devolve o counter 2. "];
+}

@@ -1,0 +1,19 @@
+digraph "contains_word_node"
+{
+  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
+  node [fontname="FreeSans",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="contains_word_node",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node2 [label="getIdP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#afa0a87d0e3edc6a72af78a5dca815fd3",tooltip="Função que obtém o Id de um post. "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node3 [label="getPostTypeIdP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#a514d82e76edef763f417b1a75d92939e",tooltip="Função que obtém o TypeId de um post. "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node4 [label="getTitleP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mypost_8c.html#ae9db454692841ddbc796cbaf34327d49",tooltip="Função que obtém o título de um post. "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node5 [label="mystrdup",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8c.html#aaec695d4d3f73b13b968950d7857116d"];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node6 [label="insereSTACK",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$myheap_8c.html#ab981b6fd5642e51aa82b38fa4e046d7d",tooltip="Função insere um elemento na stack. "];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
+  Node7 [label="wordstr",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$common_8c.html#a2165dab88aa6f64e4097d415ab9b54dc",tooltip="Função que verificar se uma palavra existe numa string. "];
+}
