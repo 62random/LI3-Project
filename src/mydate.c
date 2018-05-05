@@ -2,7 +2,6 @@
  * @file 	mydate.c
  * @brief	Ficheiro contendo funções relativa ao modulo MYDATE e funções de transformação de MYDATE para date.
  */
-
 #include "mydate.h"
 #include <stdio.h>
 
@@ -18,9 +17,7 @@ struct mydate {
  * @param	month	Variável para o mês.
  * @param	year	Variável para o ano.
  * @return 			Apontador para MYDATE criada.
-
 */
-
 MYDATE createMYDate(int day, int month, int year) {
     MYDATE d = malloc(sizeof(struct mydate));
     d->day = day;
@@ -33,9 +30,7 @@ MYDATE createMYDate(int day, int month, int year) {
  * @brief			Função que devolve a informação do dia da data.
  * @param	d		Apontador para a data.
  * @return 			Inteiro com o valor do dia.
-
 */
-
 int get_MYday(MYDATE d) {
     return d->day;
 }
@@ -46,7 +41,6 @@ int get_MYday(MYDATE d) {
  * @param	d		Apontador para a data.
  * @return 			Inteiro com o valor do mes.
 */
-
 int get_MYmonth(MYDATE d) {
     return d->month; //change to enum? (Acho que sim. Desta forma já garantimos a limitação necessária)
 }
@@ -56,9 +50,7 @@ int get_MYmonth(MYDATE d) {
  * @brief			Função que devolve a informação do ano da data.
  * @param	d		Apontador para a data.
  * @return 			Inteiro com o valor do ano.
-
 */
-
 int get_MYyear(MYDATE d) {
     return d->year;
 }
@@ -68,7 +60,6 @@ int get_MYyear(MYDATE d) {
  * @brief			Função liberta a memória da data.
  * @param	d		Apontador para a data.
 */
-
 void free_MYdate(MYDATE d) {
 	if(d != NULL)
     	free(d);
@@ -78,7 +69,6 @@ void free_MYdate(MYDATE d) {
  * @brief			Função calcula o tamanho de uma data.
  * @return 			Tamanho da estrutura .
 */
-
 int MYdate_size() {
 	return sizeof(struct mydate);
 }
@@ -88,9 +78,7 @@ int MYdate_size() {
  * @param	data1	Apontador para a data 1.
  * @param	data2	Apontador para a data 2.
  * @return 			Inteiro usado como boolean.
-
 */
-
 int compare_MYDATE_AVL(void * data1, void * data2){
 
     MYDATE a = (MYDATE) data1;
@@ -118,9 +106,7 @@ int compare_MYDATE_AVL(void * data1, void * data2){
  * @param	data1	Apontador para a data 1.
  * @param	data2	Apontador para a data 2.
  * @return 			Inteiro usado como boolean.
-
 */
-
 int compare_MYDATE_LIST(void * data1, void * data2){
 
 	MYDATE a = (MYDATE) data1;
@@ -147,9 +133,7 @@ int compare_MYDATE_LIST(void * data1, void * data2){
  * @brief			Função converte um MYDATE para Date.
  * @param	a		Apontador para MYDATE.
  * @return 			Apontador para Date.
-
 */
-
 Date MYDATEtoDate(MYDATE a){
 	Date aux;
 	aux = createDate(a->day,a->month,a->year);
@@ -160,9 +144,7 @@ Date MYDATEtoDate(MYDATE a){
  * @brief			Função converte um Date para MYDATE.
  * @param	a		Apontador para Date.
  * @return 			Apontador para MYDATE.
-
 */
-
 MYDATE DatetoMYDATE(Date a){
 	MYDATE aux;
 	int dia,mes,ano;
@@ -179,7 +161,6 @@ MYDATE DatetoMYDATE(Date a){
  * @brief			Imprimir uma data.
  * @param	d		Apontador para a data.
 */
-
 void printMyDate(MYDATE d){
 	printf("(%d-%d-%d)", get_MYday(d), get_MYmonth(d), get_MYyear(d));
 }
