@@ -724,13 +724,11 @@ long better_answer(TAD_community com, long id){
 		MYPOST resposta = NULL;
 		if (!pergunta){
 			freepost(pergunta);
-			printf("Post inexistente\n");
 			return -3;
 		}
 
 		if(getPostTypeIdP(pergunta) != 1){
 			freepost(pergunta);
-			printf("Post não é uma pergunta\n");
 			return -4;
 		}
 
