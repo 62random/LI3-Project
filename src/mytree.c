@@ -1,9 +1,9 @@
-#include "mytree.h"
-
 /**
  * @file 	mytree.c
  * @brief	Ficheiro contendo funções utilizadas na construção da AVL utilizada no programa bem como todas as funcionalidades pela mesma suportadas.
  */
+#include "mytree.h"
+
 
 #define MAX(a,b) a > b ? a : b;
 #define MAX_SIZE 40
@@ -31,9 +31,7 @@ struct tree{
  * @brief			Função calcula a altura de um nodo.
  * @param a			Apontador para a árvore.
  * @return 			Altura de um nodo.
-
 */
-
 static int altura(AVL a) {
     return a ? a-> altura : 0;
 }
@@ -42,9 +40,7 @@ static int altura(AVL a) {
  * @brief			Função calcula o balanço de um nodo.
  * @param a			Apontador para a árvore.
  * @return 			Inteiro com o valor do balanço.
-
 */
-
 static int balanceDEEP(AVL a) {
     int balance = 0;
     if (a){
@@ -58,9 +54,7 @@ static int balanceDEEP(AVL a) {
  * @brief			Função calcula a altura de uma árvore.
  * @param a			Apontador para a árvore.
  * @return 			Altura da árvore.
-
 */
-
 static int cal_altura(AVL a){
     int h = 0;
     int h1, h2;
@@ -78,9 +72,7 @@ static int cal_altura(AVL a){
  * @brief			Função verifica se a árvore é balanceada.
  * @param	a		Apontador para a árvore.
  * @return 			Inteiro a ser usado como boolean.
-
 */
-
 static int isBalanced(AVL a){
     int r = 1;
     int b;
@@ -98,9 +90,7 @@ static int isBalanced(AVL a){
  * @brief			Função verifica se a arvore da estrutura é balanceada.
  * @param tree		Apontador para a estrutura.
  * @return 			Inteiro a ser usado como boolean.
-
 */
-
 int TREE_balance(TREE tre){
 	return isBalanced(tre->arv);
 }
@@ -109,9 +99,7 @@ int TREE_balance(TREE tre){
  * @brief			Função efetua uma rotação para a direita da árvore.
  * @param	a		Apontador para a árvore.
  * @return 			Árvore após ser rodada para a direita.
-
 */
-
 static AVL rotate_rigth(AVL a){
 
     int ha_r, ha_l;
@@ -136,9 +124,7 @@ static AVL rotate_rigth(AVL a){
  * @brief			Função efetua uma rotação para a esquerda da árvore.
  * @param	a		Apontador para a árvore.
  * @return 			Árvore após ser rodada para a esquerda.
-
 */
-
 static AVL rotate_left(AVL a){
 
     int ha_r, ha_l;
@@ -163,9 +149,7 @@ static AVL rotate_left(AVL a){
  * @brief			Função efetua o balanceamento da árvore.
  * @param	a		Apontador para a árvore.
  * @return 			Árvore balanceada.
-
 */
-
 static AVL balance(AVL a){
 
     int hd, hl;
@@ -194,7 +178,6 @@ static AVL balance(AVL a){
  * @brief			Função que implementa a nova altura de um dado nodo.
  * @param	a		Apontador para a árvore.
 */
-
 static void implementa_alt(AVL * a){
 
     int hl,hr;
@@ -211,9 +194,7 @@ static void implementa_alt(AVL * a){
  * @param key		Apontador a key.
  * @param data		Apontador para a data.
  * @return 			Apontador para o nodo da árvore.
-
 */
-
 static AVL create_new_node(void * key, void * data){
     AVL a;
     a = malloc(sizeof(struct AVBin));
@@ -232,9 +213,7 @@ static AVL create_new_node(void * key, void * data){
  * @param key		Apontador para a key a inserir.
  * @param data		Apontador para a data a inserir.
  * @return 			Apontador para a estrutura após ser inserido o valor.
-
 */
-
 TREE insere_tree(TREE gl, void * key, void * data){
 
     AVL queue[MAX_SIZE];
@@ -319,9 +298,7 @@ TREE insere_tree(TREE gl, void * key, void * data){
  * @param	destroy_data	Apontador para a função que dá free à data.
  * @param	replace			Apontador para a função que dá replace à informação.
  * @return 					Apontador para a estrutura criada.
-
 */
-
 TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data,void * replace){
     TREE a = malloc(sizeof(struct tree));
     a->nnodes = 0;
@@ -341,8 +318,6 @@ TREE createTREE(void * f_compare,void * destroy_key,void * destroy_data,void * r
  * @param	destroy_key		Apontador para a função que destroi a key.
  * @param	destroy_data	Apontador para a função que destroi a data.
 */
-
-
 static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void *)){
 	if (a){
 		if (destroy_key != NULL)
@@ -363,7 +338,6 @@ static void freeAVL(AVL a,void (*destroy_key)(void *),void (*destroy_data)(void 
  * @brief			Função liberta a memória da estrutura Tree.
  * @param	tree	Apontador para a tree.
 */
-
 void freeTREE_AVL(TREE tre){
 	if(tre){
 		freeAVL(tre->arv,tre->destroy_key,tre->destroy_data);
@@ -381,9 +355,7 @@ void freeTREE_AVL(TREE tre){
  *@param key		Apontador para a key a procurar.
  *@param valid		Apontador para o passar o resultado da procura.
  *@return 			Data da árvore apos ser procurado o elemento, retorna NULL caso falhe na procura.
-
 */
-
 void * search_AVL(TREE tree, void * key,int * valid){
 	AVL node = tree->arv;
 	int result = 0;
@@ -406,9 +378,7 @@ void * search_AVL(TREE tree, void * key,int * valid){
  *@brief			Função que testa se os nodos da AVL têm as alturas direitas
  *@param a			Apontador para a AVL.
  *@return 			Inteiro a ser usado como booelan.
-
 */
-
 static int check_altura(AVL a){
     int r = 1;
     int b;
@@ -427,9 +397,7 @@ static int check_altura(AVL a){
  *@param a			Apontador para a AVL.
  *@param tree		Apontador para a estrutura com a função de comparação.
  *@return 			Inteiro a ser usado como booelan.
-
 */
-
 static int isSearch(AVL a,TREE tree){
     int r = 1;
     if (a){
@@ -452,7 +420,6 @@ static int isSearch(AVL a,TREE tree){
  *@param f_nodo		Função a aplicar a cada nodo.
  *@param data1		Apontador a passar à função a aplicar.
 */
-
 static void all_nodes_trans(AVL aux,void (*f_nodo)(void *,void *),void * data1){
 	if (aux){
 		f_nodo(aux->data,data1);
@@ -467,7 +434,6 @@ static void all_nodes_trans(AVL aux,void (*f_nodo)(void *,void *),void * data1){
  *@param	f_nodo		Função a aplicar a cada nodo.
  *@param	data1		Apontador a passar à função a aplicar.
 */
-
 void all_nodes_TREE(TREE e,void (*f_nodo)(void *,void *),void * data1){
 	if (f_nodo != NULL)
 		all_nodes_trans(e->arv,f_nodo,data1);
@@ -483,7 +449,6 @@ void all_nodes_TREE(TREE e,void (*f_nodo)(void *,void *),void * data1){
  *@param	data3		Aparametro 1 a passar à função que aplica nos nodos.
  *@param	data4		Aparametro 2 a passar à função que aplica nos nodos.
 */
-
 static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*f_compare)(void *,void *),void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
 	int a1,a2;
 	if(aux){
@@ -510,7 +475,6 @@ static void all_nodes_With_key_Condition(AVL aux,void * inicio,void * fim,int (*
  *@param data3		Aparametro 1 a passar à função que aplica nos nodos.
  *@param data4		Aparametro 2 a passar à função que aplica nos nodos.
 */
-
 void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nodo)(void *,void *,void *),void * data3,void * data4){
 	all_nodes_With_key_Condition(tree->arv,data1,data2,tree->f_compare,f_nodo,data3,data4);
 }
@@ -520,9 +484,7 @@ void all_nodes_With_Condition(TREE tree, void * data1, void * data2,void (*f_nod
  *@brief			Função que testa as propriedas da tree.
  *@param tree		Estrutura que contém a árvore.
  *@return 			Inteiro a ser usado como booelan.
-
 */
-
 int test_TREE_PROP(TREE tree){
 	int alturas,procura,balanceada;
 	balanceada = isBalanced(tree->arv);
@@ -536,9 +498,7 @@ int test_TREE_PROP(TREE tree){
  *@brief			Função que devolve o número de nodos da árvore.
  *@param tree		Estrutura que contém a árvore.
  *@return 			Numero de nodos da árvore.
-
 */
-
 long NUM_nodes(TREE t){
 	return t->nnodes;
 }
@@ -553,7 +513,6 @@ long NUM_nodes(TREE t){
  *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
  *@param n			Número máximo de nodos a percorrer. (nullable)
 */
-
 static void trans_inorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
 		if (begin == NULL || end == NULL) {
@@ -624,7 +583,6 @@ static void trans_revinorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *
  *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
  *@param n			Número máximo de nodos a percorrer. (nullable)
 */
-
 static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
 		if (*n <= 0)
@@ -660,7 +618,6 @@ static void trans_posorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
  *@param n			Número máximo de nodos a percorrer. (nullable)
 */
-
 static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int * n){
 	if (aux){
 		if (*n <= 0)
@@ -699,7 +656,6 @@ static void trans_preorder(AVL aux,void (*f_nodo)(void *,void *,void *, void *),
  *@param end		Data início do intervalo a que o nodo tem de pertencer. (nullable)
  *@param n			Número máximo de nodos a percorrer. (nullable)
 */
-
 static void trans_4_args(AVL aux,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end){
 	if (aux){
 		if (begin == NULL || end == NULL) {
@@ -735,7 +691,6 @@ static void trans_4_args(AVL aux,void (*f_nodo)(void *,void *,void *, void *),vo
  *@param travessia	Tipo de travessia.
  *@param n			Número máximo de nodos a percorrer. (nullable)
 */
-
 void trans_tree(TREE e,void (*f_nodo)(void *,void *,void *, void *),void * data1, void * data2, void * begin, void * end, int travessia, int n){
 	if (!e)
 		return;

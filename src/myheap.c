@@ -1,9 +1,8 @@
-#include "myheap.h"
-
 /**
  * @file 	myheap.c
  * @brief	Ficheiro contendo funções utilizadas na construção de uma heap e de uma stack utilizadas no programa bem como todas as funcionalidades pelas mesmas suportadas.
  */
+#include "myheap.h"
 
 
 #define PARENT(n) (n-1)/2
@@ -33,7 +32,6 @@ struct stack{
  * @param	i		Posição do 1 elemento.
  * @param 	d		Posição do 2 elemento.
 */
-
 void swap(GEN * v,int i, int d){
 	long aux1 = v[i].key;
 	long aux2 = v[i].data;
@@ -50,8 +48,6 @@ void swap(GEN * v,int i, int d){
  * @param size		Tamanho original da heap.
  * @return 			Apontador para a HEAP.
 */
-
-
 HEAP initHEAP(long size){
 	HEAP aux = malloc(sizeof(struct heap));
 	aux->size = size;
@@ -65,7 +61,6 @@ HEAP initHEAP(long size){
  * @brief			Função que coloca o último elemento adicionado na sua posição correta.
  * @param main		Apontador para a heap.
 */
-
 void bubble_up(HEAP * main){
 	HEAP h = * main;
 	int pai,i;
@@ -95,7 +90,6 @@ void bubble_up(HEAP * main){
  * @brief			Função que realiza as operações necessárias depois de se retirar um elemento.
  * @param main		Apontador para a heap.
 */
-
 void bubble_down(HEAP * main){
 	HEAP h = * main;
 	int fd,fe,i = 0;
@@ -153,7 +147,6 @@ void bubble_down(HEAP * main){
  * @param key		Valor da key a inserir.
  * @param data		Valor da data a inserir.
 */
-
 void insereHEAP(HEAP h, long key, long data){
 	if (h->n_elem >= h->size){
 		h->array = realloc(h->array,sizeof(struct generico)*h->size*2);
@@ -172,7 +165,6 @@ void insereHEAP(HEAP h, long key, long data){
  * @param key		Apontador para o sítio onde a key fica guardada.
  * @param data		Apontador para o sítio onde a data fica guardada.
 */
-
 void pop (HEAP h, long * key, long * data){
 	if (h->n_elem > 0){
 		*key =h->array[0].key;
@@ -185,7 +177,6 @@ void pop (HEAP h, long * key, long * data){
  * @brief			Função dá free à heap.
  * @param	h		Heap.
 */
-
 void freeMYHEAP(HEAP h){
 	if (h){
 		free(h->array);
@@ -197,9 +188,7 @@ void freeMYHEAP(HEAP h){
  * @brief			Função que inicializa uma stack.
  * @param size		Tamanho da stack a inicializar.
  * @return 			Apontador para STACK inicializa.
-
 */
-
 STACK initSTACK(long size){
 	STACK aux = malloc(sizeof(struct stack));
 	aux->n_elem = 0;
@@ -213,7 +202,6 @@ STACK initSTACK(long size){
  * @brief			Função dá free à stack.
  * @param	a		Stack.
 */
-
 void freeSTACK(STACK a){
 	if(a){
 		free(a->array);
@@ -226,9 +214,7 @@ void freeSTACK(STACK a){
  * @param	a		Stack.
  * @param	id		Valor a inserir.
  * @return 			Apontador para a stack apos ser inserido o elemento, returna NULL caso a stack seja nula.
-
 */
-
 STACK insereSTACK(STACK a,long id){
 	if (!a)
 		return NULL;
@@ -246,10 +232,7 @@ STACK insereSTACK(STACK a,long id){
  * @brief			Função que calcula o número de elementos na stack.
  * @param	a		Stack.
  * @return 			Número de elementos da stack.
-
 */
-
-
 long get_NUM_eleSTACK(STACK a){
 	if(a){
 		return a->n_elem;
@@ -262,9 +245,7 @@ long get_NUM_eleSTACK(STACK a){
  * @param	a		Stack.
  * @param	index	Indíce.
  * @return 			Elemento na posicao dada.
-
 */
-
 long get_ELE_index(STACK a,int index){
 	if ((!a) || a->n_elem <= index)
 		return -1;
@@ -275,9 +256,7 @@ long get_ELE_index(STACK a,int index){
  * @brief			Função que calcula o número de elementos na heap.
  * @param	a		HEAP.
  * @return 			Numero de elementos na heap.
-
 */
-
 long get_NUM_eleHEAP(HEAP a){
 	long x;
 	return (x = a ? a->n_elem : 0);
@@ -291,7 +270,6 @@ long get_NUM_eleHEAP(HEAP a){
  * @param	data1	Segundo argumento da função a ser aplicada.
  * @param	data2	Terceiro argumento da função a ser aplicada.
  * @param	data3	Quarto argumento da função a ser aplicada.
-
 */
 void trans_stack(STACK arr, void (*f_box)(long , void *, void *, void *), void * data1, void * data2, void * data3){
 	if(arr == NULL)
