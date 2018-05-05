@@ -1,3 +1,8 @@
+/**
+ * @file 	loading.c
+ * @brief	Ficheiro contendo funções predefinidas para responder as querys bem como as suas funcoes auxiliares.
+ */
+
 #include "interface.h"
 
 #define MAX_DUMP_PATH_SIZE 300
@@ -31,7 +36,7 @@ TAD_community init(){
 
 
 /**
- * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap.
+ * @brief			Função auxiliar adiciona a informação da data de um nodo MYUSER numa heap.
  * @param	data	Apontador para a data do nodo.
  * @param	dataaux	Apontador para a heap.
 */
@@ -48,7 +53,7 @@ static void num_posts_na_HEAP(void * data,void * dataaux){
 
 
 /**
- * @brief			Função adiciona a informação da data de um nodo MYUSER numa heap para reputação.
+ * @brief			Função auxiliar que adiciona a informação da data de um nodo MYUSER numa heap para reputação.
  * @param	data	Apontador para a data do nodo.
  * @param	dataaux	Apontador para a heap.
 */
@@ -61,7 +66,7 @@ static void num_rep_na_HEAP(void * data,void * dataaux){
 }
 
 /**
- * @brief			Função ordena os posts de um user.
+ * @brief			Função auxiliar que ordena os posts de um user.
  * @param	data1	Apontador para o user.
 */
 
@@ -75,7 +80,7 @@ static void ordenaMYUSER_ALL_NODES(void * data1,void * data2){
 
 /**
  * @brief				Função dá load aos ficheiros xml.
- * @param	com			Estrutura que guarda as outras estruturas.
+ * @param	com			Estrutura comunidade que guarda as outras estruturas.
  * @param	dump_path	String com a diretoria onde se encontram os ficheiros.
  * @return 				Apontador para a estura carregada em memoria.
 */
@@ -116,8 +121,8 @@ TAD_community load(TAD_community com, char * dump_path){
 
 /**
  * @brief			Função retorna a informacao de um post.
- * @param	com		Estrutura que guarda as outras estruturas.
- * @param	id		Id do post4
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
+ * @param	id		Id do post
  * @return 			STR_pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
 */
 STR_pair info_from_post(TAD_community com, long id){
@@ -158,7 +163,7 @@ STR_pair info_from_post(TAD_community com, long id){
 
 /**
  * @brief			Função que calcula os N utilizadores com mais posts.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	N		Número de jogadores.
  * @return 			LONG_list com os N users mais ativos, retorna -2 nos restantes indices da lista caso exceda o numero de users.
 
@@ -198,7 +203,7 @@ LONG_list top_most_active(TAD_community com, int N){
 
 
 /**
- * @brief				Função que corre num nodo e calcula se é resposta ou pergunta.
+ * @brief				Função auxiliar que corre num nodo e adiciona as perguntas/respostas a contadores.
  * @param	data		Apontador para a informação a filtar.
  * @param	perguntas	Número de perguntas.
  * @param	respostas	Número de respostas.
@@ -215,7 +220,7 @@ static void filtraPerguntasRespostas(void * data, void * perguntas, void * respo
 
 /**
  * @brief			Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	being	Data inicial da procura
  * @param	end		Data final da procura
  * @return 			LONG_pair com o numero total de perguntas e resposta no dado intervalo.
@@ -239,7 +244,7 @@ LONG_pair total_posts(TAD_community com, Date begin, Date end){
 
 
 /**
- * @brief			Função que corre num nodo e verifica a existencia de uma tag.
+ * @brief			Função auxiliar que corre num nodo e verifica a existencia de uma tag.
  * @param	data	Apontador para a informação a filtar.
  * @param	result	Lista de posts com essa tag.
  * @param	tag		Tag a verificar.
@@ -271,7 +276,7 @@ static void filtraTags(void * data, void * result, void * tag){
 
 /**
  * @brief			Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	tag		Tag.
  * @param	begin	Data inicial da procura.
  * @param	end		Data final da procura.
@@ -304,7 +309,7 @@ LONG_list questions_with_tag(TAD_community com, char* tag, Date begin, Date end)
 
 /**
  * @brief			Função que dado um id de um user devolve informacao sobre este mesmo.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	id		Id do post.
  * @return 			Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
 */
@@ -318,10 +323,10 @@ USER get_user_info(TAD_community com, long id){
 	posts = getNposts(user,10,&aux);
 	if(aux != 10){
 		for(;aux < 10; aux++)
-			posts[aux] = -1;
+			posts[aux] = -2;
 	}
 	char* aux2 = getBiography(user);
-	USER info = create_user(aux2,posts);// leak mem
+	USER info = create_user(aux2,posts);
 	freeMYUSER(user);
 	free(aux2);
 	free(posts);
@@ -333,7 +338,7 @@ USER get_user_info(TAD_community com, long id){
 
 
 /**
- * @brief			Função adiciona a informação da data de um nodo STACKPOST numa heap para scores.
+ * @brief			Função auxiliar que adiciona a informação da data de um nodo STACKPOST numa heap para scores.
  * @param	data	Apontador para a data do nodo.
  * @param	dataaux	Apontador para a heap.
 
@@ -361,7 +366,7 @@ static void postList_to_HEAP_score(void * data,void * dataaux,void * lal){
  * @param	N		Número de respostas.
  * @param	begin	Data do começo do intervalo.
  * @param	end		Data do fim do intervalo.
- * @return 			LONG_list com os N utilizadores que mais votaram no dado intervalo de tempo.
+ * @return 			LONG_list com os N utilizadores que mais votaram no dado intervalo de tempo, caso nao encontre N utilizadores retornara -2 nos restantes indices do array.
 */
 
 LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
@@ -393,7 +398,7 @@ LONG_list most_voted_answers(TAD_community com, int N, Date begin, Date end){
 
 
 /**
-- * @brief			Função que conta o número de post num intervalo.
+- * @brief			Função auxiliar que conta o número de post num intervalo.
 - * @param	st		Apontador para a stack de posts.
 - * @param	begin	Apontador para o inicio do intervalo.
 - * @param	end		Apontador para o fim do intervalo.
@@ -425,7 +430,7 @@ static int how_many_post_interval(STACKPOST st, MYDATE begin, MYDATE end){
 
 
 /**
- * @brief			Função adiciona a informação da data de um nodo STACKPOST numa heap para perguntas com mais respostas.
+ * @brief			Função auxiliar que adiciona a informação da data de um nodo STACKPOST numa heap para perguntas com mais respostas.
  * @param	data	Apontador para a data do nodo.
  * @param	dataaux	Apontador para a heap.
  * @param	begin	Apontador para a inicio do intervalo.
@@ -454,7 +459,7 @@ static void postList_to_HEAP_nresp(void * data,void * dataaux,void * begin, void
  * @param	N		Número de posts a calcular.
  * @param	begin	Data do começo do intervalo.
  * @param	end		Data do fim do intervalo.
- * @return 			LONG_list com os N utilizadores que mais votaram no intervalo dado.
+ * @return 			LONG_list com os N utilizadores que mais votaram no intervalo dado, caso nao encontre N utilizadores retornara -2 nos restantes indices do array.
 */
 
 LONG_list most_answered_questions(TAD_community com, int N, Date begin, Date end){
@@ -536,7 +541,7 @@ static void contains_word_arr(void * arr, void * res, void * word, void * n){
 
 
 /**
- * @brief				Função passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
+ * @brief				Função auxiliar que passa a key (neste caso do tipo long) de um nodo da nossa estrutura MYLIST para lista de longs dos professores.
  * @param	num			LList cuja key será passadas.
  * @param	longlist	LONG_list onde serão guardadas as keys.
  * @param	n			Índice onde será inserida a key.
@@ -552,7 +557,7 @@ static void stack_tolonglist(long num, void * longlist, void * n, void * nulla) 
 
 /**
  * @brief			Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	word	Palavra a ser procurada nos títulos.
  * @param	N		Número máximo de resultados N.
  * @return 			LONG_list com as N perguntas mais recentes que contêm a palavra dada.
@@ -580,7 +585,7 @@ LONG_list contains_word(TAD_community com, char* word, int N){
 
 
 /**
- * @brief			Função que compara duas keys e diz que os seus valores são iguais.
+ * @brief			Função auxiliar que compara duas keys e diz que os seus valores são iguais.
  * @param data1		Apontador para a primeira key.
  * @param data2		Apontador para a segunda key.
  * @return 			Inteiro que funciona como boolean.
@@ -594,7 +599,7 @@ static int hash_long_equals(const void * data1, const void * data2){
 }
 
 /**
- * @brief			Função que insere posts uma hashtable.
+ * @brief			Função auxiliar que insere posts uma hashtable.
  * @param com		Apontador para estrutura da comunidade.
  * @param table		Apontador para a hashtable.
  * @param l_aux		Lista de posts.
@@ -630,7 +635,7 @@ static void preenche_hash_table(TAD_community com, GHashTable * table, STACKPOST
 }
 
 /**
- * @brief			Função que retira posts de uma hashtable.
+ * @brief			Função auxiliar que retira posts de uma hashtable para um stackpost.
  * @param com		Apontador para estrutura da comunidade.
  * @param table		Apontador para a hashtable.
  * @param queue		Array para guardar os posts.
@@ -668,9 +673,9 @@ static void preenche_stackpost(TAD_community com,GHashTable * table , STACKPOST 
 
 /**
  * @brief			Função que dado 2 users retorna as N perguntas em que ambos participaram.
- * @param com		Estrutura que guarda as outras estruturas.
- * @param id1		ID1
- * @param id2		ID2
+ * @param com		Estrutura comunidade que guarda as outras estruturas.
+ * @param id1		ID do user 1.
+ * @param id2		ID do user 2.
  * @param N			Número máximo de N
  * @return 			LONG_list com as N perguntas mais recentes em que ambos os users participaram, caso a lista seja menor que N os restantes indices ficam com o valor de -2.
 */
@@ -735,7 +740,7 @@ LONG_list both_participated(TAD_community com, long id1, long id2, int N){
 
 /**
  * @brief			Função que dado um id de um post devolve a resposta melhor cotada desse post.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	id		Id do post
  * @return 			ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota, -3 caso a pergunta nao seja encontrado o post e -4 caso o id do post dado nao corresponda a uma pergunta.
 */
@@ -791,10 +796,10 @@ long better_answer(TAD_community com, long id){
 
 
 /**
- * @brief			Função que calcula os N utilizadores com melhor rep.
- * @param	com		Estrutura que guarda as outras estruturas.
- * @param	N		Número de jogadores.4
- * @return 			O array com os N users com mais rep, caso nao sejam encontrado N users retorna -2 primeiro indice apos nao serem encontrados mais.
+ * @brief			Função auxiliar que calcula os N utilizadores com melhor rep.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
+ * @param	N		Número de utilizadores.
+ * @return 			O array com os N users com mais rep, caso nao sejam encontrado N users retorna -2 no primeiro indice apos nao serem encontrados mais.
 
 */
 
@@ -881,7 +886,7 @@ static int most_used_best_rep_node(void * vpost, void * vcom, void * ocorrencias
 
 
 /**
- * @brief			Funão compatível com a API do glib para inserir numa heap os dados da hashtable com as ocorrencias de cada tag.
+ * @brief			Função auxiliar compatível com a API do glib para inserir numa heap os dados da hashtable com as ocorrencias de cada tag.
  * @param key		Chave da entrada atual, ou seja, o id da tag.
  * @param value		Valor a entrada atual, ou seja, o número de ocorrencias da tag.
  * @param data		Apontador para a heap para a qual queremos passar a informação.
@@ -897,7 +902,7 @@ void hash_to_heap(gpointer key, gpointer value, gpointer data) {
 
 /**
  * @brief			Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @param	N		Número máximo de tags.
  * @param	begin	Início do período de tempo.
  * @param	end		Final do período de tempo.
@@ -910,15 +915,15 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 	MYDATE mybegin = DatetoMYDATE(begin);										//transformar Date no nosso tipo
 	MYDATE myend = DatetoMYDATE(end);											// de dados MYDATE
 
-	long * users = NULL;														//preencher array com N
-	int i;																		//users com  maior reputação
+	long * users = NULL;
+	int i;
 	MYUSER user;
 	STACKPOST posts;
 
 	users = n_users_with_more_rep(com, N);
 
-	for(i = 0; i < N && users[i] != -2; i++){
-		user = search_USER(com->users, users[i]);
+	for(i = 0; i < N && users[i] != -2; i++){								//preencher array com N
+		user = search_USER(com->users, users[i]);							//users com  maior reputação
 		if(user) {
 			posts = getMYLISTuser(user);
 			trans_arr(posts, &most_used_best_rep_node, com, ocorrencias, mybegin, myend);
@@ -954,7 +959,7 @@ LONG_list most_used_best_rep(TAD_community com, int N, Date begin, Date end){
 
 /**
  * @brief			Função que liberta a memória da estrutura.
- * @param	com		Estrutura que guarda as outras estruturas.
+ * @param	com		Estrutura comunidade que guarda as outras estruturas.
  * @return 			Apontador para a estrutura apos levar free.
 
 */
