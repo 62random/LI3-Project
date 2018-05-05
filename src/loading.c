@@ -1,6 +1,5 @@
 /**
  * @file 	loading.c
- * @date 	24 Mar 2018
  * @brief	Ficheiro contendo funções utilizadas na gestão do carregamento do dump para memória.
  */
 #include <loading.h>
@@ -8,7 +7,6 @@
 
 
 /**
- * @date 			24 Mar 2018
  * @brief 			Função que (recorrendo à biblioteca libxml2) efetua o parsing de um ficheiro xml.
  * @param doc		O apontador do ficheiro xml.
  * @param ptr 		O apontador da estrutura resultante do parsing do ficheiro xml.
@@ -35,13 +33,10 @@ int xml_file_to_struct(xmlDocPtr * doc, xmlNodePtr * ptr, char * filepath) {
 }
 
 /**
- * @date 			29 Mar 2018
  * @brief 			Função que tira o primeiro elemento de um GArray e o coloca noutro.
  * @param 			GArray 1
  * @param 			GArray 2
  */
-
-
 static void * concat_post(void * data1, void * data2){
 
 	STACKPOST a1 = (STACKPOST) data1;
@@ -55,14 +50,12 @@ static void * concat_post(void * data1, void * data2){
 }
 
 /**
- * @date 			29 Mar 2018
  * @brief 			Função que cria as àrvores balanceadas de posts segundo id e data de criação.
  * @param path		O ficheiro Posts.xml.
  * @param tree_id 	O apontador onde ficará apontada a àrvore ordenada segundo id's.
  * @param tree_date	O apontador onde ficará apontada a àrvore ordenada segundo datas de criação.
  * @param treeusers A árvore de users.
  * @return 			Inteiro usado como boolean.
-
  */
 int createMYPOST_TREES(char * path, TREE * tree_id, TREE * tree_date, TREE treeusers) {
 	xmlDocPtr 	doc;
