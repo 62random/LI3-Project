@@ -38,13 +38,14 @@ int main(){
 		while(1){
 			gets(string);
 
-			if(strcmp(string,"exit") == 0){
+
+			if(strcmp(string,"exit")==0){
 				if (loaded != 0){
 					printf("Falta dar clean(free) a struct \n");
 					continue;
 				}
-				else
-					break;
+				free(com);
+				exit(0);
 			}
 			if(strcmp(string,"load") == 0|| strcmp(string,"q0") == 0){
 				if(inited != 1){
@@ -363,10 +364,7 @@ int main(){
 
 			}
 
-			if(strcmp(string,"exit")==0){
-				free(com);
-				exit(0);
-			}
+
 
 
 
