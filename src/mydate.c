@@ -1,3 +1,8 @@
+/**
+ * @file 	mydate.c
+ * @brief	Ficheiro contendo funções relativa ao modulo MYDATE e funções de transformação de MYDATE para date.
+ */
+
 #include "mydate.h"
 #include <stdio.h>
 
@@ -25,7 +30,7 @@ MYDATE createMYDate(int day, int month, int year) {
 }
 
 /**
- * @brief			Função devolve a informação para o dia da data.
+ * @brief			Função que devolve a informação do dia da data.
  * @param	d		Apontador para a data.
  * @return 			Inteiro com o valor do dia.
 
@@ -37,7 +42,7 @@ int get_MYday(MYDATE d) {
 
 
 /**
- * @brief			Função devolve a informação para o mês da data.
+ * @brief			Função que devolve a informação do mês da data.
  * @param	d		Apontador para a data.
  * @return 			Inteiro com o valor do mes.
 */
@@ -48,7 +53,7 @@ int get_MYmonth(MYDATE d) {
 
 
 /**
- * @brief			Função devolve a informação para o ano da data.
+ * @brief			Função que devolve a informação do ano da data.
  * @param	d		Apontador para a data.
  * @return 			Inteiro com o valor do ano.
 
@@ -71,8 +76,7 @@ void free_MYdate(MYDATE d) {
 
 /**
  * @brief			Função calcula o tamanho de uma data.
- * @return 			Tamanho da estrutura mydate.
-
+ * @return 			Tamanho da estrutura .
 */
 
 int MYdate_size() {
@@ -141,7 +145,7 @@ int compare_MYDATE_LIST(void * data1, void * data2){
 
 /**
  * @brief			Função converte um MYDATE para Date.
- * @param	a		Apontador para a data.
+ * @param	a		Apontador para MYDATE.
  * @return 			Apontador para Date.
 
 */
@@ -154,7 +158,7 @@ Date MYDATEtoDate(MYDATE a){
 
 /**
  * @brief			Função converte um Date para MYDATE.
- * @param	a		Apontador para a data.
+ * @param	a		Apontador para Date.
  * @return 			Apontador para MYDATE.
 
 */
