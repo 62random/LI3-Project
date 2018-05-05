@@ -1,5 +1,5 @@
 /**
- * @file 	loading.c
+ * @file 	interface.c
  * @brief	Ficheiro contendo funções predefinidas para responder as querys bem como as suas funcoes auxiliares.
  */
 #include "interface.h"
