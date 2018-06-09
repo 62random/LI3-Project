@@ -24,7 +24,7 @@ public class MyUser {
         this.rep        = rep;
         this.username   = username;
         this.bio        = bio;
-        this.posts      = posts;
+        this.posts      = posts;// tá mal
     }
 
     public MyUser(MyUser m){

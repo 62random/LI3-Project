@@ -22,7 +22,7 @@ public class Main {
         /* -------------------------------------------------------------------------------------------*/
 
         long before, after;
-        TADCommunity qe = new TCDExample();
+        TADCommunity qe = new TCDCommunity();
 
         /*
             LOAD PHASE
