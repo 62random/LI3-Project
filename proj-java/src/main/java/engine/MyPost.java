@@ -31,8 +31,10 @@ public class MyPost {
         this.owner_name = owner_name;
         this.title      = title;
         this.cdate      = cdate;
-        this.filhos     = filhos;
-        this.tags       = tags;
+        this.filhos     = new ArrayList<Long>();
+        this.filhos.addAll(filhos);
+        this.tags       = new HashSet<String>();
+        this.tags.addAll(tags);
     }
 
     public MyPost() {

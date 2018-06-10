@@ -16,7 +16,7 @@ public class Testes {
         time = System.nanoTime();
 
         TCDCommunity com = new TCDCommunity();
-        com.load("/home/pedro/Desktop/dump/ubuntu/");
+        com.load("/home/random/Desktop/dump/android/");
 
         time = System.nanoTime() - time;
 

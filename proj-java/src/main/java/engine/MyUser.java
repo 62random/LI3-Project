@@ -24,7 +24,8 @@ public class MyUser {
         this.rep        = rep;
         this.username   = username;
         this.bio        = bio;
-        this.posts      = posts;// tá mal
+        this.posts      = new ArrayList<Long>();
+        this.posts.addAll(posts);
     }
 
     public MyUser(MyUser m){

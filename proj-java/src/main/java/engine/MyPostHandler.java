@@ -121,7 +121,7 @@ public class MyPostHandler extends DefaultHandler {
     }
 
 
-    public LocalDate parseDate(String str){
+    public static LocalDate parseDate(String str){
         if(str == null)
             return null;
 
