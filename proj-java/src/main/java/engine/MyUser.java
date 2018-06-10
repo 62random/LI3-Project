@@ -11,6 +11,10 @@ public class MyUser {
     private String  bio;
     List<Long>      posts;
 
+
+    /**
+     * Contrutor sem argumentos.
+     */
     public MyUser() {
         this.id         = -2;
         this.rep        = 0;
@@ -19,6 +23,14 @@ public class MyUser {
         this.posts      = new ArrayList<Long>();
     }
 
+    /**
+     * Construtor com argumentos.
+     * @param id            Id a introduzir.
+     * @param rep           Reputacao a introduzir.
+     * @param username      Username a introduzir.
+     * @param bio           Bio a introduzir.
+     * @param posts         Conjunto de posts a introduzir.
+     */
     public MyUser(int id, int rep, String username, String bio, List<Long> posts) {
         this.id         = id;
         this.rep        = rep;
@@ -28,6 +40,10 @@ public class MyUser {
         this.posts.addAll(posts);
     }
 
+    /**
+     * Construtor com copias.
+     * @param m     Classe a copiar.
+     */
     public MyUser(MyUser m){
         this.id         = m.getId();
         this.rep        = m.getRep();
@@ -36,52 +52,101 @@ public class MyUser {
         this.posts      = m.getPosts();
     }
 
+    /**
+     * Get para a variável id do objeto.
+     * @return  Id do objeto.
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Método que altera a variavel id do objeto.
+     * @param id        Valor a alterar.
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Get para a variável rep do objeto.
+     * @return  Rep do objeto.
+     */
     public int getRep() {
         return rep;
     }
 
+    /**
+     * Método que altera a variavel rep do objeto.
+     * @param rep        Valor a alterar.
+     */
     public void setRep(int rep) {
         this.rep = rep;
     }
 
+    /**
+     * Get para a variável username do objeto.
+     * @return  Username do objeto.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Método que altera a variavel username do objeto.
+     * @param username        Valor a alterar.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Get para a variável bio do objeto.
+     * @return  Bio do objeto.
+     */
     public String getBio() {
         return bio;
     }
 
+    /**
+     * Método que altera a variavel bio do objeto.
+     * @param bio        Valor a alterar.
+     */
     public void setBio(String bio) {
         this.bio = bio;
     }
 
+    /**
+     * Get para a variável posts do objeto.
+     * @return  Posts do objeto.
+     */
     public List<Long> getPosts() {
         ArrayList<Long> list = new ArrayList<Long>();
         list.addAll(this.posts);
         return list;
     }
 
+    /**
+     * Método que altera a variavel posts do objeto.
+     * @param list        Valor a alterar.
+     */
     public void setPosts(List<Long> list) {
         this.posts.addAll(list);
     }
 
+    /**
+     * Método que adiciona um post à variavel de posts do objeto.
+     * @param id        Valor a adicionar.
+     */
     public void addPost(long id){
         this.posts.add(id);
     }
 
+    /**
+     * Método equal do objeto.
+     * @param  o     Objeto a comparar
+     * @return       Booelan que verifica se o objeto e igual
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,10 +159,18 @@ public class MyUser {
                 getPosts().equals(myUser.getPosts())        ;
     }
 
+    /**
+     * Método que clona este objeto.
+     * @return clone do objeto
+     */
     public MyUser clone(){
         return new MyUser(this);
     }
 
+    /**
+     * Método toString do objeto.
+     * @return Objeto em modo string.
+     */
     public String toString(){
         StringBuilder sb = new StringBuilder();
 
