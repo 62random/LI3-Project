@@ -13,13 +13,12 @@ import java.io.FilenameFilter;
 import engine.MyPostHandler.*;
 
 public class Controller {
-    private TCDCommunity model;
-    private View view;
+    private TCDCommunity model = null;
+    private View view = null;
     private String path;
 
 
     public Controller() {
-        this.model = new TCDCommunity();
         this.view = new View();
     }
 
@@ -55,6 +54,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             view.isLoading();
+            if(model != null) model.clear();
             model.load(path + view.getSelectedDump() + "/");
             view.mainMenu();
 
