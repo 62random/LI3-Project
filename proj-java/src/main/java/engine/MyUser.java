@@ -41,7 +41,7 @@ public class MyUser {
     }
 
     /**
-     * Construtor com copias.
+     * Construtor por copias.
      * @param m     Classe a copiar.
      */
     public MyUser(MyUser m){

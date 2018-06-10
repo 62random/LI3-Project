@@ -22,7 +22,9 @@ public class TCDCommunity implements TADCommunity {
     private LinkedList<Long>                    pre_posts;
     private LinkedList<Long>                    pre_rep;
 
-
+    /**
+     * Contrutor sem argumentos.
+     */
     public TCDCommunity() {
         this.users      = new LinkedHashMap<Long, MyUser>();
         this.posts_id   = new LinkedHashMap<Long, MyPost>();
@@ -32,6 +34,15 @@ public class TCDCommunity implements TADCommunity {
         this.pre_rep    = new LinkedList<Long>();
     }
 
+    /**
+     * Construtor com argumentos.
+     * @param users             Map de <ID,User> a introduzir.
+     * @param posts_id          Map de <ID,Post> a introduzir.
+     * @param posts_date        Map de <Data,Posts> a introduzir.
+     * @param tags              Map de <TAG,Contagem> a introduzir..
+     * @param pre_posts         Conjunto de posts pre calculados a introduzir.
+     * @param pre_rep           Conjunto de reputacao pre calculada a introduzir.
+     */
     public TCDCommunity(Map<Long, MyUser> users, Map<Long, MyPost> posts_id, Map<LocalDate, ArrayList<Long>> posts_date, Map<String, Long> tags, List<Long> pre_posts, List<Long> pre_rep) {
         this.setUsers(users);
         this.setPosts_id(posts_id);
@@ -40,7 +51,10 @@ public class TCDCommunity implements TADCommunity {
         this.setPre_posts(pre_posts);
         this.setPre_rep(pre_rep);
     }
-
+    /**
+     * Construtor por copias.
+     * @param c     Classe a copiar.
+     */
     public TCDCommunity(TCDCommunity c){
         this.users      = c.getUsers();
         this.posts_id   = c.getPosts_id();
@@ -50,6 +64,10 @@ public class TCDCommunity implements TADCommunity {
         this.pre_rep    = c.getPre_rep();
     }
 
+    /**
+     * Get para a variável users objeto.
+     * @return  Users do objeto.
+     */
     public LinkedHashMap<Long, MyUser> getUsers() {
         LinkedHashMap<Long, MyUser> ret = new LinkedHashMap<Long, MyUser>();
         ret.putAll(this.users);
@@ -60,6 +78,10 @@ public class TCDCommunity implements TADCommunity {
         this.users.putAll(users);
     }
 
+    /**
+     * Get para a variável post_id do objeto.
+     * @return  Post_Id do objeto.
+     */
     public LinkedHashMap<Long, MyPost> getPosts_id() {
         LinkedHashMap<Long, MyPost> ret = new LinkedHashMap<Long, MyPost>();
         ret.putAll(this.posts_id);
@@ -70,6 +92,10 @@ public class TCDCommunity implements TADCommunity {
         this.posts_id.putAll(posts_id);
     }
 
+    /**
+     * Get para a variável post_date do objeto.
+     * @return  Post_date do objeto.
+     */
     public LinkedHashMap<LocalDate, ArrayList<Long>> getPosts_date() {
         LinkedHashMap<LocalDate, ArrayList<Long>> ret = new LinkedHashMap<LocalDate, ArrayList<Long>>();
         ret.putAll(this.posts_date);
@@ -80,6 +106,10 @@ public class TCDCommunity implements TADCommunity {
         this.posts_date.putAll(posts_date);
     }
 
+    /**
+     * Get para a variável tags do objeto.
+     * @return  Tags do objeto.
+     */
     public LinkedHashMap<String, Long> getTags() {
         LinkedHashMap<String, Long> ret = new LinkedHashMap<String, Long>();
         ret.putAll(this.tags);
@@ -90,6 +120,10 @@ public class TCDCommunity implements TADCommunity {
         this.tags.putAll(tags);
     }
 
+    /**
+     * Get para a variável pre_posts do objeto.
+     * @return  Pre_posts do objeto.
+     */
     public LinkedList<Long> getPre_posts() {
         LinkedList<Long> ret = new LinkedList<Long>();
         ret.addAll(this.pre_posts);
@@ -100,6 +134,10 @@ public class TCDCommunity implements TADCommunity {
         this.pre_posts.addAll(pre_posts);
     }
 
+    /**
+     * Get para a variável pre_red do objeto.
+     * @return  Pre_rep do objeto.
+     */
     public LinkedList<Long> getPre_rep() {
         LinkedList<Long> ret = new LinkedList<Long>();
         ret.addAll(this.pre_rep);
@@ -110,6 +148,11 @@ public class TCDCommunity implements TADCommunity {
         this.pre_rep.addAll(pre_rep);
     }
 
+    /**
+     * Método equal do objeto.
+     * @param  o     Objeto a comparar
+     * @return       Booelan que verifica se o objeto e igual
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,10 +166,18 @@ public class TCDCommunity implements TADCommunity {
                 this.pre_rep.equals(that.getPre_rep())          ;
     }
 
+    /**
+     * Método que clona este objeto.
+     * @return clone do objeto
+     */
     public TCDCommunity clone(){
         return new TCDCommunity(this);
     }
 
+    /**
+     * Método toString do objeto.
+     * @return Objeto em modo string.
+     */
     public String toString(){
         StringBuilder sb = new StringBuilder();
 
@@ -143,6 +194,10 @@ public class TCDCommunity implements TADCommunity {
         return sb.toString();
     }
 
+    /**
+     * Função dá load aos ficheiros xml.
+     * @param	path	    String com a diretoria onde se encontram os ficheiros.
+     */
     public void load(String path){
 
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
@@ -231,7 +286,11 @@ public class TCDCommunity implements TADCommunity {
         }
 
     }
-
+    /**
+     * Método que adicionar uma respota a um post.
+     * @param parent        Pai a adiconar.
+     * @param child         Filho que vai ser adicionado.
+     */
     private void setChildToPost(long parent, long child){
 
         MyPost post = posts_id.get(parent);
@@ -243,12 +302,20 @@ public class TCDCommunity implements TADCommunity {
 
 
     //++++++++++++++++++++++++++++++++++++++++++++++QUERIES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+    /**
+     * Função mete um post no correspondete user.
+     * @param post			Identificador do post.
+     */
     private void setPostToUser(long post){
         this.users.get(this.posts_id.get(post).getOwner_id()).addPost(post);
     }
 
-    // Query 1 
+    // Query 1
+    /**
+     * Função retorna a informacao de um post.
+     * @param	id		Id do post
+     * @return 			STR_pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
+     */
     public Pair<String,String> infoFromPost(long id){
         MyPost p = this.posts_id.get(id);
 
@@ -259,6 +326,11 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 2
+    /**
+     * Função que calcula os N utilizadores com mais posts.
+     * @param	N		Número de jogadores.
+     * @return 			LONG_list com os N users mais ativos, retorna -2 nos restantes indices da lista caso exceda o numero de users.
+     */
     public List<Long> topMostActive(int N){
         if(N > this.pre_posts.size())
                 N = this.pre_posts.size();
@@ -266,6 +338,12 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 3
+    /**
+     * Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
+     * @param	begin	Data inicial da procura
+     * @param	end		Data final da procura
+     * @return 			LONG_pair com o numero total de perguntas e resposta no dado intervalo.
+     */
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
         Pair<Long, Long> res = new Pair<Long,Long>(0L, 0L);
 
@@ -280,6 +358,13 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 4
+    /**
+     * Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
+     * @param	tag		Tag.
+     * @param	begin	Data inicial da procura.
+     * @param	end		Data final da procura.
+     * @return 			LONG_list com o id de todas as tags que ocorreram no dado intervalo de tempo.
+     */
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end){
         TreeSet<MyPost> posts = new TreeSet<MyPost>(new Comparator<MyPost>() {
 
@@ -307,6 +392,11 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 5
+    /**
+     * Função que dado um id de um user devolve informacao sobre este mesmo.
+     * @param	id		Id do post.
+     * @return 			Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
+     */
     public Pair<String, List<Long>> getUserInfo(long id){
         TreeSet<MyPost> posts = new TreeSet<MyPost>(new Comparator<MyPost>() {
 
@@ -335,6 +425,13 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 6
+    /**
+     * Função que dado um intervalo de tempo calcula os N posts com melhor score.
+     * @param	N		Número de respostas.
+     * @param	begin	Data do começo do intervalo.
+     * @param	end		Data do fim do intervalo.
+     * @return 			LONG_list com os N utilizadores que mais votaram no dado intervalo de tempo, caso nao encontre N utilizadores retornara -2 nos restantes indices do array.
+     */
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end){
         TreeSet<MyPost> posts = new TreeSet<MyPost>(new Comparator<MyPost>() {
 
@@ -364,6 +461,13 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 7
+    /**
+     * Função que dado um intervalo de tempo calcula as N perguntas com mais respostas.
+     * @param	N		Número de posts a calcular.
+     * @param	begin	Data do começo do intervalo.
+     * @param	end		Data do fim do intervalo.
+     * @return 			LONG_list com os N utilizadores que mais votaram no intervalo dado, caso nao encontre N utilizadores retornara -2 nos restantes indices do array.
+     */
     public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end){
         TreeSet<MyPost> posts = new TreeSet<MyPost>(new Comparator<MyPost>() {
 
@@ -393,6 +497,12 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 8
+    /**
+     * Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
+     * @param	word	Palavra a ser procurada nos títulos.
+     * @param	N		Número máximo de resultados N.
+     * @return 			LONG_list com as N perguntas mais recentes que contêm a palavra dada.
+     */
     public List<Long> containsWord(int N, String word){
         TreeSet<MyPost> posts = new TreeSet<MyPost>(new Comparator<MyPost>() {
 
@@ -422,6 +532,13 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 9
+    /**
+     * Função que dado 2 users retorna as N perguntas em que ambos participaram.
+     * @param id1		ID do user 1.
+     * @param id2		ID do user 2.
+     * @param N			Número máximo de N
+     * @return 			LONG_list com as N perguntas mais recentes em que ambos os users participaram, caso a lista seja menor que N os restantes indices ficam com o valor de -2.
+     */
     public List<Long> bothParticipated(int N, long id1, long id2){
 
         TreeSet<MyPost> posts = new TreeSet<MyPost>(new Comparator<MyPost>() {
@@ -459,6 +576,11 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 10
+    /**
+     * Função que dado um id de um post devolve a resposta melhor cotada desse post.
+     * @param	id		Id do post
+     * @return 			ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota, -3 caso a pergunta nao seja encontrado o post e -4 caso o id do post dado nao corresponda a uma pergunta.
+     */
     public long betterAnswer(long id){
         long res = -2;
         double max = 0, atual;
@@ -478,6 +600,13 @@ public class TCDCommunity implements TADCommunity {
     }
 
     // Query 11
+    /**
+     * Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
+     * @param	N		Número máximo de tags.
+     * @param	begin	Início do período de tempo.
+     * @param	end		Final do período de tempo.
+     * @return 			LONG_list com as N tags mais usados num dado intervalo de tempo pelos users com mais reputacao.
+     */
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end){
         HashMap<Long, Integer> ocorrencias = new HashMap<Long, Integer>();
 
@@ -517,6 +646,11 @@ public class TCDCommunity implements TADCommunity {
     }
 
     //          NAO SEI SE ESTA MERDA É ASSIM QUE SE FAZ
+    // 0 fucks given vou documentar á mesma :D
+
+    /**
+     * Função que liberta a memória do objeto.
+     */
     public void clear(){
         this.pre_rep.clear();;
         this.users.clear();

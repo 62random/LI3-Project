@@ -20,7 +20,7 @@ public class MyPost {
     private Set<String>     tags;
 
     /**
-     * Construtor com argumentos.
+     * Construtor por argumentos.
      * @param id            Id a introduzir.
      * @param type_id       Tipo de post a introduzir.
      * @param ans_count     Answer count a introduzir.
