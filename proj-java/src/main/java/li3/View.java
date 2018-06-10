@@ -155,6 +155,7 @@ public class View extends JFrame{
     }
 
     public  void mainMenu(){
+        if (queries != null) return;
         setTitle(getSelectedDump());
         setMinimumSize(new Dimension(600, 250));
         setLocationRelativeTo(null);
@@ -173,10 +174,7 @@ public class View extends JFrame{
             buttons.add(i,button);
             queries.add(button);
         }
-
     }
-
-    public void nothing(){}
 
     public void setInput(JPanel panel){
         if(input != null) remove(input);
