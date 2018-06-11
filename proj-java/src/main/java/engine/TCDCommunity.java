@@ -333,11 +333,13 @@ public class TCDCommunity implements TADCommunity {
     
     public Pair<String,String> infoFromPost(long id){
         MyPost p = this.posts_id.get(id);
+        if (p == null)
+            return new Pair<>(null,null);
 
         if(p.getType_id() == 2)
             p = this.posts_id.get(p.getParent_id());
 
-        return new Pair<String, String>(p.getTitle(),this.users.get(p.getOwner_id()).getUsername());
+        return new Pair<>(p.getTitle(),this.users.get(p.getOwner_id()).getUsername());
     }
 
     // Query 2;
@@ -348,8 +350,12 @@ public class TCDCommunity implements TADCommunity {
      */
     
     public List<Long> topMostActive(int N){
+        if (N <= 0)
+            return new ArrayList<>();
+
         if(N > this.pre_posts.size())
             N = this.pre_posts.size();
+
         long k;
         List<Long> a = new ArrayList<>(N);
         Iterator i = this.pre_posts.iterator();
@@ -370,6 +376,9 @@ public class TCDCommunity implements TADCommunity {
      * @return             LONG_pair com o numero total de perguntas e resposta no dado intervalo.
      */
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
+        if (begin.isAfter(end))
+            return new Pair<>((long)0,(long)0);
+
         ListPost aux;
         long p = 0, r = 0;
         System.out.println("tem user:" + this.users.size() + "tem posts:" + this.posts_id.size());
@@ -399,6 +408,8 @@ public class TCDCommunity implements TADCommunity {
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
         ListPost aux;
         List<Long> res = new ArrayList<>();
+        if (begin.isAfter(end))
+            return res;
 
         while(end.isAfter(begin)){
             aux = this.posts_date.get(end);
@@ -432,6 +443,9 @@ public class TCDCommunity implements TADCommunity {
             }
         });
 
+        if (!this.users.containsKey(id))
+            return new Pair<>(null,new ArrayList<>());
+
         MyPost aux;
 
         for(Long l : this.users.get(id).getPosts()) {
@@ -449,7 +463,7 @@ public class TCDCommunity implements TADCommunity {
 
 
 
-        return new Pair<String, List<Long>>(this.users.get(id).getBio(), res);
+        return new Pair<>(this.users.get(id).getBio(), res);
     }
 
     //Query 6
@@ -464,6 +478,9 @@ public class TCDCommunity implements TADCommunity {
         List<Long> res = new ArrayList<>();
         ListPost aux1;
         List<MyPost> aux2 = new ArrayList<>();
+
+        if (begin.isAfter(end) || N <= 0)
+            return res;
 
         while(!begin.isAfter(end)){
             aux1 = this.posts_date.get(begin);
@@ -504,6 +521,9 @@ public class TCDCommunity implements TADCommunity {
         ListPost aux1;
         List<MyPost> aux2 = new ArrayList<>();
 
+        if (begin.isAfter(end) || N <= 0)
+            return res;
+
         while(!begin.isAfter(end)){
             aux1 = this.posts_date.get(begin);
             if (aux1 != null){
@@ -538,6 +558,9 @@ public class TCDCommunity implements TADCommunity {
      */
     public List<Long> containsWord(int N, String word){
         TreeSet<MyPost> posts = new TreeSet<>(new compTime());
+
+        if (N <= 0)
+            return new ArrayList<>();
 
         for(MyPost p : this.posts_id.values())
             if(p.getTitle()!= null && p.getTitle().contains(word))
@@ -630,6 +653,9 @@ public class TCDCommunity implements TADCommunity {
         double max = 0, atual;
         MyPost p;
 
+        if (!this.posts_id.containsKey(id))
+            return 0;
+
         for(Long l : this.posts_id.get(id).getFilhos()){
             p = this.posts_id.get(l);
             atual = 0.65*p.getScore() + 0.25*this.users.get(p.getOwner_id()).getRep() + 0.1*p.getComm_count();
@@ -658,7 +684,7 @@ public class TCDCommunity implements TADCommunity {
             N = this.users.size();
 
         List<Long> res = new ArrayList<>(N);
-        if (N <= 0)
+        if (N <= 0 || begin.isAfter(end))
             return res;
 
         MyUser uaux;
