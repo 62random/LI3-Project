@@ -337,7 +337,7 @@ public class TCDCommunity implements TADCommunity {
         if(p.getType_id() == 2)
             p = this.posts_id.get(p.getParent_id());
 
-        return new Pair<String, String>(p.getTitle(), p.getOwner_name());
+        return new Pair<String, String>(p.getTitle(),this.users.get(p.getOwner_id()).getUsername());
     }
 
     // Query 2;
@@ -350,7 +350,16 @@ public class TCDCommunity implements TADCommunity {
     public List<Long> topMostActive(int N){
         if(N > this.pre_posts.size())
             N = this.pre_posts.size();
-        return this.pre_posts.subList(0, N);
+        long k;
+        List<Long> a = new ArrayList<>(N);
+        Iterator i = this.pre_posts.iterator();
+        while (i.hasNext() && N > 0){
+            k =(long) i.next();
+            N--;
+            a.add(k);
+        }
+
+        return a;
     }
 
     // Query 3
@@ -363,6 +372,10 @@ public class TCDCommunity implements TADCommunity {
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
         ListPost aux;
         long p = 0, r = 0;
+        System.out.println("tem user:" + this.users.size() + "tem posts:" + this.posts_id.size());
+        int d = 0;
+        d = this.posts_date.values().stream().map(ListPost::getPosts).mapToInt(a -> a.size()).sum();
+        System.out.println(d);
         while(!begin.isAfter(end)){
             aux = this.posts_date.get(begin);
             if (aux != null){
@@ -551,28 +564,57 @@ public class TCDCommunity implements TADCommunity {
      * @return             LONG_list com as N perguntas mais recentes em que ambos os users participaram, caso a lista seja menor que N os restantes indices ficam com o valor de -2.
      */
     public List<Long> bothParticipated(int N, long id1, long id2){
-
-        TreeSet<MyPost> posts = new TreeSet<>(new compTime());
-        MyPost p = null;
-
-        for (Long l : this.users.get(id1).getPosts()){
-            if (this.posts_id.get(l).getType_id() == 1)
-                p = this.posts_id.get(l);
-            else if (this.posts_id.get(l).getType_id() == 2)
-                p = this.posts_id.get(this.posts_id.get(l).getParent_id());
-
-            if(p != null)
-                for (Long m : p.getFilhos())
-                    if (this.posts_id.get(m).getOwner_id() == id2)
-                        posts.add(p);
-        }
-
         List<Long> res = new ArrayList<>();
-        int n = 0;
-        Iterator i = posts.iterator();
 
-        while (i.hasNext() && n++ < N)
-            res.add(((MyPost) i.next()).getId());
+        MyUser u1 = this.users.get(id1);
+        MyUser u2 = this.users.get(id2);
+        MyPost postaux;
+
+        if (u2 == null || u1 == null || N <= 0)
+            return res;
+
+        Map<MyPost,Integer> aux = new HashMap<>();
+
+        for(long i : u1.getPosts()){
+            postaux = this.posts_id.get(i);
+            if (postaux != null) {
+                if (postaux.getType_id() == 1)
+                    aux.put(postaux, 0);
+                else if (postaux.getType_id() == 2) {
+                    postaux = this.posts_id.get(postaux.getParent_id());
+                    if (postaux != null)
+                        aux.put(postaux, 0);
+                }
+            }
+        }
+        for(long k : u2.getPosts()){
+            postaux = this.posts_id.get(k);
+            if (postaux != null) {
+                if (postaux.getType_id() == 1) {
+                    if (aux.containsKey(postaux)) {
+                        aux.put(postaux, 1);
+                    }
+                } else if (postaux.getType_id() == 2) {
+                    postaux = this.posts_id.get(postaux.getParent_id());
+                    if (postaux != null) {
+                        if (aux.containsKey(postaux)) {
+                            aux.put(postaux, 1);
+                        }
+                    }
+                }
+            }
+        }
+        Set<MyPost> tree = new TreeSet<>(new compTime());
+        for(Map.Entry<MyPost,Integer> a : aux.entrySet()){
+            if (a.getValue() == 1)
+                tree.add(a.getKey());
+        }
+        Iterator l = tree.iterator();
+        while (l.hasNext() && N > 0){
+            postaux = (MyPost) l.next();
+            N--;
+            res.add(postaux.getId());
+        }
 
         return res;
     }
@@ -610,41 +652,61 @@ public class TCDCommunity implements TADCommunity {
      * @return             LONG_list com as N tags mais usados num dado intervalo de tempo pelos users com mais reputacao.
      */
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end){
-        Map<Long, Integer> ocorrencias = new HashMap<Long, Integer>();
+        Map<Long, Integer> ocorrencias = new HashMap<>();
 
+        if (N > this.users.size())
+            N = this.users.size();
 
-        for (Long l : this.pre_rep.subList(0,  this.pre_rep.size() > N ? N : this.pre_rep.size())){
-            for(Long postid : this.users.get(l).getPosts()){
-                MyPost p = this.posts_id.get(postid);
-                if(p.getCdate().isAfter(begin) && p.getCdate().isBefore(end))
-                    for(String tag : p.getTags())
-                        ocorrencias.put(this.tags.get(tag), ocorrencias.containsKey(this.tags.get(tag)) ? ocorrencias.get(this.tags.get(tag)) + 1 : 1);
+        List<Long> res = new ArrayList<>(N);
+        if (N <= 0)
+            return res;
+
+        MyUser uaux;
+        long idtag;
+        int k;
+        List<Long> userids = this.pre_rep.subList(0,N);
+        List<MyPost> paux;
+        for(long id : userids){
+            uaux = this.users.get(id);
+            paux = uaux.getPosts().stream().map(a-> this.posts_id.get(a))
+                                           .filter(a -> a.getType_id()==1)
+                                           .filter(a -> (a.getCdate().isAfter(begin)
+                                                && a.getCdate().isBefore(end))
+                                                || a.getCdate().equals(begin)
+                                                || a.getCdate().equals(end))
+                                           .collect(Collectors.toList());
+            for(MyPost ps : paux){
+                for(String tag : ps.getTags()){
+                    idtag = this.tags.get(tag);
+                    if (!ocorrencias.containsKey(idtag))
+                       ocorrencias.put(idtag,0);
+                    k = ocorrencias.get(idtag);
+                    ocorrencias.put(idtag,k+1);
+                }
             }
         }
+        Set<Map.Entry<Long,Integer>> ordaux = new TreeSet<>(new Comparator<Map.Entry<Long, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Long, Integer> o1, Map.Entry<Long, Integer> o2) {
+                if (o1.getValue() > o2.getValue())
+                    return -1;
+                else if (o1.getValue() < o2.getValue())
+                    return 1;
+                return o1.getKey() > o2.getKey() ? 1 : -1;
+            }
+        });
 
-        TreeMap<Integer, TreeSet<Long>> ordenados = new TreeMap<>();
-        TreeSet<Long> longs;
-
-        for(Map.Entry<Long, Integer> e : ocorrencias.entrySet()) {
-
-            longs = ordenados.containsKey(e.getValue())? ordenados.get(e.getValue()) : new TreeSet<Long>();
-            longs.add(e.getKey());
-            ordenados.put(e.getValue(), longs);
+        ordaux.addAll(ocorrencias.entrySet());
+        res = ordaux.stream().map(a -> a.getKey()).collect(Collectors.toList());
+        List<Long> fim = new ArrayList<>();
+        Iterator i = res.iterator();
+        while (i.hasNext() && N > 0){
+            long o = (long) i.next();
+            fim.add(o);
+            N--;
         }
 
-        ArrayList<Long> res = new ArrayList<Long>();
-
-        for (int i = 0; i < N && !ordenados.isEmpty(); i++) {
-            longs = ordenados.get(ordenados.lastKey());
-            res.add(longs.pollFirst());
-
-            if (longs.isEmpty())
-                ordenados.remove(ordenados.lastKey());
-            else
-                ordenados.put(ordenados.lastKey(), longs);
-        }
-
-        return res;
+        return fim;
     }
 
     //          NAO SEI SE ESTA MERDA É ASSIM QUE SE FAZ
