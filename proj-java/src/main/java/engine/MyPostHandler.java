@@ -1,4 +1,4 @@
-package engine;
+package engine
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -82,7 +82,8 @@ public class MyPostHandler extends DefaultHandler {
 
                 p.setOwner_id(n);
                 count = num_posts.containsKey(n) ? num_posts.get(n) : 0;
-                num_posts.put(n, count + 1);
+                if (p.getType_id() == 1 || p.getType_id() == 2)
+                    num_posts.put(n, count + 1);
 
                 longs = user_posts.containsKey(n) ? user_posts.get(n) : new LinkedList<Long>();
                 longs.add(p.getId());

@@ -1,4 +1,4 @@
-package engine;
+package engine
 
 import java.util.*;
 import java.time.LocalDate;
@@ -16,9 +16,9 @@ public class MyPost {
     private String          owner_name;
     private String          title;
     private LocalDate       cdate;
-    private ArrayList<Long> filhos;
+    private List<Long> filhos;
     private Set<String>     tags;
-
+    
     /**
      * Construtor por argumentos.
      * @param id            Id a introduzir.
@@ -34,7 +34,8 @@ public class MyPost {
      * @param filhos        Conjunto de filhos do post a introduzir.
      * @param tags          Conjunto de tags do post a introduzir.
      */
-    public MyPost(int id, int type_id, int ans_count, int comm_count, int fav_count, int score, long parent_id, long owner_id, String owner_name, String title, LocalDate cdate, ArrayList<Long> filhos, Set<String> tags) {
+
+    public MyPost(int id, int type_id, int ans_count, int comm_count, int fav_count, int score, long parent_id, long owner_id, String owner_name, String title, LocalDate cdate, List<Long> filhos, Set<String> tags) {
         this.id         = id;
         this.type_id    = type_id;
         this.ans_count  = ans_count;
@@ -52,10 +53,10 @@ public class MyPost {
         this.tags.addAll(tags);
     }
 
-
     /**
      * Contrutor sem argumentos.
      */
+    
     public MyPost() {
         this.id         = -2;
         this.type_id    = 0;
@@ -71,11 +72,12 @@ public class MyPost {
         this.filhos     = new ArrayList<Long>();
         this.tags       = new HashSet<String>();
     }
-
+    
     /**
      * Construtor com copias.
      * @param m     Classe a copiar.
      */
+
     public MyPost(MyPost m) {
         this.id         = m.getId();
         this.type_id    = m.getType_id();
@@ -92,6 +94,7 @@ public class MyPost {
         this.tags       = m.getTags();
     }
 
+    
     /**
      * Get para a variável id do objeto.
      * @return  Id do objeto.
@@ -99,35 +102,39 @@ public class MyPost {
     public long getId() {
         return id;
     }
-
+    
     /**
      * Método que altera a variavel id do objeto.
      * @param id        Valor a alterar.
      */
+
     public void setId(long id) {
         this.id = id;
     }
-
+    
     /**
      * Get para a variável Type_id do objeto.
      * @return  Type_id do objeto.
      */
+    
     public int getType_id() {
         return type_id;
     }
-
+    
     /**
      * Método que altera a variavel Type_id do objeto.
      * @param type_id        Valor a alterar.
      */
+
     public void setType_id(int type_id) {
         this.type_id = type_id;
     }
-
+    
     /**
      * Get para a variável ans_count do objeto.
      * @return  Ans_count do objeto.
      */
+
     public int getAns_count() {
         return ans_count;
     }
@@ -136,110 +143,124 @@ public class MyPost {
      * Método que altera a variavel ans_count do objeto.
      * @param ans_count     Valor a alterar.
      */
+    
     public void setAns_count(int ans_count) {
         this.ans_count = ans_count;
     }
-
+    
     /**
      * Get para a variável comm_count do objeto.
      * @return  Comm_count do objeto.
      */
+
     public int getComm_count() {
         return comm_count;
     }
-
+    
     /**
      * Método que altera a variavel comm_count do objeto.
      * @param comm_count   Valor a alterar.
      */
+
     public void setComm_count(int comm_count) {
         this.comm_count = comm_count;
     }
-
+    
     /**
      * Get para a variável fav_count do objeto.
      * @return  Fav_count do objeto.
      */
+    
     public int getFav_count() {
         return fav_count;
     }
-
+    
     /**
      * Método que altera a variavel fav_count do objeto.
      * @param fav_count        Valor a alterar.
      */
+
     public void setFav_count(int fav_count) {
         this.fav_count = fav_count;
     }
-
+    
     /**
      * Get para a variável score do objeto.
      * @return  Score do objeto.
      */
+
     public int getScore() {
         return score;
     }
-
+    
     /**
      * Método que altera a variavel score do objeto.
      * @param score        Valor a alterar.
      */
+
     public void setScore(int score) {
         this.score = score;
     }
-
+    
     /**
      * Get para a variável Parent_id do objeto.
      * @return  Parent_id do objeto.
      */
+
     public long getParent_id() {
         return parent_id;
     }
-
+    
     /**
      * Método que altera a variavel parent_id do objeto.
      * @param parent_id    Valor a alterar.
      */
+    
     public void setParent_id(long parent_id) {
         this.parent_id = parent_id;
     }
-
+    
     /**
      * Get para a variável owner_id do objeto.
      * @return  Id do objeto.
      */
+    
     public long getOwner_id() {
         return owner_id;
     }
-
+    
     /**
      * Método que altera a variavel owner_id do objeto.
      * @param owner_id        Valor a alterar.
      */
+
     public void setOwner_id(long owner_id) {
         this.owner_id = owner_id;
     }
-
+    
     /**
      * Get para a variável owner_name do objeto.
      * @return  Owner_name do objeto.
      */
+
     public String getOwner_name() {
         return owner_name;
     }
-
+    
     /**
      * Método que altera a variavel owner_name do objeto.
      * @param owner_name        Valor a alterar.
      */
+    
     public void setOwner_name(String owner_name) {
         this.owner_name = owner_name;
     }
-
+    
     /**
      * Get para a variável title do objeto.
      * @return  Title do objeto.
      */
+
     public String getTitle() {
         return title;
     }
@@ -248,14 +269,16 @@ public class MyPost {
      * Método que altera a variavel title do objeto.
      * @param title        Valor a alterar.
      */
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     /**
      * Get para a variável date do objeto.
      * @return  Date do objeto.
      */
+    
     public LocalDate getCdate() {
         return LocalDate.from(cdate);
     }
@@ -264,40 +287,45 @@ public class MyPost {
      * Método que altera a variavel cdate do objeto.
      * @param cdate        Valor a alterar.
      */
+    
     public void setCdate(LocalDate cdate) {
         this.cdate = cdate;
     }
-
+    
     /**
      * Get para a variável filhos do objeto.
      * @return  Filhos do objeto.
      */
-    public ArrayList<Long> getFilhos() {
-        ArrayList<Long> list = new ArrayList<Long>();
+    
+    public List<Long> getFilhos() {
+        List<Long> list = new ArrayList<Long>();
         list.addAll(filhos);                        //podemos usar adAll porque são longs
         return list;
     }
-
+    
     /**
      * Método que altera a variavel filhos do objeto.
      * @param filhos        Valor a alterar.
      */
-    public void setFilhos(ArrayList<Long> filhos) {
-        this.filhos.addAll(filhos);
-    }
 
+    public void setFilhos(List<Long> filhos) {
+        this.filhos = filhos.stream().collect(Collectors.toCollection(ArrayList::new));
+    }
+    
     /**
      * Método que adiciona um filho à variavel filhos do objeto.
      * @param id        Valor a adicionar.
      */
+
     public void addFilho(long id) {
         this.filhos.add(id);
     }
-
+    
     /**
      * Get para a variável tags do objeto.
      * @return  Tags do objeto.
      */
+
     public Set<String> getTags() {
         Set<String> set = new HashSet<String>();
         set.addAll(tags);                   //podemos usar addAll porque são strings
@@ -308,19 +336,21 @@ public class MyPost {
      * Método que altera a variavel tags do objeto.
      * @param tags        Valor a alterar.
      */
+    
     public void setTags(Set<String> tags) {
         if(tags != null)
             this.tags.addAll(tags);
     }
-
+    
     /**
      * Método que clona este objeto.
      * @return clone do objeto
      */
+
     public MyPost clone(){
         return new MyPost(this);
     }
-
+    
     /**
      * Método equal do objeto.
      * @param  o     Objeto a comparar
@@ -345,11 +375,12 @@ public class MyPost {
                 getFilhos().equals(myPost.getFilhos())          &&
                 getTags().equals(myPost.getTags());
     }
-
+    
     /**
      * Método toString do objeto.
      * @return Objeto em modo string.
      */
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -397,6 +428,23 @@ public class MyPost {
 
 
         return sb.toString();
+    }
+    
+    /**
+     * Método hashCode do objeto.
+     * @return hash do Objeto.
+     */
+    @Override
+    public int hashCode(){
+        int hash = 7;
+        hash = hash*31 + (int) this.id;
+        hash = hash*31 + this.type_id;
+        hash = hash*31 + this.comm_count;
+        hash = hash*31 + this.ans_count;
+        hash = hash*31 + (int) this.owner_id;
+        hash = hash*31 + this.score;
+        
+        return hash;
     }
 
 }
