@@ -1,4 +1,4 @@
-package engine
+package engine;
 
 import common.Pair;
 import li3.TADCommunity;
@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public class TCDCommunity implements TADCommunity {
@@ -407,7 +408,7 @@ public class TCDCommunity implements TADCommunity {
      * @return             Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
      */
     public Pair<String, List<Long>> getUserInfo(long id){
-        Set<MyPost> posts = new TreeSet<>(new Comparator<>() {
+        Set<MyPost> posts = new TreeSet<>(new Comparator<MyPost>() {
             @Override
             public int compare (MyPost p1, MyPost p2){
                 if (p1.getCdate().equals(p2.getCdate())) {

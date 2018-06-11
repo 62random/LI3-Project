@@ -58,9 +58,9 @@ public class View extends JFrame{
 
     public void addDumps(String[] dumps){
         setTitle("Choose dump");
-
+        dumpList.removeAllItems();
         for(String s : dumps)
-            this.dumpList.addItem(s);
+            dumpList.addItem(s);
 
 
 

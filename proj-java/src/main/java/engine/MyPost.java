@@ -1,7 +1,9 @@
-package engine
+package engine;
+
 
 import java.util.*;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class MyPost {
 
