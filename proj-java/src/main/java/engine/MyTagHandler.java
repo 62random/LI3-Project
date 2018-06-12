@@ -8,15 +8,24 @@ import java.util.HashMap;
 
 
 
-
+/**
+ * Classe onde está definido o comportamento que o SAXParser adota quando efetuar o parsing do Tags.xml
+ */
 public class MyTagHandler extends DefaultHandler {
 
     private HashMap<String, Long> tags = null;
 
+    /**
+     * Get para o HashMap de posts que o handler recolhe ao longo do ficheiro xml.
+     * @return  HashMap de posts recolhidos pelo handler
+     */
     public HashMap<String, Long> getTags() {
         return tags;
     }
 
+    /**
+     * Método da interface DefaultHandler, que define o comportamento do parser no início de cada elemento (ou tag)
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
@@ -34,11 +43,11 @@ public class MyTagHandler extends DefaultHandler {
 
     }
 
+    /**
+     * Método da interface DefaultHandler, que define o comportamento do parser no fim de cada elemento (ou tag)
+     */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
     }
 
-    @Override
-    public void characters(char ch[], int start, int length) throws SAXException {
-    }
 }

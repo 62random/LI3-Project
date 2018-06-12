@@ -11,25 +11,41 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.time.LocalDate;
 
+
+/**
+ * Classe onde está definido o comportamento do modelo MVC que utiliza TCDCommunity como model, e View como view
+ */
 public class Controller {
     private TCDCommunity model = null;
     private View view = null;
     private String path;
 
-
+    /**
+     * Construtor sem parâmetros da classe Controller
+     */
     public Controller() {
         this.view = new View();
     }
 
+    /**
+     * Construtor parametrizado da classe Controller
+     * @param model Model do novo controller
+     * @param view View do novo controller
+     */
     public Controller(TCDCommunity model, View view) {
         this.model = model;
         this.view = view;
 
         this.view.addPathListener(new PathListener());
+        view.setLocationRelativeTo(null);
+        view.setVisible(true);
 
 
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que especifica a localização da dump
+     */
     public class PathListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -49,6 +65,9 @@ public class Controller {
             }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que especifica a dump a utilizar
+     */
     public  class DumpListener implements  ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -72,6 +91,9 @@ public class Controller {
 
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 1
+     */
     public class Query1Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -106,6 +128,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 2
+     */
     public class Query2Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -140,6 +165,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 3
+     */
     public class Query3Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -197,6 +225,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 4
+     */
     public class Query4Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -274,6 +305,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 5
+     */
     public class Query5Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -308,6 +342,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 6
+     */
     public class Query6Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -385,6 +422,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 7
+     */
     public class Query7Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -462,6 +502,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 8
+     */
     public class Query8Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -512,6 +555,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 9
+     */
     public class Query9Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -577,6 +623,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 10
+     */
     public class Query10Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -611,6 +660,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Classe que define o comportamento a tomar quando é ativado o elemento da interface gráfica que escolhe a query 11
+     */
     public class Query11Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent){
@@ -688,6 +740,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Método utilitário que efetua o parsing de uma data no formato "AAAA-MM-DD..."
+     */
     public LocalDate parseDate(String str){
         if(str == null)
             return null;

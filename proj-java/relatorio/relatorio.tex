@@ -127,7 +127,7 @@
 	um conjunto de perguntas mais respondidas ou um conjunto de 
 	utilizadores com maior reputação.
 	
-		Estas estruturas consistem em dias listas, mais propriamente, 
+		Estas estruturas consistem em duas listas, mais propriamente, 
 	\texttt{ArrayList}. Um deles contém os \texttt{Ids} de todos os
 	\textit{users} ordenados pelo número de posts que o respetivo
 	\texttt{user} efetuou. O outro segue a mesma lógica, mas o 
@@ -237,7 +237,7 @@
 				\item É efetuado um ciclo semelhante aos referidos 
 			nas \textit{queries} 3 e 4.
 				\item Para cada data, percorre-se os \textit{posts} 
-			correspondentes e adiciona-se os que forem perguntas 
+			correspondentes e adiciona-se os que forem respostas 
 			a uma lista auxiliar.
 				\item Esta lista de \textit{posts} é ordenada 
 			segundo os \textit{scores} (recorrendo a um 
@@ -355,8 +355,12 @@ e também devido ao facto de a parte obrigatória do projeto estar
 pronta para ser utilizada como \textit{Model} do MVC simplesmente 
 recorrendo à interface \texttt{TADCommunity}.
 
+	Nota: Por uma questão de simplicidade, a nossa implementação 
+da interface comporta-se de forma que as datas têm de ser 
+introduzidas no formato "AAAA-DD-MM.." (i.e. "2001-01-01").
+
 \begin{figure}[h]\centering
-		\includegraphics[scale=0.6]{gui.png}
+		\includegraphics[scale=0.55]{gui.png}
 		\caption{Exemplo de estado da interface gráfica}
 		\label{fig1:gui}
 

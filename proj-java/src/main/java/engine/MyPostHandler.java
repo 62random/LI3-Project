@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.*;
 import java.time.ZoneId;
 
+/**
+ * Classe onde está definido o comportamento que o SAXParser adota quando efetuar o parsing do Posts.xml
+ */
 public class MyPostHandler extends DefaultHandler {
 
     private List<MyPost> posts = null;
@@ -16,19 +19,33 @@ public class MyPostHandler extends DefaultHandler {
     private Map<Long, List<Long>> user_posts;
     private MyPost p = null;
 
-
+    /**
+     * Get para a lista de posts que o handler recolher ao longo do ficheiro xml.
+     * @return  Lista de posts recolhidos pelo handler
+     */
     public List<MyPost> getPosts() {
         return posts;
     }
 
+    /**
+     * Get para o map que ao longo do ficheiro associa a cada id o número de respostas ao respetivo post
+     * @return  Mapa com (Id do post -> Nº de respostas ao post)
+     */
     public Map<Long, Integer> getNum_posts() {
         return num_posts;
     }
 
+    /**
+     * Get para o map que ao longo do ficheiro associa a cada id o número de posts do respetivo user
+     * @return  Mapa com (Id do user -> Nº de posts criados)
+     */
     public Map<Long, List<Long>> getUser_posts() {
         return user_posts;
     }
 
+    /**
+     * Método da interface DefaultHandler, que define o comportamento do parser no início de cada elemento (ou tag)
+     */
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
@@ -111,6 +128,9 @@ public class MyPostHandler extends DefaultHandler {
 
     }
 
+    /**
+     * Método da interface DefaultHandler, que define o comportamento do parser no fim de cada elemento (ou tag)
+     */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase("row")) {
@@ -118,10 +138,10 @@ public class MyPostHandler extends DefaultHandler {
         }
     }
 
-    @Override
-    public void characters(char ch[], int start, int length) throws SAXException {
-    }
-
+    /**
+     * Método utilitário para processar datas numa string com o formato "AAAA-MM-DD..."
+     * @return LocalDate correspondente ao post
+     */
     public LocalDate parseDate(String str){
         if(str == null)
             return null;
@@ -148,6 +168,10 @@ public class MyPostHandler extends DefaultHandler {
         return d;
     }
 
+    /**
+     * Método utilitário para processar o atributo Tags e devolver um conjunto de strings com as tags correspondentes
+     * @return Set<String> com as tags de um post
+     */
     public Set<String> parseTags(String str){
         if(str == null)
             return null;

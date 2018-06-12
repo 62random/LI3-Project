@@ -7,8 +7,14 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe com o simples intuito de testar o nosso programa
+ */
 public class Testes {
 
+    /**
+     * Função main que permite testar interativamente as queries do projeto
+     */
     public static void main(String[] args) {
         long l, l2;
         double time;
@@ -157,6 +163,9 @@ public class Testes {
 
     }
 
+    /**
+     * Função utilitária que gere o input de uma data por parte do utilizador
+     */
     public static LocalDate scanDate(){
         int a, m, d;
         Scanner s = new Scanner(System.in);
