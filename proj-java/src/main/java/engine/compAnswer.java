@@ -2,6 +2,10 @@ package engine;
 
 import java.util.Comparator;
 
+
+/**
+ * Classe comparator para comparar faturas posts com base no answer count.
+ */
 public class compAnswer implements Comparator<MyPost> {
 
     @Override

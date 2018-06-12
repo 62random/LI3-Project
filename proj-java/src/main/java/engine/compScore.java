@@ -2,6 +2,9 @@ package engine;
 
 import java.util.Comparator;
 
+/**
+ * Classe comparator para comparar faturas posts com base no score.
+ */
 public class compScore implements Comparator<MyPost> {
 
     @Override

@@ -224,7 +224,7 @@ public class TCDCommunity implements TADCommunity {
     }
 
     /**
-     * Função dá load aos ficheiros xml.
+     * Método dá load aos ficheiros xml.
      * @param    path        String com a diretoria onde se encontram os ficheiros.
      */
     
@@ -315,7 +315,7 @@ public class TCDCommunity implements TADCommunity {
     //++++++++++++++++++++++++++++++++++++++++++++++QUERIES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     /**
-     * Função mete um post no correspondete user.
+     * Método mete um post no correspondete user.
      * @param post            Identificador do post.
      */
 
@@ -326,7 +326,7 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 1
     /**
-     * Função retorna a informacao de um post.
+     * Método retorna a informacao de um post.
      * @param    id        Id do post
      * @return             STR_pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
      */
@@ -344,7 +344,7 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 2;
     /**
-     * Função que calcula os N utilizadores com mais posts.
+     * Método que calcula os N utilizadores com mais posts.
      * @param    N        Número de jogadores.
      * @return             LONG_list com os N users mais ativos, retorna -2 nos restantes indices da lista caso exceda o numero de users.
      */
@@ -370,7 +370,7 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 3
     /**
-     * Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
+     * Método que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
      * @param    begin    Data inicial da procura
      * @param    end        Data final da procura
      * @return             LONG_pair com o numero total de perguntas e resposta no dado intervalo.
@@ -398,7 +398,7 @@ public class TCDCommunity implements TADCommunity {
     }
     // Query 4
     /**
-     * Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
+     * Método que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
      * @param    tag        Tag.
      * @param    begin    Data inicial da procura.
      * @param    end        Data final da procura.
@@ -427,7 +427,7 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 5
     /**
-     * Função que dado um id de um user devolve informacao sobre este mesmo.
+     * Método que dado um id de um user devolve informacao sobre este mesmo.
      * @param    id        Id do post.
      * @return             Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
      */
@@ -468,7 +468,7 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 6
     /**
-     * Função que dado um intervalo de tempo calcula os N posts com melhor score.
+     * Método que dado um intervalo de tempo calcula os N posts com melhor score.
      * @param    N        Número de respostas.
      * @param    begin    Data do começo do intervalo.
      * @param    end        Data do fim do intervalo.
@@ -509,7 +509,7 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 7
     /**
-     * Função que dado um intervalo de tempo calcula as N perguntas com mais respostas.
+     * Método que dado um intervalo de tempo calcula as N perguntas com mais respostas.
      * @param    N        Número de posts a calcular.
      * @param    begin    Data do começo do intervalo.
      * @param    end        Data do fim do intervalo.
@@ -551,7 +551,7 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 8
     /**
-     * Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
+     * Método que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
      * @param    word    Palavra a ser procurada nos títulos.
      * @param    N        Número máximo de resultados N.
      * @return             LONG_list com as N perguntas mais recentes que contêm a palavra dada.
@@ -580,7 +580,7 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 9
     /**
-     * Função que dado 2 users retorna as N perguntas em que ambos participaram.
+     * Método que dado 2 users retorna as N perguntas em que ambos participaram.
      * @param id1        ID do user 1.
      * @param id2        ID do user 2.
      * @param N            Número máximo de N
@@ -644,7 +644,7 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 10
     /**
-     * Função que dado um id de um post devolve a resposta melhor cotada desse post.
+     * Método que dado um id de um post devolve a resposta melhor cotada desse post.
      * @param    id        Id do post
      * @return             ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota, -3 caso a pergunta nao seja encontrado o post e -4 caso o id do post dado nao corresponda a uma pergunta.
      */
@@ -671,7 +671,7 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 11
     /**
-     * Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
+     * Método que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
      * @param    N        Número máximo de tags.
      * @param    begin    Início do período de tempo.
      * @param    end        Final do período de tempo.
@@ -737,7 +737,7 @@ public class TCDCommunity implements TADCommunity {
 
     //          NAO SEI SE ESTA MERDA É ASSIM QUE SE FAZ
     /**
-     * Função que liberta a memória do objeto.
+     * Método que liberta a memória do objeto.
      */
     public void clear(){
         this.pre_rep.clear();;
