@@ -1,9 +1,0 @@
-digraph "check_altura"
-{
-  edge [fontname="FreeSans",fontsize="10",labelfontname="FreeSans",labelfontsize="10"];
-  node [fontname="FreeSans",fontsize="10",shape=record];
-  rankdir="LR";
-  Node1 [label="check_altura",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="FreeSans"];
-  Node2 [label="test_TREE_PROP",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$mytree_8h.html#aa655221e8c6c0729bb5799bf5df6163d",tooltip="Função que testa as propriedas da tree. "];
-}
