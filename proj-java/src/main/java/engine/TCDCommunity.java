@@ -381,10 +381,6 @@ public class TCDCommunity implements TADCommunity {
 
         ListPost aux;
         long p = 0, r = 0;
-        System.out.println("tem user:" + this.users.size() + "tem posts:" + this.posts_id.size());
-        int d = 0;
-        d = this.posts_date.values().stream().map(ListPost::getPosts).mapToInt(a -> a.size()).sum();
-        System.out.println(d);
         while(!begin.isAfter(end)){
             aux = this.posts_date.get(begin);
             if (aux != null){
@@ -411,7 +407,7 @@ public class TCDCommunity implements TADCommunity {
         if (begin.isAfter(end))
             return res;
 
-        while(end.isAfter(begin)){
+        while(end.isAfter(begin) || end.equals(begin)){
             aux = this.posts_date.get(end);
             if (aux != null){
                 for(MyPost i : aux.getPosts()){
@@ -432,16 +428,7 @@ public class TCDCommunity implements TADCommunity {
      * @return             Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
      */
     public Pair<String, List<Long>> getUserInfo(long id){
-        Set<MyPost> posts = new TreeSet<>(new Comparator<MyPost>() {
-            @Override
-            public int compare (MyPost p1, MyPost p2){
-                if (p1.getCdate().equals(p2.getCdate())) {
-                    return p1.getId() < p2.getId() ? 1 : -1;
-                }
-
-                return p1.getCdate().isBefore(p2.getCdate()) ? 1 : -1;
-            }
-        });
+        Set<MyPost> posts = new TreeSet<>(new compTime());
 
         if (!this.users.containsKey(id))
             return new Pair<>(null,new ArrayList<>());
