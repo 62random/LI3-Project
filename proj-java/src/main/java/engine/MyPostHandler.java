@@ -4,9 +4,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
-
+import java.time.ZoneId;
 
 public class MyPostHandler extends DefaultHandler {
 
@@ -120,7 +121,6 @@ public class MyPostHandler extends DefaultHandler {
     @Override
     public void characters(char ch[], int start, int length) throws SAXException {
     }
-
 
     public static LocalDate parseDate(String str){
         if(str == null)
