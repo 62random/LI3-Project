@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -13,13 +14,13 @@ import java.util.HashMap;
  */
 public class MyTagHandler extends DefaultHandler {
 
-    private HashMap<String, Long> tags = null;
+    private Map<String, Long> tags = null;
 
     /**
      * Get para o HashMap de posts que o handler recolhe ao longo do ficheiro xml.
      * @return  HashMap de posts recolhidos pelo handler
      */
-    public HashMap<String, Long> getTags() {
+    public Map<String, Long> getTags() {
         return tags;
     }
 
