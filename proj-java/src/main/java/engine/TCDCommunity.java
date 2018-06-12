@@ -250,7 +250,7 @@ public class TCDCommunity implements TADCommunity {
             for (MyPost p : post_handler.getPosts()) {
 
                 try {
-                    p.setOwner_name(this.users.get(p.getId()).getUsername());
+                    p.setOwner_name(this.users.get(p.getOwner_id()).getUsername());
                 } catch (NullPointerException o) {
                 }
 
