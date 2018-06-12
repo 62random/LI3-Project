@@ -1,6 +1,5 @@
 package li3;
 
-import engine.MyPostHandler;
 import engine.TCDCommunity;
 
 import javax.swing.*;
@@ -10,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import engine.MyPostHandler.*;
+import java.time.LocalDate;
 
 public class Controller {
     private TCDCommunity model = null;
@@ -166,7 +165,10 @@ public class Controller {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(data2.getText() != "")
-                        view.answer(model.totalPosts(MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                        try{
+                        view.answer(model.totalPosts(parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        }
+                        catch( java.time.DateTimeException e){ System.out.println(e);}
                 }
 
             });
@@ -175,7 +177,11 @@ public class Controller {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(data1.getText() != "")
-                        view.answer(model.totalPosts(MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                        try{
+                        view.answer(model.totalPosts(parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        }
+                        catch( java.time.DateTimeException e){ System.out.println(e);}
+
                 }
 
             });
@@ -220,16 +226,24 @@ public class Controller {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(data2.getText() != "" && tag.getText() != "")
-                        view.answer(model.questionsWithTag(tag.getText(),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
-                }
+                        try{
+                            view.answer(model.questionsWithTag(tag.getText(),parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        }
+                        catch(java.time.DateTimeException  e){ System.out.println(e);}
 
+
+                }
             });
 
             data2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     if(data1.getText() != "" && tag.getText() != "")
-                        view.answer(model.questionsWithTag(tag.getText(),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                        try{
+                            view.answer(model.questionsWithTag(tag.getText(),parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        }
+                        catch( java.time.DateTimeException e){ System.out.println(e);}
+
                 }
 
             });
@@ -237,11 +251,15 @@ public class Controller {
             tag.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && data2.getText() != "")
-                        view.answer(model.questionsWithTag(tag.getText(),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if (data1.getText() != "" && data2.getText() != "")
+                        try {
+                            view.answer(model.questionsWithTag(tag.getText(), parseDate(data1.getText()),parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
                 }
 
-            });
+                });
 
             texto.setEditable(false);
             texto.setText(s);
@@ -318,29 +336,41 @@ public class Controller {
             data1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data2.getText() != "" && n.getText() != "")
-                        view.answer(model.mostVotedAnswers(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
-                }
+                    if (data2.getText() != "" && n.getText() != "")
+                        try {
+                            view.answer(model.mostVotedAnswers(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
 
-            });
+                    }
+                });
 
             data2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && n.getText() != "")
-                        view.answer(model.mostVotedAnswers(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if (data1.getText() != "" && n.getText() != "")
+                        try {
+                            view.answer(model.mostVotedAnswers(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
                 }
 
-            });
+                });
 
             n.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && data2.getText() != "")
-                        view.answer(model.mostVotedAnswers(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if (data1.getText() != "" && data2.getText() != "")
+                        try {
+                            view.answer(model.mostVotedAnswers(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
                 }
 
-            });
+                });
 
             texto.setEditable(false);
             texto.setText(s);
@@ -383,29 +413,41 @@ public class Controller {
             data1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data2.getText() != "" && n.getText() != "")
-                        view.answer(model.mostAnsweredQuestions(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if (data2.getText() != "" && n.getText() != "")
+                        try {
+                            view.answer(model.mostAnsweredQuestions(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
                 }
 
-            });
+                });
 
             data2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && n.getText() != "")
-                        view.answer(model.mostAnsweredQuestions(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if (data1.getText() != "" && n.getText() != "")
+                        try {
+                            view.answer(model.mostAnsweredQuestions(Integer.parseInt(n.getText()), parseDate(data1.getText()),parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
                 }
 
-            });
+                });
 
             n.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && data2.getText() != "")
-                        view.answer(model.mostAnsweredQuestions(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if (data1.getText() != "" && data2.getText() != "")
+                        try {
+                            view.answer(model.mostAnsweredQuestions(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
                 }
 
-            });
+                });
 
             texto.setEditable(false);
             texto.setText(s);
@@ -597,8 +639,10 @@ public class Controller {
             data1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data2.getText() != "" && n.getText() != "")
-                        view.answer(model.mostUsedBestRep(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if(data2.getText() != "" && n.getText() != "") {
+                        try {view.answer(model.mostUsedBestRep(Integer.parseInt(n.getText()),parseDate(data1.getText()), parseDate(data2.getText())).toString());}
+                        catch( java.time.DateTimeException e ){ System.out.println(e);}
+                    }
                 }
 
             });
@@ -606,8 +650,13 @@ public class Controller {
             data2.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && n.getText() != "")
-                        view.answer(model.mostUsedBestRep(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if(data1.getText() != "" && n.getText() != "") {
+                        try {
+                            view.answer(model.mostUsedBestRep(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e ) {
+                            System.out.println(e);
+                        }
+                    }
                 }
 
             });
@@ -615,8 +664,13 @@ public class Controller {
             n.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(data1.getText() != "" && data2.getText() != "")
-                        view.answer(model.mostUsedBestRep(Integer.parseInt(n.getText()),MyPostHandler.parseDate(data1.getText()), MyPostHandler.parseDate(data2.getText())).toString());
+                    if(data1.getText() != "" && data2.getText() != "") {
+                        try {
+                            view.answer(model.mostUsedBestRep(Integer.parseInt(n.getText()), parseDate(data1.getText()), parseDate(data2.getText())).toString());
+                        } catch (java.time.DateTimeException e) {
+                            System.out.println(e);
+                        }
+                    }
                 }
 
             });
@@ -632,6 +686,32 @@ public class Controller {
             input.add(n);
             view.setInput(input);
         }
+    }
+
+    public LocalDate parseDate(String str){
+        if(str == null)
+            return null;
+
+        StringBuilder sb = new StringBuilder();
+        int year, day, month;
+        sb.append(str.charAt(0));
+        sb.append(str.charAt(1));
+        sb.append(str.charAt(2));
+        sb.append(str.charAt(3));
+        year = Integer.parseInt(sb.toString());
+        sb.setLength(0);
+
+        sb.append(str.charAt(5));
+        sb.append(str.charAt(6));
+        month = Integer.parseInt(sb.toString());
+        sb.setLength(0);
+
+        sb.append(str.charAt(8));
+        sb.append(str.charAt(9));
+        day = Integer.parseInt(sb.toString());
+
+        LocalDate d = LocalDate.of(year, month, day);
+        return d;
     }
 
 }
