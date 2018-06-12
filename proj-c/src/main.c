@@ -8,8 +8,8 @@
 
 	int inited 	= 0;
 	int loaded 	= 0;
-	char* ambA = "/Users/Ambrosiny/Desktop/dump exemplo/android";
-	char* ambU = "/Users/Ambrosiny/Desktop/dump exemplo/ubuntu";
+	char* ambA = "/Users/Ambrosiny/Desktop/dump/android";
+	char* ambU = "/Users/Ambrosiny/Desktop/dump/ubuntu";
 	char* randA = "/home/pedro/Desktop/dump/android";
 	char* randU = "/home/pedro/Desktop/dump/ubuntu";
 	char* megaA = "/home/alexrone/a/android";
@@ -64,13 +64,13 @@ int main(){
 
 
 				if (int1 == 1)
-					com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/android");
+					com = load(com,"/Users/Ambrosiny/Desktop/dump/android");
 				else if (int1 == 2)
 					com = load(com,"/home/pedro/Desktop/dump/android");
 				else if (int1 == 3)
 					com = load(com,"/home/alexrone/a/android");
 				else if (int1 == 4)
-					com = load(com,"/Users/Ambrosiny/Desktop/dump exemplo/ubuntu");
+					com = load(com,"/Users/Ambrosiny/Desktop/dump/ubuntu");
 				else if (int1 == 5)
 					com = load(com,"/home/pedro/Desktop/dump/ubuntu");
 				else if (int1 == 6)

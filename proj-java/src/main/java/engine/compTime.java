@@ -2,6 +2,10 @@ package engine;
 
 import java.util.Comparator;
 
+
+/**
+ * Classe comparator para comparar faturas posts com base na data.
+ */
 public class compTime implements Comparator<MyPost> {
     @Override
     public int compare(MyPost p1,MyPost p2){

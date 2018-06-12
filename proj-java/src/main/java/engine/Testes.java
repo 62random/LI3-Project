@@ -16,7 +16,8 @@ public class Testes {
         time = System.nanoTime();
 
         TCDCommunity com = new TCDCommunity();
-        com.load("/home/random/Desktop/dump/android/");
+        //com.load("/home/random/Desktop/dump/android/");
+        com.load("/Users/Ambrosiny/Desktop/dump/ubuntu/");
 
         time = System.nanoTime() - time;
 
@@ -46,9 +47,10 @@ public class Testes {
                 System.out.println("Número de utilizadores a devlver");
                 n = s.nextInt();
                 time = System.nanoTime();
-                System.out.println((com.topMostActive(n)));
+                List<Long> a = com.topMostActive(n);
                 time = System.nanoTime() - time;
                 System.out.println("Query 2 done in " + time/1000000 + " milisecs");
+                //System.out.println(a);
             }
             if(n == 3) {
                 System.out.println("Data de início do período:");

@@ -224,7 +224,7 @@ public class TCDCommunity implements TADCommunity {
     }
 
     /**
-     * Função dá load aos ficheiros xml.
+     * Método dá load aos ficheiros xml.
      * @param    path        String com a diretoria onde se encontram os ficheiros.
      */
     
@@ -250,7 +250,7 @@ public class TCDCommunity implements TADCommunity {
             for (MyPost p : post_handler.getPosts()) {
 
                 try {
-                    p.setOwner_name(this.users.get(p.getId()).getUsername());
+                    p.setOwner_name(this.users.get(p.getOwner_id()).getUsername());
                 } catch (NullPointerException o) {
                 }
 
@@ -315,7 +315,7 @@ public class TCDCommunity implements TADCommunity {
     //++++++++++++++++++++++++++++++++++++++++++++++QUERIES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     /**
-     * Função mete um post no correspondete user.
+     * Método mete um post no correspondete user.
      * @param post            Identificador do post.
      */
 
@@ -326,43 +326,65 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 1
     /**
-     * Função retorna a informacao de um post.
+     * Método retorna a informacao de um post.
      * @param    id        Id do post
      * @return             STR_pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
      */
     
     public Pair<String,String> infoFromPost(long id){
         MyPost p = this.posts_id.get(id);
+        if (p == null)
+            return new Pair<>(null,null);
 
         if(p.getType_id() == 2)
             p = this.posts_id.get(p.getParent_id());
 
-        return new Pair<String, String>(p.getTitle(), p.getOwner_name());
+        return new Pair<>(p.getTitle(),this.users.get(p.getOwner_id()).getUsername());
     }
 
     // Query 2;
     /**
-     * Função que calcula os N utilizadores com mais posts.
+     * Método que calcula os N utilizadores com mais posts.
      * @param    N        Número de jogadores.
      * @return             LONG_list com os N users mais ativos, retorna -2 nos restantes indices da lista caso exceda o numero de users.
      */
     
     public List<Long> topMostActive(int N){
+        if (N <= 0)
+            return new ArrayList<>();
+
         if(N > this.pre_posts.size())
             N = this.pre_posts.size();
-        return this.pre_posts.subList(0, N);
+
+        long k;
+        List<Long> a = new ArrayList<>(N);
+        Iterator i = this.pre_posts.iterator();
+        while (i.hasNext() && N > 0){
+            k =(long) i.next();
+            N--;
+            a.add(k);
+        }
+
+        return a;
     }
 
     // Query 3
     /**
-     * Função que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
+     * Método que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
      * @param    begin    Data inicial da procura
      * @param    end        Data final da procura
      * @return             LONG_pair com o numero total de perguntas e resposta no dado intervalo.
      */
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
+        if (begin.isAfter(end))
+            return new Pair<>((long)0,(long)0);
+
         ListPost aux;
         long p = 0, r = 0;
+        System.out.println("tem user:" + this.users.size() + "tem posts:" + this.posts_id.size());
+        int d = 0;
+        d = this.posts_date.values().stream().map(ListPost::getPosts).mapToInt(a -> a.size()).sum();
+        System.out.println(d);
         while(!begin.isAfter(end)){
             aux = this.posts_date.get(begin);
             if (aux != null){
@@ -376,7 +398,7 @@ public class TCDCommunity implements TADCommunity {
     }
     // Query 4
     /**
-     * Função que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
+     * Método que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
      * @param    tag        Tag.
      * @param    begin    Data inicial da procura.
      * @param    end        Data final da procura.
@@ -386,6 +408,8 @@ public class TCDCommunity implements TADCommunity {
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
         ListPost aux;
         List<Long> res = new ArrayList<>();
+        if (begin.isAfter(end))
+            return res;
 
         while(end.isAfter(begin)){
             aux = this.posts_date.get(end);
@@ -403,7 +427,7 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 5
     /**
-     * Função que dado um id de um user devolve informacao sobre este mesmo.
+     * Método que dado um id de um user devolve informacao sobre este mesmo.
      * @param    id        Id do post.
      * @return             Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
      */
@@ -418,6 +442,9 @@ public class TCDCommunity implements TADCommunity {
                 return p1.getCdate().isBefore(p2.getCdate()) ? 1 : -1;
             }
         });
+
+        if (!this.users.containsKey(id))
+            return new Pair<>(null,new ArrayList<>());
 
         MyPost aux;
 
@@ -436,12 +463,12 @@ public class TCDCommunity implements TADCommunity {
 
 
 
-        return new Pair<String, List<Long>>(this.users.get(id).getBio(), res);
+        return new Pair<>(this.users.get(id).getBio(), res);
     }
 
     //Query 6
     /**
-     * Função que dado um intervalo de tempo calcula os N posts com melhor score.
+     * Método que dado um intervalo de tempo calcula os N posts com melhor score.
      * @param    N        Número de respostas.
      * @param    begin    Data do começo do intervalo.
      * @param    end        Data do fim do intervalo.
@@ -451,6 +478,9 @@ public class TCDCommunity implements TADCommunity {
         List<Long> res = new ArrayList<>();
         ListPost aux1;
         List<MyPost> aux2 = new ArrayList<>();
+
+        if (begin.isAfter(end) || N <= 0)
+            return res;
 
         while(!begin.isAfter(end)){
             aux1 = this.posts_date.get(begin);
@@ -479,7 +509,7 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 7
     /**
-     * Função que dado um intervalo de tempo calcula as N perguntas com mais respostas.
+     * Método que dado um intervalo de tempo calcula as N perguntas com mais respostas.
      * @param    N        Número de posts a calcular.
      * @param    begin    Data do começo do intervalo.
      * @param    end        Data do fim do intervalo.
@@ -490,6 +520,9 @@ public class TCDCommunity implements TADCommunity {
         List<Long> res = new ArrayList<>();
         ListPost aux1;
         List<MyPost> aux2 = new ArrayList<>();
+
+        if (begin.isAfter(end) || N <= 0)
+            return res;
 
         while(!begin.isAfter(end)){
             aux1 = this.posts_date.get(begin);
@@ -518,13 +551,16 @@ public class TCDCommunity implements TADCommunity {
 
     //Query 8
     /**
-     * Função que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
+     * Método que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
      * @param    word    Palavra a ser procurada nos títulos.
      * @param    N        Número máximo de resultados N.
      * @return             LONG_list com as N perguntas mais recentes que contêm a palavra dada.
      */
     public List<Long> containsWord(int N, String word){
         TreeSet<MyPost> posts = new TreeSet<>(new compTime());
+
+        if (N <= 0)
+            return new ArrayList<>();
 
         for(MyPost p : this.posts_id.values())
             if(p.getTitle()!= null && p.getTitle().contains(word))
@@ -544,42 +580,71 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 9
     /**
-     * Função que dado 2 users retorna as N perguntas em que ambos participaram.
+     * Método que dado 2 users retorna as N perguntas em que ambos participaram.
      * @param id1        ID do user 1.
      * @param id2        ID do user 2.
      * @param N            Número máximo de N
      * @return             LONG_list com as N perguntas mais recentes em que ambos os users participaram, caso a lista seja menor que N os restantes indices ficam com o valor de -2.
      */
     public List<Long> bothParticipated(int N, long id1, long id2){
-
-        TreeSet<MyPost> posts = new TreeSet<>(new compTime());
-        MyPost p = null;
-
-        for (Long l : this.users.get(id1).getPosts()){
-            if (this.posts_id.get(l).getType_id() == 1)
-                p = this.posts_id.get(l);
-            else if (this.posts_id.get(l).getType_id() == 2)
-                p = this.posts_id.get(this.posts_id.get(l).getParent_id());
-
-            if(p != null)
-                for (Long m : p.getFilhos())
-                    if (this.posts_id.get(m).getOwner_id() == id2)
-                        posts.add(p);
-        }
-
         List<Long> res = new ArrayList<>();
-        int n = 0;
-        Iterator i = posts.iterator();
 
-        while (i.hasNext() && n++ < N)
-            res.add(((MyPost) i.next()).getId());
+        MyUser u1 = this.users.get(id1);
+        MyUser u2 = this.users.get(id2);
+        MyPost postaux;
+
+        if (u2 == null || u1 == null || N <= 0)
+            return res;
+
+        Map<MyPost,Integer> aux = new HashMap<>();
+
+        for(long i : u1.getPosts()){
+            postaux = this.posts_id.get(i);
+            if (postaux != null) {
+                if (postaux.getType_id() == 1)
+                    aux.put(postaux, 0);
+                else if (postaux.getType_id() == 2) {
+                    postaux = this.posts_id.get(postaux.getParent_id());
+                    if (postaux != null)
+                        aux.put(postaux, 0);
+                }
+            }
+        }
+        for(long k : u2.getPosts()){
+            postaux = this.posts_id.get(k);
+            if (postaux != null) {
+                if (postaux.getType_id() == 1) {
+                    if (aux.containsKey(postaux)) {
+                        aux.put(postaux, 1);
+                    }
+                } else if (postaux.getType_id() == 2) {
+                    postaux = this.posts_id.get(postaux.getParent_id());
+                    if (postaux != null) {
+                        if (aux.containsKey(postaux)) {
+                            aux.put(postaux, 1);
+                        }
+                    }
+                }
+            }
+        }
+        Set<MyPost> tree = new TreeSet<>(new compTime());
+        for(Map.Entry<MyPost,Integer> a : aux.entrySet()){
+            if (a.getValue() == 1)
+                tree.add(a.getKey());
+        }
+        Iterator l = tree.iterator();
+        while (l.hasNext() && N > 0){
+            postaux = (MyPost) l.next();
+            N--;
+            res.add(postaux.getId());
+        }
 
         return res;
     }
 
     // Query 10
     /**
-     * Função que dado um id de um post devolve a resposta melhor cotada desse post.
+     * Método que dado um id de um post devolve a resposta melhor cotada desse post.
      * @param    id        Id do post
      * @return             ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota, -3 caso a pergunta nao seja encontrado o post e -4 caso o id do post dado nao corresponda a uma pergunta.
      */
@@ -587,6 +652,9 @@ public class TCDCommunity implements TADCommunity {
         long res = -2;
         double max = 0, atual;
         MyPost p;
+
+        if (!this.posts_id.containsKey(id))
+            return 0;
 
         for(Long l : this.posts_id.get(id).getFilhos()){
             p = this.posts_id.get(l);
@@ -603,53 +671,73 @@ public class TCDCommunity implements TADCommunity {
 
     // Query 11
     /**
-     * Função que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
+     * Método que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
      * @param    N        Número máximo de tags.
      * @param    begin    Início do período de tempo.
      * @param    end        Final do período de tempo.
      * @return             LONG_list com as N tags mais usados num dado intervalo de tempo pelos users com mais reputacao.
      */
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end){
-        Map<Long, Integer> ocorrencias = new HashMap<Long, Integer>();
+        Map<Long, Integer> ocorrencias = new HashMap<>();
 
+        if (N > this.users.size())
+            N = this.users.size();
 
-        for (Long l : this.pre_rep.subList(0,  this.pre_rep.size() > N ? N : this.pre_rep.size())){
-            for(Long postid : this.users.get(l).getPosts()){
-                MyPost p = this.posts_id.get(postid);
-                if(p.getCdate().isAfter(begin) && p.getCdate().isBefore(end))
-                    for(String tag : p.getTags())
-                        ocorrencias.put(this.tags.get(tag), ocorrencias.containsKey(this.tags.get(tag)) ? ocorrencias.get(this.tags.get(tag)) + 1 : 1);
+        List<Long> res = new ArrayList<>(N);
+        if (N <= 0 || begin.isAfter(end))
+            return res;
+
+        MyUser uaux;
+        long idtag;
+        int k;
+        List<Long> userids = this.pre_rep.subList(0,N);
+        List<MyPost> paux;
+        for(long id : userids){
+            uaux = this.users.get(id);
+            paux = uaux.getPosts().stream().map(a-> this.posts_id.get(a))
+                                           .filter(a -> a.getType_id()==1)
+                                           .filter(a -> (a.getCdate().isAfter(begin)
+                                                && a.getCdate().isBefore(end))
+                                                || a.getCdate().equals(begin)
+                                                || a.getCdate().equals(end))
+                                           .collect(Collectors.toList());
+            for(MyPost ps : paux){
+                for(String tag : ps.getTags()){
+                    idtag = this.tags.get(tag);
+                    if (!ocorrencias.containsKey(idtag))
+                       ocorrencias.put(idtag,0);
+                    k = ocorrencias.get(idtag);
+                    ocorrencias.put(idtag,k+1);
+                }
             }
         }
+        Set<Map.Entry<Long,Integer>> ordaux = new TreeSet<>(new Comparator<Map.Entry<Long, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Long, Integer> o1, Map.Entry<Long, Integer> o2) {
+                if (o1.getValue() > o2.getValue())
+                    return -1;
+                else if (o1.getValue() < o2.getValue())
+                    return 1;
+                return o1.getKey() > o2.getKey() ? 1 : -1;
+            }
+        });
 
-        TreeMap<Integer, TreeSet<Long>> ordenados = new TreeMap<>();
-        TreeSet<Long> longs;
-
-        for(Map.Entry<Long, Integer> e : ocorrencias.entrySet()) {
-
-            longs = ordenados.containsKey(e.getValue())? ordenados.get(e.getValue()) : new TreeSet<Long>();
-            longs.add(e.getKey());
-            ordenados.put(e.getValue(), longs);
+        ordaux.addAll(ocorrencias.entrySet());
+        res = ordaux.stream().map(a -> a.getKey()).collect(Collectors.toList());
+        List<Long> fim = new ArrayList<>();
+        Iterator i = res.iterator();
+        while (i.hasNext() && N > 0){
+            long o = (long) i.next();
+            fim.add(o);
+            N--;
         }
 
-        ArrayList<Long> res = new ArrayList<Long>();
-
-        for (int i = 0; i < N && !ordenados.isEmpty(); i++) {
-            longs = ordenados.get(ordenados.lastKey());
-            res.add(longs.pollFirst());
-
-            if (longs.isEmpty())
-                ordenados.remove(ordenados.lastKey());
-            else
-                ordenados.put(ordenados.lastKey(), longs);
-        }
-
-        return res;
+        return fim;
     }
 
     //          NAO SEI SE ESTA MERDA É ASSIM QUE SE FAZ
     /**
-     * Função que liberta a memória do objeto.
+     * Método que liberta a memória do objeto.
      */
     public void clear(){
         this.pre_rep.clear();;
