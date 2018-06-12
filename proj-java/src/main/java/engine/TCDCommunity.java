@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * Classe contendo funções predefinidas para responder as querys bem como as suas funcoes auxiliares.
+ */
 
 public class TCDCommunity implements TADCommunity {
 
@@ -328,7 +331,7 @@ public class TCDCommunity implements TADCommunity {
     /**
      * Método retorna a informacao de um post.
      * @param    id        Id do post
-     * @return             STR_pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
+     * @return             Pair com o title e name do user, retorna NULL em caso de nao ser encontrado.
      */
     
     public Pair<String,String> infoFromPost(long id){
@@ -346,7 +349,7 @@ public class TCDCommunity implements TADCommunity {
     /**
      * Método que calcula os N utilizadores com mais posts.
      * @param    N        Número de jogadores.
-     * @return             LONG_list com os N users mais ativos, retorna -2 nos restantes indices da lista caso exceda o numero de users.
+     * @return            Lista de Longs com os N users mais ativos.
      */
     
     public List<Long> topMostActive(int N){
@@ -371,9 +374,9 @@ public class TCDCommunity implements TADCommunity {
     // Query 3
     /**
      * Método que dado um intervalo de tempo obtem o numero total de perguntas e respostas.
-     * @param    begin    Data inicial da procura
+     * @param    begin      Data inicial da procura
      * @param    end        Data final da procura
-     * @return             LONG_pair com o numero total de perguntas e resposta no dado intervalo.
+     * @return              Pair com o numero total de perguntas e resposta no dado intervalo.
      */
     public Pair<Long,Long> totalPosts(LocalDate begin, LocalDate end){
         if (begin.isAfter(end))
@@ -381,10 +384,6 @@ public class TCDCommunity implements TADCommunity {
 
         ListPost aux;
         long p = 0, r = 0;
-        System.out.println("tem user:" + this.users.size() + "tem posts:" + this.posts_id.size());
-        int d = 0;
-        d = this.posts_date.values().stream().map(ListPost::getPosts).mapToInt(a -> a.size()).sum();
-        System.out.println(d);
         while(!begin.isAfter(end)){
             aux = this.posts_date.get(begin);
             if (aux != null){
@@ -400,9 +399,9 @@ public class TCDCommunity implements TADCommunity {
     /**
      * Método que dado um intervalo de tempo retornar todas as perguntas contendo uma determinada tag.
      * @param    tag        Tag.
-     * @param    begin    Data inicial da procura.
+     * @param    begin      Data inicial da procura.
      * @param    end        Data final da procura.
-     * @return             LONG_list com o id de todas as tags que ocorreram no dado intervalo de tempo.
+     * @return              List com o id de todas as tags que ocorreram no dado intervalo de tempo.
      */
     
     public List<Long> questionsWithTag(String tag, LocalDate begin, LocalDate end) {
@@ -411,7 +410,7 @@ public class TCDCommunity implements TADCommunity {
         if (begin.isAfter(end))
             return res;
 
-        while(end.isAfter(begin)){
+        while(end.isAfter(begin) || end.equals(begin)){
             aux = this.posts_date.get(end);
             if (aux != null){
                 for(MyPost i : aux.getPosts()){
@@ -429,19 +428,10 @@ public class TCDCommunity implements TADCommunity {
     /**
      * Método que dado um id de um user devolve informacao sobre este mesmo.
      * @param    id        Id do post.
-     * @return             Estrutura USER com a biografia e os 10 posts mais recentes desse mesmo user, retorna -2 nos indices dos posts apartir do momento que nao seja encontrado mais posts desse user.
+     * @return             Pair com a biografia e os 10 posts mais recentes desse mesmo user.
      */
     public Pair<String, List<Long>> getUserInfo(long id){
-        Set<MyPost> posts = new TreeSet<>(new Comparator<MyPost>() {
-            @Override
-            public int compare (MyPost p1, MyPost p2){
-                if (p1.getCdate().equals(p2.getCdate())) {
-                    return p1.getId() < p2.getId() ? 1 : -1;
-                }
-
-                return p1.getCdate().isBefore(p2.getCdate()) ? 1 : -1;
-            }
-        });
+        Set<MyPost> posts = new TreeSet<>(new compTime());
 
         if (!this.users.containsKey(id))
             return new Pair<>(null,new ArrayList<>());
@@ -469,10 +459,10 @@ public class TCDCommunity implements TADCommunity {
     //Query 6
     /**
      * Método que dado um intervalo de tempo calcula os N posts com melhor score.
-     * @param    N        Número de respostas.
-     * @param    begin    Data do começo do intervalo.
+     * @param    N          Número de respostas.
+     * @param    begin      Data do começo do intervalo.
      * @param    end        Data do fim do intervalo.
-     * @return             LONG_list com os N utilizadores que mais votaram no dado intervalo de tempo, caso nao encontre N utilizadores retornara -2 nos restantes indices do array.
+     * @return              List com os N utilizadores que mais votaram no dado intervalo de tempo.
      */
     public List<Long> mostVotedAnswers(int N, LocalDate begin, LocalDate end){
         List<Long> res = new ArrayList<>();
@@ -510,10 +500,10 @@ public class TCDCommunity implements TADCommunity {
     //Query 7
     /**
      * Método que dado um intervalo de tempo calcula as N perguntas com mais respostas.
-     * @param    N        Número de posts a calcular.
-     * @param    begin    Data do começo do intervalo.
+     * @param    N          Número de posts a calcular.
+     * @param    begin      Data do começo do intervalo.
      * @param    end        Data do fim do intervalo.
-     * @return             LONG_list com os N utilizadores que mais votaram no intervalo dado, caso nao encontre N utilizadores retornara -2 nos restantes indices do array.
+     * @return              List com os N utilizadores que mais votaram no intervalo dado.
      */
 
     public List<Long> mostAnsweredQuestions(int N, LocalDate begin, LocalDate end){
@@ -552,9 +542,9 @@ public class TCDCommunity implements TADCommunity {
     //Query 8
     /**
      * Método que obtém os id's das N perguntas mais recentes cujo título contém uma dada palavra.
-     * @param    word    Palavra a ser procurada nos títulos.
-     * @param    N        Número máximo de resultados N.
-     * @return             LONG_list com as N perguntas mais recentes que contêm a palavra dada.
+     * @param    word       Palavra a ser procurada nos títulos.
+     * @param    N          Número máximo de resultados N.
+     * @return              List com as N perguntas mais recentes que contêm a palavra dada.
      */
     public List<Long> containsWord(int N, String word){
         TreeSet<MyPost> posts = new TreeSet<>(new compTime());
@@ -581,10 +571,10 @@ public class TCDCommunity implements TADCommunity {
     // Query 9
     /**
      * Método que dado 2 users retorna as N perguntas em que ambos participaram.
-     * @param id1        ID do user 1.
-     * @param id2        ID do user 2.
-     * @param N            Número máximo de N
-     * @return             LONG_list com as N perguntas mais recentes em que ambos os users participaram, caso a lista seja menor que N os restantes indices ficam com o valor de -2.
+     * @param id1           ID do user 1.
+     * @param id2           ID do user 2.
+     * @param N             Número máximo de N
+     * @return              List com as N perguntas mais recentes em que ambos os users participaram.
      */
     public List<Long> bothParticipated(int N, long id1, long id2){
         List<Long> res = new ArrayList<>();
@@ -646,7 +636,7 @@ public class TCDCommunity implements TADCommunity {
     /**
      * Método que dado um id de um post devolve a resposta melhor cotada desse post.
      * @param    id        Id do post
-     * @return             ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota, -3 caso a pergunta nao seja encontrado o post e -4 caso o id do post dado nao corresponda a uma pergunta.
+     * @return             ID da respota com melhor pontuacao,retorna -2 caso nao haja nenhuma respota ou o id nao corresponda a uma pergunta e -3 caso o post nao exista.
      */
     public long betterAnswer(long id){
         long res = -2;
@@ -654,7 +644,7 @@ public class TCDCommunity implements TADCommunity {
         MyPost p;
 
         if (!this.posts_id.containsKey(id))
-            return 0;
+            return -3;
 
         for(Long l : this.posts_id.get(id).getFilhos()){
             p = this.posts_id.get(l);
@@ -672,10 +662,10 @@ public class TCDCommunity implements TADCommunity {
     // Query 11
     /**
      * Método que obtém o número de ocorrencias das N tags mais usadas num dado período de tempo pelos N users com maior reputação.
-     * @param    N        Número máximo de tags.
-     * @param    begin    Início do período de tempo.
+     * @param    N          Número máximo de tags.
+     * @param    begin      Início do período de tempo.
      * @param    end        Final do período de tempo.
-     * @return             LONG_list com as N tags mais usados num dado intervalo de tempo pelos users com mais reputacao.
+     * @return              List com as N tags mais usados num dado intervalo de tempo pelos users com mais reputacao.
      */
     public List<Long> mostUsedBestRep(int N, LocalDate begin, LocalDate end){
         Map<Long, Integer> ocorrencias = new HashMap<>();

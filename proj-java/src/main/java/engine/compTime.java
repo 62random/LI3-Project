@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 
 /**
- * Classe comparator para comparar faturas posts com base na data.
+ * Classe comparator para comparar posts com base na data.
  */
 public class compTime implements Comparator<MyPost> {
     @Override

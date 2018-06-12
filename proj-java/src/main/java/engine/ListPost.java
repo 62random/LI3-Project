@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
+/**
+ * Classe onde está definido tipo adotado para os posts e funções relativas ao mesmo.
+ */
+
 public class ListPost {
 
     private int perguntas;

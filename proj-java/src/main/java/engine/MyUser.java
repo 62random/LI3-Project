@@ -3,6 +3,11 @@ package engine;
 import java.util.List;
 import java.util.ArrayList;
 
+
+/**
+ * Classe onde está definido tipo adotado para os users e funções relativas ao mesmo.
+ */
+
 public class MyUser {
 
     private long    id;
