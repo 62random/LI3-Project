@@ -4,4 +4,3 @@ This was an assignment for a course which consisted in interpreting XML data dum
 
 The challenge was to implement the same set of queries twice: the first time in C, and the second in Java.
 The goal was to understand the differences between both tools in respect to how easy it is to encapsulate data and implement data structures.
->>>>>>> 13648805553b3e56fdc09da3d70b8a8dc5eab5e0
